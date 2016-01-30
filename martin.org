@@ -1,12 +1,22 @@
+#+STARTUP: indent content hidestars
 * Personal Information
 
 If for some reason any application will need personal information,
-here they are ;-) 
+here they are ;-)
 
 #+BEGIN_SRC emacs-lisp
   (setq user-full-name "Martin Homuth"
         user-mail-address "martin@martinhomuth.de")
 #+END_SRC
+
+Load all the things I don't like to share with the world
+
+#+BEGIN_SRC elisp
+(load "~/.emacs.d/emacs.secrets" t t t)
+#+END_SRC
+
+#+RESULTS:
+: t
 
 * Emacs Initialization
 
@@ -96,7 +106,7 @@ possibility to solve this:
   fi
 #+END_SRC
 
-Tramp itself can have various configurations for default settings. 
+Tramp itself can have various configurations for default settings.
 
 #+BEGIN_SRC elisp
   (setq tramp-default-method "ssh"
@@ -137,43 +147,6 @@ Tramp itself can have various configurations for default settings.
                       ("C-x c o" . helm-occur)
                       ("C-x c s" . helm-scoop)))
 #+END_SRC
-
-
-** Helm-Swoop
-#+BEGIN_SRC emacs-lisp
-  (use-package helm-swoop
-    :ensure t
-    :defer t
-    :bind
-    (("C-S-s" . helm-swoop)
-     ("M-i" . helm-swoop)
-     ("M-s s" . helm-swoop)
-     ("C-x M-i" . helm-multi-swoop-all))
-    :config
-    (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
-    (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop))
-#+END_SRC
-
-#+RESULTS:
-
-** Key Bindings
-#+BEGIN_SRC emacs-lisp
-  (global-set-key "\C-x\C-m" 'execute-extended-command)
-  (global-set-key "\C-c\C-m" 'execute-extended-command)
-  (global-set-key "\C-w" 'backward-kill-word)
-  (global-set-key "\C-x\C-k" 'kill-region)
-  (global-set-key "\C-c\C-k" 'kill-region)
-  (global-set-key (kbd "C-s") 'isearch-forward-regexp)
-  (global-set-key (kbd "C-r") 'isearch-backward-regexp)
-  (global-unset-key (kbd "C-z"))
-  (global-set-key [f1] 'eshell)
-  (global-set-key (kbd "C-x g") 'magit-status)
-  (global-set-key (kbd "C-+") 'text-scale-increase)
-  (global-set-key (kbd "C--") 'text-scale-decrease)
-#+END_SRC
-
-#+RESULTS:
-: magit-status
 
 ** Hydra
 
@@ -218,8 +191,62 @@ Tramp itself can have various configurations for default settings.
 
 #+RESULTS:
 
-* Git
-** Magit
+** Key Bindings
+#+BEGIN_SRC emacs-lisp
+  ;; General
+  (global-set-key "\C-x\C-m" 'execute-extended-command)
+  (global-set-key "\C-c\C-m" 'execute-extended-command)
+  (global-set-key "\C-w" 'backward-kill-word)
+  (global-set-key "\C-x\C-k" 'kill-region)
+  (global-set-key "\C-c\C-k" 'kill-region)
+  (global-set-key (kbd "C-s") 'isearch-forward-regexp)
+  (global-set-key (kbd "C-r") 'isearch-backward-regexp)
+  (global-unset-key (kbd "C-z"))
+  (global-set-key [f1] 'eshell)
+  (global-set-key (kbd "C-x g") 'magit-status)
+  (global-set-key (kbd "C-+") 'text-scale-increase)
+  (global-set-key (kbd "C--") 'text-scale-decrease)
+  ;; Org-Mode
+  (bind-key "C-c r" 'org-capture)
+  (bind-key "C-c a" 'org-agenda)
+  (bind-key "C-c l" 'org-store-link)
+  (bind-key "C-c L" 'org-insert-link-global)
+  (bind-key "C-c O" 'org-open-at-point-global)
+  (bind-key "<f9>" 'org-agenda-list)
+  (bind-key "C-c v" 'org-show-todo-tree org-mode-map)
+  (bind-key "C-c C-r" 'org-refile org-mode-map)
+  (bind-key "C-c R" 'org-reveal org-mode-map)
+#+END_SRC
+
+#+RESULTS:
+: org-agenda-clock-in
+
+#+END_SRC
+
+#+RESULTS:
+: magit-status
+* Navigation
+** Helm-Swoop
+#+BEGIN_SRC emacs-lisp
+  (use-package helm-swoop
+    :ensure t
+    :defer t
+    :bind
+    (("C-S-s" . helm-swoop)
+     ("M-i" . helm-swoop)
+     ("M-s s" . helm-swoop)
+     ("C-x M-i" . helm-multi-swoop-all))
+    :config
+    (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
+    (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop))
+#+END_SRC
+
+#+RESULTS:
+* Version Control
+** Git
+
+Magit seems to be the one and only package when dealing with git
+repositories. We will see, if there is something else needed ever.
 
 #+BEGIN_SRC emacs-lisp
 (use-package magit
@@ -231,12 +258,10 @@ Tramp itself can have various configurations for default settings.
 
 #+RESULTS:
 
-
-* Org
+* Org-Mode
 ** General
-As the most awesome people do, I too use org-mode! :)
 
-#+STARTUP: content hidestars 
+As the most awesome people do, I too use org-mode! :)
 
 #+BEGIN_SRC emacs-lisp
   (use-package org
@@ -252,142 +277,23 @@ As the most awesome people do, I too use org-mode! :)
     (add-hook 'org-babel-after-execute-hook 'org-display-inline-images)
     (org-babel-do-load-languages
      'org-babel-load-languages
-     '((dot . t)
-       (ditaa . t) 
-       (sh . t)
-       (R . t)
+     '((sh . t)
        (python . t)))
-    (add-to-list 'org-src-lang-modes '("dot" . graphviz-dot)))
+    (eval-after-load 'org-agenda
+      '(bind-key "i" 'org-agenda-clock-in org-agenda-mode-map))
+      (setq org-hide-emphasis-markers t)
+    )
   #+END_SRC
 
 #+RESULTS:
 : t
 
-** My Files
-
-#<<org-files>>
-
-All of the org files I use
-| personal.org  | Everything personal, mostly the main stuff like next actions, projects or people |
-| work.org      | Everything regarding the work in the HU                                          |
-| organizer.org | All dates to be remembered, tasks?                                               |
-| journal.org   | Stuff to collect                                                                 |
-| martin.org    | This great file!                                                                 |
-
-** TODO Modules
-I still have no idea about org-modules, will look into that soonish
-
-Hava a look [[https://github.com/sachac/.emacs.d/blob/gh-pages/Sacha.org#modules][here]]
-#+BEGIN_SRC emacs-lisp
-    (setq org-modules '(org-bbdb 
-                        org-gnus
-                        org-drill
-                        org-info
-                        org-habit
-                        org-irc
-                        org-mouse
-                        org-annotate-file
-                        org-eval
-                        org-expiry
-                        org-interactive-query
-                        org-man
-                        org-panel
-                        org-screen
-                        org-toc
-                        org-habit
-                        org-bibtex
-                        org-docview
-                        org-mhe))
-    (eval-after-load 'org
-      '(org-load-modules-maybe t))
-    (setq org-expiry-inactive-timestamps t)
-#+END_SRC
-
-#+RESULTS:
-: t
-
-** Keyboard Shortcuts
-#+BEGIN_SRC emacs-lisp
-  (bind-key "C-c r" 'org-capture)
-  (bind-key "C-c a" 'org-agenda)
-  (bind-key "C-c l" 'org-store-link)
-  (bind-key "C-c L" 'org-insert-link-global)
-  (bind-key "C-c O" 'org-open-at-point-global)
-  (bind-key "<f9>" 'org-agenda-list)
-  (bind-key "C-c v" 'org-show-todo-tree org-mode-map)
-  (bind-key "C-c C-r" 'org-refile org-mode-map)
-  (bind-key "C-c R" 'org-reveal org-mode-map)
-
-  (eval-after-load 'org-agenda
-    '(bind-key "i" 'org-agenda-clock-in org-agenda-mode-map))
-#+END_SRC
-
-#+RESULTS:
-: org-agenda-clock-in
-
-** LaTeX
-*** Beamer
-#+BEGIN_SRC emacs-lisp
-  ;; allow for export=>beamer by placing
-
-  ;; #+LaTeX_CLASS: beamer in org files
-  (unless (boundp 'org-export-latex-classes)
-    (setq org-export-latex-classes nil))
-  (add-to-list 'org-export-latex-classes
-    ;; beamer class, for presentations
-    '("beamer"
-       "\\documentclass[11pt]{beamer}\n
-        \\mode<{{{beamermode}}}>\n
-        \\usetheme{{{{beamertheme}}}}\n
-        \\usecolortheme{{{{beamercolortheme}}}}\n
-        \\beamertemplateballitem\n
-        \\setbeameroption{show notes}
-        \\usepackage[utf8]{inputenc}\n
-        \\usepackage[T1]{fontenc}\n
-        \\usepackage{hyperref}\n
-        \\usepackage{color}
-        \\usepackage{listings}
-        \\lstset{numbers=none,language=[ISO]C++,tabsize=4,
-    frame=single,
-    basicstyle=\\small,
-    showspaces=false,showstringspaces=false,
-    showtabs=false,
-    keywordstyle=\\color{blue}\\bfseries,
-    commentstyle=\\color{red},
-    }\n
-        \\usepackage{verbatim}\n
-        \\institute{{{{beamerinstitute}}}}\n          
-         \\subject{{{{beamersubject}}}}\n"
-
-       ("\\section{%s}" . "\\section*{%s}")
-     
-       ("\\begin{frame}[fragile]\\frametitle{%s}"
-         "\\end{frame}"
-         "\\begin{frame}[fragile]\\frametitle{%s}"
-         "\\end{frame}")))
-
-    ;; letter class, for formal letters
-
-    (add-to-list 'org-export-latex-classes
-
-    '("letter"
-       "\\documentclass[11pt]{letter}\n
-        \\usepackage[utf8]{inputenc}\n
-        \\usepackage[T1]{fontenc}\n
-        \\usepackage{color}"
-     
-       ("\\section{%s}" . "\\section*{%s}")
-       ("\\subsection{%s}" . "\\subsection*{%s}")
-       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-       ("\\paragraph{%s}" . "\\paragraph*{%s}")
-       ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
-#+END_SRC
-
-#+RESULTS:
-
 ** Publish HTML
-#+BEGIN_SRC emacs-lisp
+
+Recently I played with writing my blog with org-mode but I did not
+have the time yet to steamline it.
+
+#+BEGIN_SRC emacs-lisp :export no
   (use-package ox-publish
     :config
     (setq org-publish-project-alist
@@ -415,46 +321,11 @@ Hava a look [[https://github.com/sachac/.emacs.d/blob/gh-pages/Sacha.org#modules
 #+RESULTS:
 : t
 
-** Hide the markup symbols
-I don't like having the = or * symbols hanging around
-when ttext is markuped, so I turn them off
-#+BEGIN_SRC emacs-lisp
-(setq org-hide-emphasis-markers t)
-#+END_SRC
-
-#+RESULTS:
-: t
-
-** Link Org Subtrees and Navigate Between Them
-Makes it easier to link trees with entries
-#+BEGIN_SRC emacs-lisp
-  (defun martin/org-follow-entry-link ()
-    "Follow the defined link for this entry."
-    (interactive)
-    (if (org-entry-get (point) "LINK")
-        (org-open-link-from-string (org-entry-get (point) "LINK"))
-      (org-open-at-point)))
-
-  (bind-key "C-c o" 'martin/org-follow-entry-link org-mode-map)
-
-  (defun martin/org-link-projects (location)
-    "Add link properties between the current subtree and the one specified by LOCATION."
-    (interactive
-     (list (let ((org-refile-use-cache nil))
-             (org-refule-get-location "Location"))))
-    (let ((link11 (org-store-link nil)) link2)
-      (save-window-excursion
-        (org-refile 4 nil location)
-        (setq link2 (org-store-link nil))
-        (org-set-property "LINK" link1))
-      (org-set-property "LINK" link2)))
-#+END_SRC
-
-#+RESULTS:
-: martin/org-link-projects
-
 ** Taking Notes
-Setting the directories for the notes to be placed in - this will be synced soonish
+
+Setting the directories for the notes to be placed in - this will be
+synced soonish.
+
 #+BEGIN_SRC emacs-lisp
   (setq org-directory "~/git/org")
   (setq org-default-notes-file "~/git/org/personal.org")
@@ -464,6 +335,7 @@ Setting the directories for the notes to be placed in - this will be synced soon
 : ~/git/org/personal.org
 
 *** Templates
+
 Let's use =org-capture= to quickly add the things that come to mind all the time :)
 
 #+BEGIN_SRC emacs-lisp
@@ -494,13 +366,13 @@ Let's use =org-capture= to quickly add the things that come to mind all the time
   :END:
   %^g%?
   " "Programming Workout Template")
-  (defvar martin/org-journal-template 
-  "**** %^{Description} %^g
+  (defvar martin/org-journal-template
+    "**** %^{Description} %^g
   :PROPERTIES:
   :Effort: %^{effort|0:05|0:10|0:15|0:20|0:25|0:30|0:45|1:00|2:00|4:00|8:00}
   :END:
   %T"
-  "Journal Template")
+    "Journal Template")
   (setq org-capture-templates
         `(("t" "Tasks" entry
            (file+headline "~/git/org/personal.org" "INBOX")
@@ -519,13 +391,10 @@ Let's use =org-capture= to quickly add the things that come to mind all the time
           ("d" "Decisions" entry
            (file+headline "~/git/org/personal.org" "Decisions")
            "* %?\n%i")
-          ("q" "Question" entry
-           (file+headline "~/git/org/university.org" "Fragen")
-           "* %?\n%i")
           ("p" "Project" entry
            (file+headline "~/git/org/personal.org" "Projects")
            ,martin/org-project-template)
-          ("pw" "Workout" entry
+          ("W" "Workout" entry
            (file+headline "~/git/org/personal.org" "Primary Skills")
            ,martin/org-programming-workout-template)))
   (bind-key "C-M-r" 'org-capture)
@@ -535,7 +404,10 @@ Let's use =org-capture= to quickly add the things that come to mind all the time
 : org-capture
 
 *** Refiling
-=org-refile= lets you organize notes by typing in the headline to file them under
+
+=org-refile= lets you organize notes by typing in the headline to file
+them under.
+
 #+BEGIN_SRC emacs-lisp
   (setq org-reverse-note-order t)
   (setq org-refile-use-outline-path nil)
@@ -548,26 +420,28 @@ Let's use =org-capture= to quickly add the things that come to mind all the time
 #+RESULTS:
 
 ** org-caldav
+
 #+BEGIN_SRC emacs-lisp
   (use-package org-caldav
     :ensure t
     :config
-    (setq org-caldav-url "https://lab.is-by.us/remote.php/caldav/calendars/martin")
+    (setq org-caldav-url martin-caldav-url)
     (setq org-caldav-calendars
           '((:calendar-id "personal" :files ("~/git/org/personal.org" "~/git/org/organizer.org" "~/git/org/journal.org")
                           :inbox "~/git/org/inbox/frompersonal.org")
             (:calendar-id "work"
                           :files ("~/git/org/work.org")
                           :inbox "~/git/org/inbox/fromwork.org"))))
-  
+
 #+END_SRC
 
 #+RESULTS:
 : t
 
 ** Managing Tasks
+
 *** Track TODO state
-<<todo-keywords>>
+
 #+BEGIN_SRC emacs-lisp
   (setq org-todo-keywords
         '((sequence
@@ -591,45 +465,10 @@ Let's use =org-capture= to quickly add the things that come to mind all the time
 | WAITING | :foreground | red   | :weight | bold |
 | SOMEDAY | :foregound  | gray  | :weight | bold |
 
-*** Projects
-Don't inherit the project tag
-#+BEGIN_SRC emacs-lisp
-(setq org-tags-exclude-from-inheritance '("project"))
-#+END_SRC
-
-#+RESULTS:
-| project |
-
-This code makes it easy to focus on one project and it's tasks
-#+BEGIN_SRC emacs-lisp
-  (add-to-list 'org-speed-commands-user '("N" org-narrow-to-subtree))
-  (add-to-list 'org-speed-commands-user '("W" widen))
-  (defun martin/org-agenda-for-subtree ()
-    (interactive)
-    (if (derived-mode-p 'org-agenda-mode)
-        (let* ((marker (or (org-get-at-bol 'org-hd-marker)
-                           (org-agenda-error)))
-               (hdmarker (or (org-get-at-bol 'org-hd-marker) marker))
-               (pos (marker-position-marker))
-               (col (current-column))
-               newhead)
-          (org-with-remote-undo (marker-buffer marker)
-            (with-current-buffer (marker-buffer marker)
-              (widen)
-              (let ((org-agenda-view-columns-initially t))
-                (org-agenda nil "t" 'subtree)))))
-      (let ((org-agenda-view-columns-initially t))
-        (org-agenda nil "t" 'subtree))))
-  (add-to-list 'org-speed-commands-user '("T" martin/org-agenda-for-subtree))
-#+END_SRC
-
-#+RESULTS:
-| T | martin/org-agenda-for-subtree |
-| W | widen                         |
-| N | org-narrow-to-subtree         |
-
 *** Tag Tasks with GTD-ish contexts
+
 This defines the key commands for those, too.
+
 #+BEGIN_SRC emacs-lisp
   (setq org-tag-alist '(("call" . ?c)
                         ("@computer" . ?l)
@@ -651,16 +490,19 @@ This defines the key commands for those, too.
 #+RESULTS:
 
 *** Enable Filtering by Effort Estimates
+
 That way it is easy to see short tasks that i can finish fast
+
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'org-global-properties
-               '("Effort_ALL" . "0:05 0:15 0:30 0:45 1:00 2:00 4:00"))
+               '("Effort_ALL" . "0:05 0:10 0:15 0:20 0:25 0:30 0:45 1:00 2:00 4:00"))
 #+END_SRC
 
 #+RESULTS:
 
 *** Track Time
 #+BEGIN_SRC emacs-lisp
+
   (defun martin/org-clock-in-set-state-to-started ()
     "Mark STARTED when clocked in."
     (save-excursion
@@ -697,6 +539,7 @@ Too many clock entries clutter up a heading
 : 1
 
 *** Habits
+
 #+BEGIN_SRC emacs-lisp
   (setq org-habit-graph-column 80)
   (setq org-habit-show-habits-only-for-today nil)
@@ -705,6 +548,7 @@ Too many clock entries clutter up a heading
 #+RESULTS:
 
 *** Estimating Tasks
+
 #+BEGIN_SRC emacs-lisp
   (add-hook 'org-clock-in-prepare-hook
             'martin/org-mode-ask-effort)
@@ -723,6 +567,7 @@ Too many clock entries clutter up a heading
 : martin/org-mode-ask-effort
 
 ** Org Agenda
+
 *** Basic Configuration
 #+BEGIN_SRC emacs-lisp
   (setq org-agenda-files
@@ -756,32 +601,9 @@ This is some configuration of Sacha's
 : %50ITEM %12SCHEDULED %TODO %3PRIORITY %Effort{:} %TAGS
 
 
-** Org-Babel
-#+BEGIN_SRC emacs-lisp
-  (setq org-ditaa-jar-path "~/bin/ditaa.jar")
-  (setq org-startup-with-inline-images t)
-#+END_SRC
-
-#+RESULTS:
-: t
-
-We want to accept 'safe' languages by default without confirmation
-#+BEGIN_SRC emacs-lisp
-  (defun my-org-confirm-babel-evaluate (lang body)
-    (not (member lang (list "ditaa" "python"))))  ; don't ask for ditaa
-  (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
-#+END_SRC
-
-#+RESULTS:
-: my-org-confirm-babel-evaluate
-
-* Blog
-I use org-mode to write my blog contents and thus export it using org-modes html-exporter. Here are some settings that I use.
-#+BEGIN_SRC emacs-lisp
-(setq org-html-doctype "html5")
-#+END_SRC
 * Programming
 ** General
+
 #+BEGIN_SRC emacs-lisp
   (use-package auto-complete
     :ensure t
@@ -789,15 +611,15 @@ I use org-mode to write my blog contents and thus export it using org-modes html
     (require 'auto-complete-config)
     (ac-config-default)
     (global-auto-complete-mode t))
-
-
 #+END_SRC
 
 #+RESULTS:
 : t
 
 ** C
+
 Simple C-mode adjustments
+
 #+BEGIN_SRC emacs-lisp
   (require 'cc-mode)
   (setq-default
@@ -821,6 +643,7 @@ Simple C-mode adjustments
 : compile-parent
 
 C-mode hooks that just load when c-mode is activated
+
 #+BEGIN_SRC emacs-lisp
   (add-hook 'c-mode-hook
             (lambda ()
@@ -875,9 +698,3 @@ C-mode hooks that just load when c-mode is activated
 
 #+RESULTS:
 | my/add-semantic-to-autocomplete |
-
-* Org-Config
-  #+STARTUP: indent nostars
-  
-
-
