@@ -5,14 +5,16 @@ If for some reason any application will need personal information,
 here they are ;-)
 
 #+BEGIN_SRC emacs-lisp
-  (setq user-full-name "Martin Homuth"
-        user-mail-address "martin@martinhomuth.de")
+  (setq user-full-name "Martin Homuth")
 #+END_SRC
+
+#+RESULTS:
+: Martin Homuth
 
 Load all the things I don't like to share with the world
 
-#+BEGIN_SRC elisp
-(load "~/.emacs.d/emacs.secrets" t t t)
+#+BEGIN_SRC emacs-lisp
+(load "~/.emacs.d/secrets")
 #+END_SRC
 
 #+RESULTS:
@@ -23,7 +25,7 @@ Load all the things I don't like to share with the world
 These settings are for emacs internals, nothing specific.
 
 ** Emacs Font
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (add-to-list 'default-frame-alist
     '(font . "DejaVu Sans Mono-11"))
 #+END_SRC
@@ -33,12 +35,15 @@ These settings are for emacs internals, nothing specific.
 ** Add Package Sources
 
    #+BEGIN_SRC emacs-lisp
-     (setq package-archives
-           '(("gnu" . "http://elpa.gnu.org/packages/")
-             ("melpa" . "http://melpa.org/packages/")
-             ("org" . "http://orgmode.org/elpa/")))
-     (package-refresh-contents)
+          (setq package-archives
+                '(("org" . "http://orgmode.org/elpa/")
+                  ("gnu" . "http://elpa.gnu.org/packages/")
+                  ("melpa" . "http://melpa.org/packages/")))
+
+          (package-refresh-contents)
    #+END_SRC
+
+   #+RESULTS:
 
 ** Add elisp directory and other files
 
@@ -70,27 +75,42 @@ just to make sure it is there if I ever need it.
     (scroll-bar-mode -1)
     (line-number-mode -1)
     (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)
-          fill-column 85))
-    (fset 'yes-or-no-p 'y-or-n-p)
-    (prefer-coding-system 'utf-8)
-    (delete-selection-mode t)
+          visible-bell t))
+
+  (setq fill-column 85
+        initial-scratch-message "")
+
+  ; Whitespaces... A colleague of mine showed me the horror of not
+  ; considering whitespaces and thus they are shown always and everywhere!
+  (setq-default show-trailing-whitespace t)
+
+  (fset 'yes-or-no-p 'y-or-n-p)
+  (prefer-coding-system 'utf-8)
+  (delete-selection-mode t)
 #+END_SRC
 
 #+RESULTS:
+: t
+
+A good addition is to toggle every whitespace character on demand.
 
 #+BEGIN_SRC emacs-lisp
-  (defun my-show-trailing-whitespaces-func ()
-    (interactive)
-    "This function shall be called whenever a buffer is entered and
-  the buffer-local variable 'show-trailing-whitespace' is set."
-    (setq show-trailing-whitespace t))
-  (add-hook 'c-mode-hook 'my-show-trailing-whitespaces-func)
-  (add-hook 'c-mode-common-hook 'my-show-trailing-whitespaces-func)
-  (add-hook 'c++-mode-hook 'my-show-trailing-whitespaces-func)
-  (add-hook 'makefile-mode 'my-show-trailing-whitespaces-func)
-  (add-hook 'sh-mode 'my-show-trailing-whitespaces-func)
-  (add-hook 'shell-mode 'my-show-trailing-whitespaces-func)
+  (use-package whitespace
+    :ensure t
+    :bind ("C-c T w" . whitespace-mode)
+    :init
+    (setq whitespace-line-column nil
+          whitespace-display-mappings '((space-mark 32 [183] [46])
+                                        (newline-mark 10 [9166 10])
+                                        (tab-mark 9 [9654 9] [92 9])))
+    :config
+    (set-face-attribute 'whitespace-space       nil :foreground "#666666" :background nil)
+    (set-face-attribute 'whitespace-newline     nil :foreground "#666666" :background nil)
+    (set-face-attribute 'whitespace-indentation nil :foreground "#666666" :background nil)
+    :diminish whitespace-mode)
 #+END_SRC
+
+#+RESULTS:
 
 ** Tramp
 
@@ -108,18 +128,13 @@ possibility to solve this:
 
 Tramp itself can have various configurations for default settings.
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (setq tramp-default-method "ssh"
-        'tramp-default-user "martin")
-  (add-to-list 'tramp-default-method-alist '("magi" "martin" "ssh"))
+        tramp-default-user "martin")
 #+END_SRC
 
 #+RESULTS:
-| magi              | martin         | ssh        |                 |          |    |
-| nil               | %              | smb        |                 |          |    |
-| \`\(127\.0\.0\.1\ | ::1\           | balthasar\ | localhost6?\)\' | \`root\' | su |
-| nil               | \`\(anonymous\ | ftp\)\'    | ftp             |          |    |
-| \`ftp\.           | nil            | ftp        |                 |          |    |
+: martin
 
 ** Helm - Interactive Completion
 
@@ -191,6 +206,18 @@ Tramp itself can have various configurations for default settings.
 
 #+RESULTS:
 
+** Startup File
+
+Load my personal org file after startup.
+
+#+BEGIN_SRC emacs-lisp
+  (setq inhibit-startup-screen t
+        initial-buffer-choice (expand-file-name "~/git/org/personal.org"))
+#+END_SRC
+
+#+RESULTS:
+| personal.org |
+
 ** Key Bindings
 #+BEGIN_SRC emacs-lisp
   ;; General
@@ -225,7 +252,43 @@ Tramp itself can have various configurations for default settings.
 
 #+RESULTS:
 : magit-status
+
 * Navigation
+** Better Beginning Of The Line
+
+#+BEGIN_SRC emacs-lisp
+  (defun smarter-move-beginning-of-line (arg)
+    "Move point back to indentation of beginning of line.
+
+  Move point to the first non-whitespace character on this line.
+  If point is already there, move to the beginning of the line.
+  Effectively toggle between the first non-whitespace character and
+  the beginning of the line.
+
+  If ARG is not nil or 1, move forward ARG - 1 lines first.  If
+  point reaches the beginning or end of the buffer, stop there."
+    (interactive "^p")
+    (setq arg (or arg 1))
+
+    ;; Move lines first
+    (when (/= arg 1)
+      (let ((line-move-visual nil))
+        (forward-line (1- arg))))
+
+    (let ((orig-point (point)))
+      (back-to-indentation)
+      (when (= orig-point (point))
+        (move-beginning-of-line 1))))
+
+  ;; remap C-a to `smarter-move-beginning-of-line'
+  (global-set-key [remap move-beginning-of-line] 'smarter-move-beginning-of-line)
+  (global-set-key [remap org-beginning-of-line]  'smarter-move-beginning-of-line)
+
+#+END_SRC
+
+#+RESULTS:
+: smarter-move-beginning-of-line
+
 ** Helm-Swoop
 #+BEGIN_SRC emacs-lisp
   (use-package helm-swoop
@@ -258,6 +321,17 @@ repositories. We will see, if there is something else needed ever.
 
 #+RESULTS:
 
+** Symbolic Links
+
+The default behavior of emacs is to ask whether to follow symbolic
+links or not. If not following the link, the `file` is opened, but
+there can't be interaction with the version control (magit) and thus I
+like the default behavior to be follow the links.
+
+#+BEGIN_SRC emacs-lisp
+  (setq vc-follow-symlinks t)
+#+END_SRC
+
 * Org-Mode
 ** General
 
@@ -275,10 +349,6 @@ As the most awesome people do, I too use org-mode! :)
     (org-clock-persistence-insinuate)
     (add-hook 'org-clock-in-hook 'martin/org-clock-in-set-state-to-started)
     (add-hook 'org-babel-after-execute-hook 'org-display-inline-images)
-    (org-babel-do-load-languages
-     'org-babel-load-languages
-     '((sh . t)
-       (python . t)))
     (eval-after-load 'org-agenda
       '(bind-key "i" 'org-agenda-clock-in org-agenda-mode-map))
       (setq org-hide-emphasis-markers t)
