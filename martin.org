@@ -507,16 +507,17 @@ them under.
 ** org-caldav
 
 #+BEGIN_SRC emacs-lisp
-  (use-package org-caldav
-    :ensure t
-    :config
-    (setq org-caldav-url martin-caldav-url)
-    (setq org-caldav-calendars
-          '((:calendar-id "personal" :files ("~/git/org/personal.org" "~/git/org/organizer.org" "~/git/org/journal.org")
-                          :inbox "~/git/org/inbox/frompersonal.org")
-            (:calendar-id "work"
-                          :files ("~/git/org/work.org")
-                          :inbox "~/git/org/inbox/fromwork.org"))))
+    (use-package org-caldav
+      :ensure t
+      :config
+      (setq org-caldav-url martin-caldav-url)
+      (setq org-caldav-calendars
+            '((:calendar-id "personal"
+                            :files ("~/git/org/personal.org" "~/git/org/organizer.org" "~/git/org/journal.org")
+                            :inbox "~/git/org/inbox/frompersonal.org")
+              (:calendar-id "work"
+                            :files ("~/git/org/work.org")
+                            :inbox "~/git/org/inbox/fromwork.org"))))
 
 #+END_SRC
 
