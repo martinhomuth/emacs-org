@@ -32,6 +32,21 @@ These settings are for emacs internals, nothing specific.
 
 #+RESULTS:
 
+** Themes
+
+My desktop machine(s) have a light i3 theme currently while the
+notebook maintains a dark theme. That's why I chose to make a
+difference here.
+
+#+BEGIN_SRC emacs-lisp
+  (when (or (string= system-name "devpool14")
+            (string= system-name "melchior"))
+    (load-theme 'tsdh-light t))
+  (when (string= system-name "balthasar")
+    (load-theme 'wombat t))
+
+#+END_SRC
+
 ** Add Package Sources
 
    #+BEGIN_SRC emacs-lisp
