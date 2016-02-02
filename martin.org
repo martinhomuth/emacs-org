@@ -351,7 +351,7 @@ like the default behavior to be follow the links.
 
 Testing some scripts for startup
 
-#+BEGIN_SRC sh :eval no :tangle no
+#+BEGIN_SRC shell
   #!/bin/sh
   # This script handles various different startup tasks
 
@@ -361,17 +361,26 @@ Testing some scripts for startup
   REPOS="github/martinhomuth/repos/emacs-org git/dotfiles git/org"
 
   echo -n "Updating repositories"
+  echo "============================" >>/var/log/startup.log
   for repo in $REPOS; do
-      cd $HOME/$repo
+      pushd $HOME/$repo >/dev/null
       echo -n "."
-      echo "$(date) - $repo" >> /var/log/startup.log
-      git pull &>>/var/log/startup.log
+      echo -e "------------------------------\n$(date) - $repo" >> /var/log/startup.log 2>&1
+      {
+          git pull
+      } >> /var/log/startup.log 2>&1
+
       if [ $? -eq 1 ]; then
           notify-send "Git repository $repo" "Pull failed"
       fi
+      popd >/dev/null
   done
   echo "done."
+  echo "============================" >>/var/log/startup.log
 #+END_SRC
+
+#+RESULTS:
+: Updating repositories.done.
 
 * Org-Mode
 ** General
