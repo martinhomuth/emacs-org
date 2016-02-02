@@ -357,15 +357,14 @@ Testing some scripts for startup
   #!/bin/sh
   # This script handles various different startup tasks
 
-  HOME=/home/ze0
-
   # synchronization of important git repositories
   REPOS="github/martinhomuth/repos/emacs-org git/dotfiles git/org"
 
   echo -n "Updating repositories"
   echo "============================" >>/var/log/startup.log
   for repo in $REPOS; do
-      pushd $HOME/$repo >/dev/null
+      pushd ~/$repo >/dev/null
+      # if ~ breaks, use lisp variable user-login-name
       echo -n "."
       echo -e "------------------------------\n$(date) - $repo" >> /var/log/startup.log 2>&1
       {
