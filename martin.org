@@ -271,6 +271,8 @@ Load my personal org file after startup.
 * Navigation
 ** Better Beginning Of The Line
 
+Thanks to Howard Abrams for this neat function!
+
 #+BEGIN_SRC emacs-lisp
   (defun smarter-move-beginning-of-line (arg)
     "Move point back to indentation of beginning of line.
