@@ -379,25 +379,25 @@ Testing some scripts for startup
 As the most awesome people do, I too use org-mode! :)
 
 #+BEGIN_SRC emacs-lisp
-    (use-package org
-      :ensure t
-      :init
-      (setq org-clock-idle-time nil)
-      (setq org-log-done 'time)
-      (setq org-clock-persist t)
-      (setq org-clock-report-include-clocking-task t)
-      :config
-      (org-clock-persistence-insinuate)
-      (add-hook 'org-clock-in-hook 'martin/org-clock-in-set-state-to-started)
-      (add-hook 'org-babel-after-execute-hook 'org-display-inline-images)
-      (eval-after-load 'org-agenda
-        '(bind-key "i" 'org-agenda-clock-in org-agenda-mode-map))
-        (setq org-hide-emphasis-markers t)
-        (org-babel-do-load-languages
-         'org-babel-load-languages
-         '((sh . t)
-           ))
-      )
+  (use-package org
+    :ensure t
+    :init
+    (setq org-clock-idle-time nil)
+    (setq org-log-done 'time)
+    (setq org-clock-persist t)
+    (setq org-clock-report-include-clocking-task t)
+    :config
+    (org-clock-persistence-insinuate)
+    (add-hook 'org-clock-in-hook 'martin/org-clock-in-set-state-to-started)
+    (add-hook 'org-babel-after-execute-hook 'org-display-inline-images)
+    (eval-after-load 'org-agenda
+      '(bind-key "i" 'org-agenda-clock-in org-agenda-mode-map))
+    (setq org-hide-emphasis-markers t)
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((shell . t)
+       (emacs-lisp . t)))
+    )
   #+END_SRC
 
 #+RESULTS:
