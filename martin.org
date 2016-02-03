@@ -227,7 +227,7 @@ Load my personal org file after startup.
 
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-screen t
-        initial-buffer-choice (expand-file-name "~/git/org/personal.org"))
+        initial-buffer-choice (expand-file-name "~/git/CG_bitbucket/personal.org"))
 #+END_SRC
 
 #+RESULTS:
@@ -358,7 +358,7 @@ Testing some scripts for startup
   # This script handles various different startup tasks
 
   # synchronization of important git repositories
-  REPOS="github/martinhomuth/repos/emacs-org git/dotfiles git/org"
+  REPOS="github/martinhomuth/repos/emacs-org git/dotfiles git/CG_bitbucket"
 
   echo -n "Updating repositories"
   echo "============================" >>/var/log/startup.log
@@ -370,9 +370,9 @@ Testing some scripts for startup
       {
           git pull
       } >> /var/log/startup.log 2>&1
-
       if [ $? -eq 1 ]; then
           notify-send "Git repository $repo" "Pull failed"
+          # TODO check for needed push
       fi
       popd >/dev/null
   done
@@ -452,8 +452,8 @@ Setting the directories for the notes to be placed in - this will be
 synced soonish.
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-directory "~/git/org")
-  (setq org-default-notes-file "~/git/org/personal.org")
+  (setq org-directory "~/git/CG_bitbucket")
+  (setq org-default-notes-file "~/git/CG_bitbucket/personal.org")
 #+END_SRC
 
 #+RESULTS:
@@ -500,27 +500,27 @@ Let's use =org-capture= to quickly add the things that come to mind all the time
     "Journal Template")
   (setq org-capture-templates
         `(("t" "Tasks" entry
-           (file+headline "~/git/org/personal.org" "INBOX")
+           (file+headline "~/git/CG_bitbucket/personal.org" "INBOX")
            ,martin/org-basic-task-template)
           ("T" "Quick Task" entry
-           (file+headline "~/git/org/personal.org" "INBOX")
+           (file+headline "~/git/CG_bitbucket/personal.org" "INBOX")
            "* TODO %^{Task}"
            :immediate-finish t)
           ("j" "Journal entry" plain
-           (file+datetree "~/git/org/journal.org")
+           (file+datetree "~/git/CG_bitbucket/journal.org")
            ,martin/org-journal-template
            :immediate-finish t)
           ("a" "Appointments" entry
-           (file+headline "~/git/org/organizer.org" "Appointments")
+           (file+headline "~/git/CG_bitbucket/organizer.org" "Appointments")
            "* %?\n%i")
           ("d" "Decisions" entry
-           (file+headline "~/git/org/personal.org" "Decisions")
+           (file+headline "~/git/CG_bitbucket/personal.org" "Decisions")
            "* %?\n%i")
           ("p" "Project" entry
-           (file+headline "~/git/org/personal.org" "Projects")
+           (file+headline "~/git/CG_bitbucket/personal.org" "Projects")
            ,martin/org-project-template)
           ("W" "Workout" entry
-           (file+headline "~/git/org/personal.org" "Primary Skills")
+           (file+headline "~/git/CG_bitbucket/personal.org" "Primary Skills")
            ,martin/org-programming-workout-template)))
   (bind-key "C-M-r" 'org-capture)
 #+END_SRC
@@ -553,11 +553,11 @@ them under.
       (setq org-caldav-url martin-caldav-url)
       (setq org-caldav-calendars
             '((:calendar-id "personal"
-                            :files ("~/git/org/personal.org" "~/git/org/organizer.org" "~/git/org/journal.org")
-                            :inbox "~/git/org/inbox/frompersonal.org")
+                            :files ("~/git/CG_bitbucket/personal.org" "~/git/CG_bitbucket/organizer.org" "~/git/CG_bitbucket/journal.org")
+                            :inbox "~/git/CG_bitbucket/inbox/frompersonal.org")
               (:calendar-id "work"
-                            :files ("~/git/org/work.org")
-                            :inbox "~/git/org/inbox/fromwork.org"))))
+                            :files ("~/git/CG_bitbucket/work.org")
+                            :inbox "~/git/CG_bitbucket/inbox/fromwork.org"))))
 
 #+END_SRC
 
@@ -699,10 +699,10 @@ Too many clock entries clutter up a heading
   (setq org-agenda-files
         (delq nil
               (mapcar (lambda (x) (and (file-exists-p x) x))
-                      '("~/git/org/personal.org"
-                        "~/git/org/work.org"
-                        "~/git/org/journal.org"
-                        "~/git/org/organizer.org"))))
+                      '("~/git/CG_bitbucket/personal.org"
+                        "~/git/CG_bitbucket/work.org"
+                        "~/git/CG_bitbucket/journal.org"
+                        "~/git/CG_bitbucket/organizer.org"))))
 #+END_SRC
 
 #+RESULTS:
