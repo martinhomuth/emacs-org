@@ -50,6 +50,16 @@ difference here.
 
 #+END_SRC
 
+** Server
+
+Starting the server at emacs start should be handy someday..
+
+#+BEGIN_SRC emacs-lisp
+(server-start)
+#+END_SRC
+
+#+RESULTS:
+
 ** Add Package Sources
 
    #+BEGIN_SRC emacs-lisp
@@ -827,3 +837,30 @@ C-mode hooks that just load when c-mode is activated
 
 #+RESULTS:
 | my/add-semantic-to-autocomplete |
+
+** WebDev
+
+#+BEGIN_SRC emacs-lisp
+  (use-package web-mode
+    :ensure t
+    :config
+    (defun my-setup-php ()
+      ;; enable web mode
+      (web-mode)
+
+      ;; make these variables local
+      (make-local-variable 'web-mode-code-indent-offset)
+      (make-local-variable 'web-mode-markup-indent-offset)
+      (make-local-variable 'web-mode-css-indent-offset)
+
+      ;; set indentation, can set different indentation level for different code type
+      (setq web-mode-code-indent-offset 4)
+      (setq web-mode-css-indent-offset 2)
+      (setq web-mode-markup-indent-offset 2))
+    (add-to-list 'auto-mode-alist '("\\.php$" . my-setup-php))
+    )
+#+END_SRC
+
+#+RESULTS:
+: t
+
