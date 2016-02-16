@@ -31,9 +31,31 @@ These settings are for emacs internals, nothing specific.
                    '(font . "DejaVu Sans Mono-8"))
     (add-to-list 'default-frame-alist
                    '(font . "DejaVu Sans Mono-11")))
+  (setq myFont (concat "DejaVu Sans Mono-" (number-to-string fontsize)))
+  (add-to-list 'default-frame-alist
+               '(font . myFont))
+  (set-fontset-font "fontset-default" nil
+                    (font-spec :size 20 :name "Symbola"))
+  ;; disable CJK coding/encoding
+  (setq utf-translate-cjk-mode nil)
+  (set-language-environment 'utf-8)
+  (setq locale-coding-system 'utf-8)
+  (prefer-coding-system 'utf-8)
+  (setq default-file-name-coding-system 'utf-8)
+  (set-default-coding-systems 'utf-8)
+  (set-terminal-coding-system 'utf-8)
+
+  ;; backwards compatibility
+  (if (boundp buffer-file-coding-system)
+      (setq buffer-file-coding-system 'utf-8)
+    (setq default-buffer-file-coding-system 'utf-8))
+
+  ;; Treat clipboard as UTF-8 string first
+  (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 #+END_SRC
 
 #+RESULTS:
+| UTF8_STRING | COMPOUND_TEXT | TEXT | STRING |
 
 ** Themes
 
@@ -446,6 +468,13 @@ As the most awesome people do, I too use org-mode! :)
      '((shell . t)
        (emacs-lisp . t)))
     )
+
+  (use-package org-bullets
+    :ensure t
+    :config
+    (add-hook 'org-mode-hook (lambda() (org-bullets-mode 1)))
+    (setq org-bullets-bullet-list '("✙" "♱" "♰" "☥" "✞" "✟" "✝" "†" "✠" "✚" "✜" "✛" "✢" "✣" "✤" "✥")
+          org-ellipsis "➔"))
   #+END_SRC
 
 #+RESULTS:
