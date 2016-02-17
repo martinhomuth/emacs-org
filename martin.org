@@ -429,6 +429,17 @@ Testing some scripts for startup
 #+RESULTS:
 : Updating repositories.done.
 
+* Ledger
+
+I use ledger to collect any accounting data.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ledger-mode
+    :ensure t)
+#+END_SRC
+
+#+RESULTS:
+
 * Org-Mode
 ** General
 
