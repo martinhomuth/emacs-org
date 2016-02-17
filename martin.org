@@ -348,7 +348,7 @@ from Better Beginning Of The Line this can be cumbersome. Therefore
 there is a need for changing this behavior to deleting the whole line
 if the point is at the beginning of the line.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :eval no
   (defun hungry-eat-line ()
     ""
     (interactive)
@@ -454,10 +454,8 @@ As the most awesome people do, I too use org-mode! :)
     :init
     (setq org-clock-idle-time nil)
     (setq org-log-done 'time)
-    (setq org-clock-persist t)
     (setq org-clock-report-include-clocking-task t)
     :config
-    (org-clock-persistence-insinuate)
     (add-hook 'org-clock-in-hook 'martin/org-clock-in-set-state-to-started)
     (add-hook 'org-babel-after-execute-hook 'org-display-inline-images)
     (eval-after-load 'org-agenda
