@@ -348,7 +348,7 @@ from Better Beginning Of The Line this can be cumbersome. Therefore
 there is a need for changing this behavior to deleting the whole line
 if the point is at the beginning of the line.
 
-#+BEGIN_SRC emacs-lisp :eval no
+#+BEGIN_SRC emacs-lisp :eval no :tangle no
   (defun hungry-eat-line ()
     ""
     (interactive)
