@@ -179,15 +179,14 @@ Tramp itself can have various configurations for default settings.
   (use-package helm
                :ensure helm
                :diminish helm-mode
-               :init
+               :config
                (progn
                  (require 'helm-config)
                  (setq helm-candidate-number-limit 100)
                  (setq helm-idle-delay 0.0
                        helm-input-idle-delay 0.01
                        helm-quick-update t
-                       helm-M-x-requires-pattern nil
-                       helm-ff-skip-boring-files t)
+                       helm-M-x-requires-pattern nil)
                  (helm-mode))
                :bind (("C-c h" . helm-mini)
                       ("C-h a" . helm-apropos)
@@ -439,7 +438,6 @@ As the most awesome people do, I too use org-mode! :)
   (use-package org
     :ensure t
     :init
-    (setq org-clock-idle-time nil)
     (setq org-log-done 'time)
     (setq org-clock-report-include-clocking-task t)
     :config
