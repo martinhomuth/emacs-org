@@ -31,9 +31,6 @@ These settings are for emacs internals, nothing specific.
                    '(font . "DejaVu Sans Mono-8"))
     (add-to-list 'default-frame-alist
                    '(font . "DejaVu Sans Mono-11")))
-  (setq myFont (concat "DejaVu Sans Mono-" (number-to-string fontsize)))
-  (add-to-list 'default-frame-alist
-               '(font . myFont))
   (set-fontset-font "fontset-default" nil
                     (font-spec :size 20 :name "Symbola"))
   ;; disable CJK coding/encoding
