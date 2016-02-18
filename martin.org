@@ -395,6 +395,28 @@ like the default behavior to be follow the links.
   (setq vc-follow-symlinks t)
 #+END_SRC
 
+* Communication
+** circe
+
+For work, I'd like to use an emacs IRC client. If it prooves to be
+good, I will switch to it generally.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package circe
+    :ensure t
+    :config
+    (setq circe-network-options
+          `((,work-irc-server
+           :tls nil
+           :port 6667
+           :nick "martin"
+           :channels (,work-irc-channel)
+           ))))
+#+END_SRC
+
+#+RESULTS:
+: t
+
 * Startup
 
 Testing some scripts for startup
