@@ -953,7 +953,19 @@ needed. [[http://truongtx.me][Truong TX]] gave a nice example.
     :ensure t
     :init
     (add-hook 'js2-mode-hook 'ac-js2-mode))
+
+
+  (use-package flymake-jslint
+    :ensure t
+    :config
+    (add-to-list 'load-path "~/git/lintnode")
+    (setq lintnode-location "~/git/lintnode")
+    (setq lintnode-jslint-excludes (list 'nomen 'undef 'plusplus 'onevar 'white))
+    (add-hook 'js-mode-hook
+	      (lambda()
+		(lintnode-hook))))
 #+END_SRC
 
 #+RESULTS:
+: t
 
