@@ -910,6 +910,9 @@ C-mode hooks that just load when c-mode is activated
 
 ** WebDev
 
+For work I need some php/javascript combination support. Web-mode
+gives me what I need so far.
+
 #+BEGIN_SRC emacs-lisp
   (use-package web-mode
     :ensure t
@@ -933,4 +936,24 @@ C-mode hooks that just load when c-mode is activated
 
 #+RESULTS:
 : t
+
+I started coding Javascript lately and thus an appropriate mode is
+needed. [[http://truongtx.me][Truong TX]] gave a nice example.
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.json$" . js-mode))
+
+  (use-package js2-mode
+    :ensure t
+    :init
+    (add-hook 'js-mode-hook 'js2-minor-mode)
+    (setq js2-highlight-level 3))
+
+  (use-package ac-js2
+    :ensure t
+    :init
+    (add-hook 'js2-mode-hook 'ac-js2-mode))
+#+END_SRC
+
+#+RESULTS:
 
