@@ -390,6 +390,20 @@ reddit:
 #+RESULTS:
 : t
 
+* Input
+** Default input method
+
+I use the 'german-prefix' input method regularly and thus this should
+be the default all the time. Maybe I'll tweak that someday if becomes
+cumbersome.
+
+#+BEGIN_SRC emacs-lisp
+  (setq default-input-method "german-prefix")
+#+END_SRC
+
+#+RESULTS:
+: german-prefix
+
 * Version Control
 ** Git
 
