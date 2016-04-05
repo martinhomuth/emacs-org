@@ -531,7 +531,7 @@ As the most awesome people do, I too use org-mode! :)
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((shell . t)
-       (sh . t)
+       (shell . t)
        (js . t)
        (python . t)
        (C . t)
@@ -722,17 +722,23 @@ them under.
 ** org-caldav
 
 #+BEGIN_SRC emacs-lisp
-    (use-package org-caldav
-      :ensure t
-      :config
-      (setq org-caldav-url martin-caldav-url)
-      (setq org-caldav-calendars
-            '((:calendar-id "personal"
-                            :files ("~/git/CG_bitbucket/org/personal.org" "~/git/CG_bitbucket/org/organizer.org" "~/git/CG_bitbucket/org/journal.org")
-                            :inbox "~/git/CG_bitbucket/org/inbox/frompersonal.org")
-              (:calendar-id "work"
-                            :files ("~/git/CG_bitbucket/org/work.org")
-                            :inbox "~/git/CG_bitbucket/org/inbox/fromwork.org"))))
+  (use-package org-caldav
+    :ensure t
+    :config
+    (setq org-caldav-url martin-caldav-url)
+    (setq org-caldav-calendars
+          '((:calendar-id "personal"
+                          :files
+			  ("~/git/CG_bitbucket/org/personal.org"
+			   "~/git/CG_bitbucket/org/organizer.org"
+			   "~/git/CG_bitbucket/org/journal.org")
+                          :inbox
+			  "~/git/CG_bitbucket/org/inbox/frompersonal.org")
+            (:calendar-id "work"
+                          :files
+			  ("~/git/CG_bitbucket/org/work.org")
+                          :inbox
+			  "~/git/CG_bitbucket/org/inbox/fromwork.org"))))
 
 #+END_SRC
 
