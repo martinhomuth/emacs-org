@@ -267,6 +267,29 @@ Load my personal org file after startup.
 #+RESULTS:
 | personal.org |
 
+** Exit Confirmation
+
+Even though unsaved buffers saved me lots of times due to prompting
+for save, it happened quite often that I closed Emacs because of
+mistyping. Maybe a confirmation helps and is not really annoying -
+when in window system.
+
+#+BEGIN_SRC emacs-lisp
+  (defun martin-save-buffers-kill-emacs-with-confirm ()
+    "Thanks to jsled for this method"
+    (interactive)
+    (if (window-system)
+	(if (null current-prefix-arg)
+	    (if (y-or-n-p "Are you sure you want to quit?")
+		(save-buffers-kill-emacs))
+	  (save-buffers-kill-emacs))
+      (save-buffers-kill-terminal)))
+  (global-set-key "\C-x\C-c" 'martin-save-buffers-kill-emacs-with-confirm)
+#+END_SRC
+
+#+RESULTS:
+: martin-save-buffers-kill-emacs-with-confirm
+
 ** Key Bindings
 #+BEGIN_SRC emacs-lisp
   ;; General
