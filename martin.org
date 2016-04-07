@@ -178,7 +178,7 @@ possibility to solve this:
 
 Tramp itself can have various configurations for default settings.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :eval no
   (setq tramp-default-method "ssh"
         tramp-default-user "martin")
 #+END_SRC
@@ -466,6 +466,28 @@ like the default behavior to be follow the links.
 #+BEGIN_SRC emacs-lisp
   (setq vc-follow-symlinks t)
 #+END_SRC
+
+** Projectile
+
+As switching between projects becomes more and more cumbersome, I
+decided to finally head over to projectile and give it a try.
+
+#+BEGIN_SRC emacs-lisp
+    (use-package projectile
+      :ensure t
+      :ensure helm-projectile
+      :config
+      (projectile-global-mode)
+      (setq projectile-enable-caching t
+            projectile-switch-project-action 'projectile-dired
+            )
+
+      )
+
+#+END_SRC
+
+#+RESULTS:
+: t
 
 * Communication
 ** circe
