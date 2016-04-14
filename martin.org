@@ -54,6 +54,27 @@ These settings are for emacs internals, nothing specific.
 
 ** Themes
 
+Start by gathering some themes I like.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package color-theme-sanityinc-tomorrow
+    :ensure t)
+
+  (use-package color-theme
+    :ensure t)
+
+  (use-package color-theme-solarized
+    :ensure t)
+
+  (use-package color-theme-sanityinc-solarized
+    :ensure t)
+
+  (use-package cyberpunk-theme
+    :ensure t)
+#+END_SRC
+
+#+RESULTS:
+
 My desktop machine(s) have a light i3 theme currently while the
 notebook maintains a dark theme. That's why I chose to make a
 difference here. This is hidden in secrets.el to avoid information
