@@ -1,0 +1,27 @@
+# -*- mode: snippet -*-
+# name: OOPCPP Add Class/Header
+# key: classheader
+# --
+
+$0
+
+#+BEGIN_SRC cpp :tangle include/${1:Filename}.h :main no
+
+#+END_SRC
+
+#+BEGIN_SRC cpp :tangle src/$2/$1.cpp :main no :comments org
+
+#+END_SRC
+
+#+BEGIN_SRC sh :tangle CMakeLists.txt
+  ADD_LIBRARY($1 src/${2:Folder}/$1.cpp)
+#+END_SRC
+
+#+BEGIN_SRC cpp :tangle test/$2/$1Test.cpp :main no :comments org
+
+#+END_SRC
+
+#+BEGIN_SRC sh :tangle CMakeLists.txt
+  ADD_EXECUTABLE($1Test test/$2/$1Test.cpp)
+  TARGET_LINK_LIBRARIES($1Test $1)
+#+END_SRC
