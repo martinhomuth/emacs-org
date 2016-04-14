@@ -30,6 +30,7 @@ These settings are for emacs internals, nothing specific.
                `(font . ,(concat "DejaVu Sans Mono-" (number-to-string fontsize))))
   (set-fontset-font "fontset-default" nil
                     (font-spec :size 20 :name "Symbola"))
+  (setq-default cursor-type 'hbar)
   ;; disable CJK coding/encoding
   (setq utf-translate-cjk-mode nil)
   (set-language-environment 'utf-8)
