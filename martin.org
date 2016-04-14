@@ -1,3 +1,4 @@
+ 
 #+STARTUP: indent content hidestars
 * Personal Information
 
@@ -30,6 +31,7 @@ These settings are for emacs internals, nothing specific.
   ;;              `(font . ,(concat "DejaVu Sans Mono-" (number-to-string fontsize))))
   ;; (set-fontset-font "fontset-default" nil
   ;;                   (font-spec :size 20 :name "Symbola"))
+  (setq-default cursor-type 'hbar)
   ;; disable CJK coding/encoding
   (setq utf-translate-cjk-mode nil)
   (set-language-environment 'utf-8)
@@ -325,7 +327,7 @@ From Sacha Chuas Configuration for testing
       (yas-global-mode)
       (add-hook 'hippie-expand-try-functions-list 'yas-hippie-try-expand)
       (setq yas-key-syntaxes '("w_" "w_." "^ "))
-      (setq yas-installed-snippets-dir "~/lisp/yasnippet-snippets")
+      (setq yas-installed-snippets-dir "~/elisp/yasnippet-snippets")
       (setq yas-expand-only-for-last-commands nil)
       (yas-global-mode 1)
       (bind-key "\t" 'hippie-expand yas-minor-mode-map)))
@@ -558,16 +560,16 @@ As switching between projects becomes more and more cumbersome, I
 decided to finally head over to projectile and give it a try.
 
 #+BEGIN_SRC emacs-lisp
-    (use-package projectile
-      :ensure t
-      :ensure helm-projectile
-      :config
-      (projectile-global-mode)
-      (setq projectile-enable-caching t
-            projectile-switch-project-action 'projectile-dired
-            )
+  (use-package projectile
+    :ensure t
+    :ensure helm-projectile
+    :config
+    (projectile-global-mode)
+    (setq projectile-enable-caching t
+          projectile-switch-project-action 'projectile-dired
+          )
 
-      )
+    )
 
 #+END_SRC
 
@@ -1096,53 +1098,6 @@ Simple C-mode adjustments
 
 #+RESULTS:
 : compile-parent
-
-C-mode hooks that just load when c-mode is activated
-
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'c-mode-hook
-            (lambda ()
-              (unless (file-exists-p "Makefile")
-                (set (make-local-variable 'compile-command)
-                     (let ((file (file-name-nondirectory buffer-file-name)))
-                       (format "%s %s %s %s -o %s"
-                               (or (getenv "CC") "gcc")
-                               (or (getenv "CPPFLAGS") "-DDEBUG=9")
-                               (or (getenv "CFLAGS") "-Werror -pedantic -Wall -g -std=c11")
-                               file
-                               (file-name-sans-extension file))
-                       (when (and filename
-                                  (string-match (expand-file-name "~/src/linux-trees")
-                                                filename))
-                         (setq indent-tabs-mode t)
-                         (setq show-trailing-whitespace t)
-                         (c-set-style "linux-tabs-only")))))
-              (add-to-list 'ac-sources 'ac-source-c-headers)
-              (add-to-list 'ac-sources 'ac-source-c-header-symbols t)
-              (hs-minor-mode)))
-
-  (defun c-lineup-arglist-tabs-only (ignored)
-    "Line up argument lists by tabs, not spaces"
-    (let* ((anchor (c-langelem-pos c-syntactic-element))
-           (column (c-langelem-2nd-pos c-syntactic-element))
-           (offset (- (1+ column) anchor))
-           (steps (floor offset c-basic-offset)))
-      (* (max steps 1)
-         c-basic-offset)))
-
-  (add-hook 'c-mode-common-hook
-            (lambda ()
-              (c-add-style
-               "linux-tabs-only"
-               '("linux" (c-offsets-alist
-                          (arglist-cont-nonempty
-                           c-lineup-gcc-asm-reg
-                           c-lineup-arglist-tabs-only))))))
-
-#+END_SRC
-
-#+RESULTS:
-| (lambda nil (c-add-style linux-tabs-only (quote (linux (c-offsets-alist (arglist-cont-nonempty c-lineup-gcc-asm-reg c-lineup-arglist-tabs-only)))))) | my/add-semantic-to-autocomplete |
 
 #+BEGIN_SRC emacs-lisp
   (semantic-mode 1)
