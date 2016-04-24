@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: New CPPUTest Test
+# key: TST
+# --
+TEST($1, $1_${2:Function}_${3:Condition})
+{
+	$0
+}
