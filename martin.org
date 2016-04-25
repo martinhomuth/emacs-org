@@ -583,6 +583,45 @@ good, I will switch to it generally.
 #+RESULTS:
 : t
 
+* Learning
+** Org-drill
+
+I am learning hungarian and I need some vocabulary trainer for some of
+the words I still can't remember. I found org-drill might be what I am
+looking for, let's have a look.
+
+#+BEGIN_SRC emacs-lisp
+  (defun my:work-around-org-window-drill-bug ()
+          "Comment out a troublesome line in `org-toggle-latex-fragment'.
+  See https://bitbucket.org/eeeickythump/org-drill/issues/30 for
+  details."
+          (save-excursion
+            (let ((org-library-location (concat
+					 (locate-library "org" 'nosuffix)
+					 ".el")))
+              (with-current-buffer (find-file-noselect org-library-location)
+		(goto-char (point-min))
+		(search-forward "(set-window-start nil window-start)")
+		(back-to-indentation)
+		(if (looking-at ";; ")
+                    (message "Already modified `org-toggle-latex-fragment' for `org-drill'")
+                  (insert ";; ")
+                  (save-buffer)
+                  (byte-compile-file org-library-location)
+                  (eval-defun)
+                  (message "Modified `org-toggle-latex-fragment' for `org-drill'"))))))
+
+  (use-package org-drill-table
+    :ensure t
+    :config
+    (my:work-around-org-window-drill-bug)
+    )
+#+END_SRC
+
+#+RESULTS:
+: t
+
+
 * Startup
 
 Testing some scripts for startup
