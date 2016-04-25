@@ -10,6 +10,7 @@ $0
 #+END_SRC
 
 #+BEGIN_SRC cpp :tangle src/$2/$1.cpp :main no :comments org
+#include "$1.h"
 
 #+END_SRC
 
@@ -18,7 +19,7 @@ $0
 #+END_SRC
 
 #+BEGIN_SRC cpp :tangle test/$2/$1Test.cpp :main no :comments org
-
+#include "$1.h"
 #+END_SRC
 
 #+BEGIN_SRC sh :tangle CMakeLists.txt
