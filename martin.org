@@ -1,4 +1,3 @@
- 
 #+STARTUP: indent content hidestars
 * Personal Information
 
@@ -590,7 +589,7 @@ I am learning hungarian and I need some vocabulary trainer for some of
 the words I still can't remember. I found org-drill might be what I am
 looking for, let's have a look.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :eval no
   (defun my:work-around-org-window-drill-bug ()
           "Comment out a troublesome line in `org-toggle-latex-fragment'.
   See https://bitbucket.org/eeeickythump/org-drill/issues/30 for
