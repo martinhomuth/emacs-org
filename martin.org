@@ -1098,29 +1098,49 @@ This is some configuration of Sacha's
 
 ** C
 
-Simple C-mode adjustments
+Linux kernel coding style adjustments
 
 #+BEGIN_SRC emacs-lisp
-  (require 'cc-mode)
-  (setq-default
-   c-basic-offset 8
-   cdefault-style "linux"
-   tab-width 8
-   indent-tabs-mode t)
-  (define-key c-mode-base-map (kbd "RET") 'newline-and-indent)
+  (defun c-lineup-arglist-tabs-only (ignored)
+    "Line up argument lists by tabs, not spaces"
+    (let* ((anchor (c-langelem-pos c-syntactic-element))
+           (column (c-langelem-2nd-pos c-syntactic-element))
+           (offset (- (1+ column) anchor))
+           (steps (floor offset c-basic-offset)))
+      (* (max steps 1)
+         c-basic-offset)))
 
-  (defun compile-parent (command)
-    (interactive
-     (let* ((make-directory (locate-dominating-file (buffer-file-name)
-                                                    "Makefile"))
-            (command (concat "make -k -C "
-                             (shell-quote-argument make-directory))))
-       (list (compilation-read-command command))))
-    (compile command))
+  (defun my:general-c-mode-configuration ()
+    (setq indent-tabs-mode t)
+    (setq show-trailing-whitespace t
+          c-basic-offset 8
+          cdefault-style "linux"
+          tab-width 8)
+    (define-key c-mode-base-map (kbd "RET") 'newline-and-indent))
+
+  (add-hook 'c-mode-common-hook
+            (lambda ()
+              ;; Add kernel style
+              (c-add-style
+               "linux-tabs-only"
+               '("linux" (c-offsets-alist
+                          (arglist-cont-nonempty
+                           c-lineup-gcc-asm-reg
+                           c-lineup-arglist-tabs-only))))))
+  (add-hook 'c-mode-hook
+            (lambda ()
+              (let ((filename (buffer-file-name)))
+                ;; Enable kernel mode for the appropriate files
+                (when (and filename
+                           (string-match (expand-file-name "~/src/linux-trees")
+                                         filename))
+                  (setq indent-tabs-mode t)
+                  (setq show-trailing-whitespace t)
+                  (c-set-style "linux-tabs-only")))))
 #+END_SRC
 
 #+RESULTS:
-: compile-parent
+| (lambda nil (let ((filename (buffer-file-name))) (when (and filename (string-match (expand-file-name ~/src/linux-trees) filename)) (setq indent-tabs-mode t) (setq show-trailing-whitespace t) (c-set-style linux-tabs-only)))) | (lambda nil (let ((filename (buffer-file-name))) (when (and filename (string-match (expand-file-name ~/src/linux-trees) filename)) (setq indent-tabs-mode t) (setq show-trailing-whitespace t c-basic-offset 8 cdefault-style linux tab-width 8) (define-key c-mode-base-map (kbd RET) (quote newline-and-indent)) (c-set-style linux-tabs-only)))) | my:init-ac-c-headers | (lambda nil (let ((filename (buffer-file-name))) (if (and filename (string-match (expand-file-name ~/src/linux-trees) filename)) (progn (setq indent-tabs-mode t) (setq show-trailing-whitespace t c-basic-offset 8 cdefault-style linux tab-width 8) (define-key c-mode-base-map (kbd RET) (quote newline-and-indent)) (c-set-style linux-tabs-only))))) |
 
 #+BEGIN_SRC emacs-lisp
   (semantic-mode 1)
@@ -1131,6 +1151,44 @@ Simple C-mode adjustments
 
 #+RESULTS:
 | my/add-semantic-to-autocomplete |
+
+Define a function that intializes auto-complete-c-headers and gets
+called for c/c++ hooks
+
+#+BEGIN_SRC emacs-lisp
+  (defun my:init-ac-c-headers ()
+    (require 'auto-complete-c-headers)
+    (add-to-list 'ac-sources 'ac-source-c-headers)
+    (add-to-list 'achead:include-directories '"/usr/lib/gcc/x86_64-linux-gnu/4.8/include")
+    (add-to-list 'achead:include-directories '"/usr/src/linux-headers-3.13.0-37/include/"))
+
+  (add-hook 'c++-mode-hook 'my:init-ac-c-headers)
+  (add-hook 'c-mode-hook 'my:init-ac-c-headers)
+#+END_SRC
+
+#+RESULTS:
+| my:init-ac-c-headers |
+
+Use iedit for refactoring
+
+#+BEGIN_SRC emacs-lisp
+  (use-package iedit
+    :ensure t
+    :config
+    (define-key global-map (kbd "C-c ;") 'iedit-mode))
+#+END_SRC
+
+#+RESULTS:
+: t
+
+Use flymake to ensure everything is fine. Maybe.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package flymake-google-cpplint
+    :ensure flymake-cursor)
+#+END_SRC
+
+#+RESULTS:
 
 ** WebDev
 
