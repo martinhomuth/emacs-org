@@ -1181,14 +1181,7 @@ Use iedit for refactoring
 #+RESULTS:
 : t
 
-Use flymake to ensure everything is fine. Maybe.
 
-#+BEGIN_SRC emacs-lisp
-  (use-package flymake-google-cpplint
-    :ensure flymake-cursor)
-#+END_SRC
-
-#+RESULTS:
 
 ** WebDev
 
