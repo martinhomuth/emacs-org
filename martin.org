@@ -1181,7 +1181,22 @@ Use iedit for refactoring
 #+RESULTS:
 : t
 
+Use flycheck for syntax checking
 
+#+BEGIN_SRC emacs-lisp :eval no
+  (use-package flycheck
+    :ensure flycheck-cstyle
+    :config
+    (eval-after-load 'flycheck
+     '(progn
+        (require 'flycheck-cstyle)
+        (flycheck-cstyle-setup)
+        (flycheck-add-next-checker 'c/c++-cppcheck '(warning . cstyle))))
+    (global-flycheck-mode))
+#+END_SRC
+
+#+RESULTS:
+: t
 
 ** WebDev
 
