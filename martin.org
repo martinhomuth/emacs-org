@@ -1183,20 +1183,36 @@ Use iedit for refactoring
 
 Use flycheck for syntax checking
 
-#+BEGIN_SRC emacs-lisp :eval no
+#+BEGIN_SRC emacs-lisp
   (use-package flycheck
     :ensure flycheck-cstyle
     :config
     (eval-after-load 'flycheck
-     '(progn
-        (require 'flycheck-cstyle)
-        (flycheck-cstyle-setup)
-        (flycheck-add-next-checker 'c/c++-cppcheck '(warning . cstyle))))
-    (global-flycheck-mode))
+      '(progn
+         (require 'flycheck-cstyle)
+         (flycheck-cstyle-setup)
+         (flycheck-add-next-checker 'c/c++-cppcheck '(warning . cstyle))))
+    (global-flycheck-mode)
+    (add-hook 'c-mode-hook
+              (lambda () (setq flycheck-gcc-include-path
+                               (list (expand-file-name "/usr/src/linux-headers-3.13.0-37-generic/include/y"))))))
 #+END_SRC
 
 #+RESULTS:
 : t
+
+Highlight TODO/FIXME/etc
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'c-mode-hook
+            (lambda()
+              (font-lock-add-keywords nil
+                                      '(("\\<\\(FIXME\\|TODO\\|XXX+\\|BUG\\):"
+                                         1 font-lock-warning-face prepend)))))
+#+END_SRC
+
+#+RESULTS:
+| (lambda nil (font-lock-add-keywords nil (quote ((\<\(FIXME\ | TODO\ | XXX+\ | BUG\): 1 font-lock-warning-face prepend))))) | (lambda nil (setq flycheck-gcc-include-path (list (expand-file-name /usr/src/linux-headers-3.13.0-37-generic/include/y)))) | my:init-ac-c-headers | (lambda nil (let ((filename (buffer-file-name))) (if (and filename (string-match (expand-file-name ~/src/linux-trees) filename)) (progn (setq indent-tabs-mode t) (setq show-trailing-whitespace t) (c-set-style linux-tabs-only))))) |
 
 ** WebDev
 
