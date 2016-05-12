@@ -1118,6 +1118,8 @@ Linux kernel coding style adjustments
           tab-width 8)
     (define-key c-mode-base-map (kbd "RET") 'newline-and-indent))
 
+  (add-hook 'c-mode-common-hook 'my:general-c-mode-configuration)
+
   (add-hook 'c-mode-common-hook
             (lambda ()
               ;; Add kernel style
