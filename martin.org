@@ -566,7 +566,7 @@ decided to finally head over to projectile and give it a try.
 For work, I'd like to use an emacs IRC client. If it prooves to be
 good, I will switch to it generally.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :eval no
   (use-package circe
     :ensure t
     :config
