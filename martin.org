@@ -589,7 +589,7 @@ I am learning hungarian and I need some vocabulary trainer for some of
 the words I still can't remember. I found org-drill might be what I am
 looking for, let's have a look.
 
-#+BEGIN_SRC emacs-lisp :eval no
+#+BEGIN_SRC emacs-lisp :eval no :tangle no
   (defun my:work-around-org-window-drill-bug ()
           "Comment out a troublesome line in `org-toggle-latex-fragment'.
   See https://bitbucket.org/eeeickythump/org-drill/issues/30 for
@@ -1108,7 +1108,7 @@ Linux kernel coding style adjustments
            (offset (- (1+ column) anchor))
            (steps (floor offset c-basic-offset)))
       (* (max steps 1)
-         c-basic-offset)))
+	 c-basic-offset)))
 
   (defun my:general-c-mode-configuration ()
     (setq indent-tabs-mode t)
@@ -1132,10 +1132,10 @@ Linux kernel coding style adjustments
   (add-hook 'c-mode-hook
             (lambda ()
               (let ((filename (buffer-file-name)))
-                ;; Enable kernel mode for the appropriate files
-                (when (and filename
+		;; Enable kernel mode for the appropriate files
+		(when (and filename
                            (string-match (expand-file-name "~/src/linux-trees")
-                                         filename))
+					 filename))
                   (setq indent-tabs-mode t)
                   (setq show-trailing-whitespace t)
                   (c-set-style "linux-tabs-only")))))
@@ -1191,13 +1191,14 @@ Use flycheck for syntax checking
     :config
     (eval-after-load 'flycheck
       '(progn
-         (require 'flycheck-cstyle)
-         (flycheck-cstyle-setup)
-         (flycheck-add-next-checker 'c/c++-cppcheck '(warning . cstyle))))
+	 (require 'flycheck-cstyle)
+	 (flycheck-cstyle-setup)
+	 (flycheck-add-next-checker 'c/c++-cppcheck '(warning . cstyle))))
     (global-flycheck-mode)
     (add-hook 'c-mode-hook
               (lambda () (setq flycheck-gcc-include-path
-                               (list (expand-file-name "/usr/src/linux-headers-3.13.0-37-generic/include/y"))))))
+                               (list "/usr/src/linux-headers-3.13.0-37-generic/include"
+				     "/usr/src/linux-headers-4.4.0-22/include")))))
 #+END_SRC
 
 #+RESULTS:
