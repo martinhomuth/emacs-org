@@ -1178,6 +1178,44 @@ Highlight TODO/FIXME/etc
 #+RESULTS:
 | (lambda nil (font-lock-add-keywords nil (quote ((\<\(FIXME\ | TODO\ | XXX+\ | BUG\): 1 font-lock-warning-face prepend))))) | (lambda nil (setq flycheck-gcc-include-path (list (expand-file-name /usr/src/linux-headers-3.13.0-37-generic/include/y)))) | my:init-ac-c-headers | (lambda nil (let ((filename (buffer-file-name))) (if (and filename (string-match (expand-file-name ~/src/linux-trees) filename)) (progn (setq indent-tabs-mode t) (setq show-trailing-whitespace t) (c-set-style linux-tabs-only))))) |
 
+** C++
+*** Indentation enum class
+
+This indentation is not working in the original c++-mode, thus a fix is needed:
+
+#+BEGIN_SRC emacs-lisp
+  (defun inside-class-enum-p (pos)
+    "Checks if POS is within the braces of a C++ \"enum class\"."
+    (ignore-errors
+      (save-excursion
+	(goto-char pos)
+	(up-list -1)
+	(backward-sexp 1)
+	(looking-back "enum[ \t]+class[ \t]+[^}]+"))))
+
+  (defun align-enum-class (langelem)
+    (if (inside-class-enum-p (c-langelem-pos langelem))
+	0
+      (c-lineup-topmost-intro-cont langelem)))
+
+  (defun align-enum-class-closing-brace (langelem)
+    (if (inside-class-enum-p (c-langelem-pos langelem))
+	'-
+      '+))
+
+  (defun fix-enum-class ()
+    "Setup `c++-mode' to better handle \"class enum\"."
+    (add-to-list 'c-offsets-alist '(topmost-intro-cont . align-enum-class))
+    (add-to-list 'c-offsets-alist
+		 '(statement-cont . align-enum-class-closing-brace)))
+
+  (add-hook 'c++-mode-hook 'fix-enum-class)
+#+END_SRC
+
+#+RESULTS:
+| fix-enum-class | my:init-ac-c-headers |
+
+
 ** WebDev
 
 For work I need some php/javascript combination support. Web-mode
