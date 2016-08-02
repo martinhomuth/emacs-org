@@ -59,7 +59,9 @@ difference here. This is hidden in secrets.el to avoid information
 leaking about differences.
 
 #+BEGIN_SRC emacs-lisp
-  (load-theme mytheme t)
+  ;;; As mytheme can be nil, guard it
+  (if (not (eq mytheme nil))
+      (load-theme mytheme t))
   (setq-default cursor-type 'hbar)
   (global-hl-line-mode)
 
