@@ -1172,11 +1172,14 @@ Use flycheck for syntax checking
 Highlight TODO/FIXME/etc
 
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'c-mode-hook
-            (lambda()
-              (font-lock-add-keywords nil
-                                      '(("\\<\\(FIXME\\|TODO\\|XXX+\\|BUG\\):"
-                                         1 font-lock-warning-face prepend)))))
+  (defun my-highlight-keywords()
+    ""
+    (font-lock-add-keywords nil
+                            '(("\\<\\(FIXME\\|TODO\\|XXX+\\|BUG\\):"
+                               1 font-lock-warning-face prepend))))
+
+  (add-hook 'c-mode-hook 'my-highlight-keywords)
+  (add-hook 'c++-mode-hook 'my-highlight-keywords)
 #+END_SRC
 
 #+RESULTS:
