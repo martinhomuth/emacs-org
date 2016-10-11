@@ -1150,20 +1150,22 @@ Use iedit for refactoring
 Use flycheck for syntax checking
 
 #+BEGIN_SRC emacs-lisp
-    (use-package flycheck
-      :ensure flycheck-cstyle
-      :config
-      (eval-after-load 'flycheck
-	'(progn
-	   (require 'flycheck-cstyle)
-	   (flycheck-cstyle-setup)
-	   (flycheck-add-next-checker 'c/c++-cppcheck '(warning . cstyle))))
-      (global-flycheck-mode)
-      (add-hook 'c-mode-hook
-		(lambda () (setq flycheck-gcc-include-path
-				 (list "/usr/src/linux-headers-3.13.0-37-generic/include"
-				       "/usr/src/linux-headers-4.4.0-22/include"
-				       "/usr/src/linux/include" )))))
+  (use-package flycheck
+    :ensure flycheck-cstyle
+    :config
+    (eval-after-load 'flycheck
+      '(progn
+         (require 'flycheck-cstyle)
+         (flycheck-cstyle-setup)
+         (flycheck-add-next-checker 'c/c++-cppcheck '(warning . cstyle))))
+    (global-flycheck-mode)
+    (add-hook 'c-mode-hook
+              (lambda () (setq flycheck-gcc-include-path
+                               (list "/usr/src/linux-headers-3.13.0-37-generic/include"
+                                     "/usr/src/linux-headers-4.4.0-22/include"
+                                     "/usr/src/linux/include" ))))
+    (add-hook 'c-mode-hook
+              (lambda () (setq flycheck-gcc-language-standard "c11"))))
 #+END_SRC
 
 #+RESULTS:
