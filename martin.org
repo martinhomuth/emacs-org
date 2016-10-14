@@ -709,27 +709,32 @@ have the time yet to steamline it.
 
 #+BEGIN_SRC emacs-lisp :export no
   (use-package ox-publish
+    :ensure t
     :config
     (setq org-publish-project-alist
-          '(
-            ("org-notes"
-             :base-directory "~/web/martinhomuth_org/"
-             :base-extension "org"
-             :publishing-directory "~/web/martinhomuth/"
-             :recursive t
-             :publishing-function org-html-publish-to-html
-             :headline-levels 4
-             :auto-preamble
-             )
-            ("org-static"
-             :base-directory "~/web/martinhomuth_org/"
-             :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
-             :publishing-directory "~/web/martinhomuth/"
-             :recursive t
-             :publishing-function org-publish-attachment
-             )
-            ("org" :components ("org-notes" "org-static"))
-            )))
+	  '(
+
+	    ("org-notes"
+	     :base-directory "~/git/CG_bitbucket/blog/org/"
+	     :base-extension "org"
+	     :publishing-directory "~/git/CG_bitbucket/blog/public_html/"
+	     :recursive t
+	     :publishing-function org-html-publish-to-html
+	     :headline-levels 4             ; Just the default for this project.
+	     :auto-preamble t
+	     )
+
+	    ("org-static"
+	     :base-directory "~/git/CG_bitbucket/blog/org/"
+	     :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+	     :publishing-directory "~/git/CG_bitbucket/blog/public_html/"
+	     :recursive t
+	     :publishing-function org-publish-attachment
+	     )
+
+	    ("org" :components ("org-notes" "org-static"))
+
+	    )))
 #+END_SRC
 
 #+RESULTS:
@@ -1174,18 +1179,25 @@ Use flycheck for syntax checking
 Highlight TODO/FIXME/etc
 
 #+BEGIN_SRC emacs-lisp
-  (defun my-highlight-keywords()
+  (defun my-highlight-keywords-warning()
     ""
     (font-lock-add-keywords nil
-                            '(("\\<\\(FIXME\\|TODO\\|XXX+\\|BUG\\):"
-                               1 font-lock-warning-face prepend))))
+			    '(("\\<\\(FIXME\\|TODO\\|XXX+\\|BUG\\):"
+			       1 font-lock-warning-face prepend))))
+  (defun my-highlight-keywords-info()
+    ""
+    (font-lock-add-keywords nil
+			    '(("\\<\\(NOTE\\|INFO\\|\\):"
+			       1 font-lock-comment-face prepend))))
 
-  (add-hook 'c-mode-hook 'my-highlight-keywords)
-  (add-hook 'c++-mode-hook 'my-highlight-keywords)
+  (add-hook 'c-mode-hook 'my-highlight-keywords-warning)
+  (add-hook 'c-mode-hook 'my-highlight-keywords-info)
+  (add-hook 'c++-mode-hook 'my-highlight-keywords-warning)
+  (add-hook 'c++-mode-hook 'my-highlight-keywords-info)
 #+END_SRC
 
 #+RESULTS:
-| (lambda nil (font-lock-add-keywords nil (quote ((\<\(FIXME\ | TODO\ | XXX+\ | BUG\): 1 font-lock-warning-face prepend))))) | (lambda nil (setq flycheck-gcc-include-path (list (expand-file-name /usr/src/linux-headers-3.13.0-37-generic/include/y)))) | my:init-ac-c-headers | (lambda nil (let ((filename (buffer-file-name))) (if (and filename (string-match (expand-file-name ~/src/linux-trees) filename)) (progn (setq indent-tabs-mode t) (setq show-trailing-whitespace t) (c-set-style linux-tabs-only))))) |
+| my-highlight-keywords-info | my-highlight-keywords-warning | fix-enum-class | my-highlight-keywords | my:init-ac-c-headers |
 
 ** C++
 *** Indentation enum class
