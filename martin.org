@@ -708,33 +708,31 @@ Recently I played with writing my blog with org-mode but I did not
 have the time yet to steamline it.
 
 #+BEGIN_SRC emacs-lisp :export no
-  (use-package ox-publish
-    :ensure t
-    :config
-    (setq org-publish-project-alist
-	  '(
+  (require 'ox-publish)
+  (setq org-publish-project-alist
+        '(
 
-	    ("org-notes"
-	     :base-directory "~/git/CG_bitbucket/blog/org/"
-	     :base-extension "org"
-	     :publishing-directory "~/git/CG_bitbucket/blog/public_html/"
-	     :recursive t
-	     :publishing-function org-html-publish-to-html
-	     :headline-levels 4             ; Just the default for this project.
-	     :auto-preamble t
-	     )
+          ("org-notes"
+           :base-directory "~/git/CG_bitbucket/blog/org/"
+           :base-extension "org"
+           :publishing-directory "~/git/CG_bitbucket/blog/public_html/"
+           :recursive t
+           :publishing-function org-html-publish-to-html
+           :headline-levels 4             ; Just the default for this project.
+           :auto-preamble t
+           )
 
-	    ("org-static"
-	     :base-directory "~/git/CG_bitbucket/blog/org/"
-	     :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
-	     :publishing-directory "~/git/CG_bitbucket/blog/public_html/"
-	     :recursive t
-	     :publishing-function org-publish-attachment
-	     )
+          ("org-static"
+           :base-directory "~/git/CG_bitbucket/blog/org/"
+           :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+           :publishing-directory "~/git/CG_bitbucket/blog/public_html/"
+           :recursive t
+           :publishing-function org-publish-attachment
+           )
 
-	    ("org" :components ("org-notes" "org-static"))
+          ("org" :components ("org-notes" "org-static"))
 
-	    )))
+          ))
 #+END_SRC
 
 #+RESULTS:
