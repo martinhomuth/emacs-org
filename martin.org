@@ -400,6 +400,14 @@ From Sacha Chuas Configuration for testing
 #+RESULTS:
 : magit-status
 
+** Auto fill mode
+#+BEGIN_SRC emacs-lisp
+  (setq-default major-mode 'text-mode)
+  (add-hook 'text-mode-hook 'turn-on-auto-fill)
+  (add-hook 'c-mode-hook 'turn-on-auto-fill)
+  (add-hook 'c++-mode-hook 'turn-on-auto-fill)
+  (add-hook 'org-mode-hook 'turn-on-auto-fill)
+#+END_SRC
 * Navigation
 ** Better Beginning Of The Line
 
