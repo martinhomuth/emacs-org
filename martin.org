@@ -375,6 +375,7 @@ From Sacha Chuas Configuration for testing
   (global-set-key (kbd "C-s") 'isearch-forward-regexp)
   (global-set-key (kbd "C-r") 'isearch-backward-regexp)
   (global-unset-key (kbd "C-z")) ;; who needs that anyways?
+  (global-set-key (kbd "M-o") 'other-window)
   (global-unset-key "\C-xf")
   (global-set-key [f1] 'eshell)
   (global-set-key (kbd "C-x g") 'magit-status)
