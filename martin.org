@@ -659,7 +659,8 @@ As the most awesome people do, I too use org-mode! :)
     (add-hook 'org-babel-after-execute-hook 'org-display-inline-images)
     (eval-after-load 'org-agenda
       '(bind-key "i" 'org-agenda-clock-in org-agenda-mode-map))
-    (setq org-hide-emphasis-markers t)
+    (setq org-hide-emphasis-markers t
+          org-src-window-setup 'current-window)
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((shell . t)
