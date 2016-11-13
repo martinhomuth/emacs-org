@@ -177,15 +177,13 @@ It is really important, that the prompt that is going to be accessed
 by tamp is `simple`. The following excerpt from my zsh.theme shows a
 possibility to solve this:
 
-#+BEGIN_SRC sh :tangle no
+#+BEGIN_SRC sh :tangle no :eval no
   if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-      export PROMPT="%m> "
+     PROMPT="%m> "
   else
-      export PROMPT="%(?.%(!.#.;).%F{1}%B;%b%f) "
+     PROMPT="%(?.%(!.#.;).%F{1}%B;%b%f) "
   fi
 #+END_SRC
-
-#+RESULTS:
 
 Tramp itself can have various configurations for default settings.
 
