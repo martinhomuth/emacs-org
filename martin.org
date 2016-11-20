@@ -656,8 +656,13 @@ I use ledger to collect any accounting data.
 #+BEGIN_SRC emacs-lisp
   (use-package ledger-mode
     :ensure t)
+
+  (setenv "PATH" (concat (concat "/home/" user-login-name "/bin:")
+			 (getenv "PATH")))
+  (push (concat "/home/" user-login-name "/bin") exec-path)
 #+END_SRC
 
+(getenv "PATH")
 #+RESULTS:
 
 * Org-Mode
