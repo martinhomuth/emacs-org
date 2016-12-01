@@ -408,7 +408,13 @@ From Sacha Chuas Configuration for testing
   (add-hook 'c-mode-hook 'turn-on-auto-fill)
   (add-hook 'c++-mode-hook 'turn-on-auto-fill)
   (add-hook 'org-mode-hook 'turn-on-auto-fill)
+  (add-hook 'tex-mode-hook 'turn-on-auto-fill)
+  (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
 #+END_SRC
+
+#+RESULTS:
+| turn-on-auto-fill |
+
 * Navigation
 ** Better Beginning Of The Line
 
