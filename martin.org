@@ -1053,6 +1053,19 @@ This is some configuration of Sacha's
 #+RESULTS:
 : %50ITEM %12SCHEDULED %TODO %3PRIORITY %Effort{:} %TAGS
 
+** Literate Programming
+
+For syntax highlighting of org src blocks and disabling the
+confirmation of executing those blocks the following variables are set
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-confirm-babel-evaluate nil
+	org-src-fontify-natively t
+	org-src-tab-acts-natively t)
+#+END_SRC
+
+#+RESULTS:
+: t
 
 * Programming
 ** General
