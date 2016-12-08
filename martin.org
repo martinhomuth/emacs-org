@@ -620,6 +620,13 @@ emails. Let's fix that.
 #+RESULTS:
 | turn-on-auto-fill |
 
+Aaaand, it would be gread to use org tables in mails as well.
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'message-mode-hook 'turn-on-orgtbl)
+  (add-hook 'message-mode-hook 'turn-on-orgstruct++)
+#+END_SRC
+
 ** circe
 
 For work, I'd like to use an emacs IRC client. If it prooves to be
