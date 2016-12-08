@@ -591,6 +591,35 @@ decided to finally head over to projectile and give it a try.
 : t
 
 * Communication
+** Mail
+
+At work I am using mutt for handling my emails, mostly because the
+accessibility to all the other buffers I have opened and in part also
+because I am using a en_US keyboard layout which can be kind of
+problematic in official german emails. I used mutt for quite some time
+now and I just found out, that I don't use the appropriate mode for my
+emails. Let's fix that.
+
+[[https://www.emacswiki.org/emacs/MuttInEmacs][Emacs Wiki]]
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '(".*mutt.*" . message-mode))
+  (setq mail-header-separator "")
+  (add-hook 'message-mode-hook
+	    'turn-on-auto-fill
+	    (function
+	     (lambda ()
+	       (progn
+		 (local-unset-key "\C-c\C-c")
+		 (define-key message-mode-map "\C-c\C-c" '(lambda ()
+							    "save and exit quickly"
+							    (interactive)
+							    (save-buffer)))))))
+#+END_SRC
+
+#+RESULTS:
+| turn-on-auto-fill |
+
 ** circe
 
 For work, I'd like to use an emacs IRC client. If it prooves to be
