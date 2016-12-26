@@ -670,35 +670,75 @@ good, I will switch to it generally.
 
 Testing some scripts for startup
 
-#+BEGIN_SRC shell
-  #!/bin/sh
-  # This script handles various different startup tasks
+#+BEGIN_SRC sh
+  #!/bin/bash
 
-  # synchronization of important git repositories
-  REPOS="github/martinhomuth/repos/emacs-org git/dotfiles git/CG_bitbucket/org"
+  #set -x
 
-  echo -n "Updating repositories"
-  echo "============================" >>/var/log/startup.log
-  for repo in $REPOS; do
-      pushd ~/$repo >/dev/null
-      # if ~ breaks, use lisp variable user-login-name
-      echo -n "."
-      echo -e "------------------------------\n$(date) - $repo" >> /var/log/startup.log 2>&1
-      {
-          git pull
-      } >> /var/log/startup.log 2>&1
-      if [ $? -eq 1 ]; then
-          notify-send "Git repository $repo" "Pull failed"
-          # TODO check for needed push
+  CG=$HOME/git/CG_bitbucket
+  GH=$HOME/github
+
+  err () {
+      notify-send "$1"
+      exit 1
+  }
+
+  REPOSITORIES="\
+                   $CG/eudyptula \
+                   $CG/org \
+                   $CG/misc \
+                   $CG/opencv-testbed \
+                   $GH/emacs-org \
+                   $GH/algorithms \
+                   $GH/psp \
+                   $GH/thelinuxprogramminginterface \
+  "
+
+  for repo in $REPOSITORIES; do
+      if [ ! -d $repo ]; then
+	  err "repo $(basename $repo) is not available"
       fi
-      popd >/dev/null
+
+      # execute everything in a subshell, may be useful later on
+      (
+	  cd $repo
+
+	  status=$(git status -s)
+	  if [ "y$status" != "y" ]; then
+	      # can be unstaged or untracked
+	      if [ $(expr match "$status" '^??.*') -eq 0 ]; then  # if unstaged
+		  err "$(basename $repo) has unstaged changes"
+	      fi
+	  fi
+
+	  git status | grep -e behind >/dev/null
+	  ret=$?
+	  if [ $ret -eq 0 ]; then
+	      echo "Pulling changeds from $repo"
+	      {
+		  git pull
+	      } &>/dev/null
+	      if [ $? -eq 1 ]; then
+		  err "unable to pull repo $repo"
+	      fi
+	  fi
+
+	  git status | grep -e ahead >/dev/null
+	  ret=$?
+	  if [ $ret -eq 0 ]; then
+	      echo "Pushing changes to $repo"
+	      {
+		  git push
+	      } &>/dev/null
+	      if [ $? -eq 1 ]; then
+		  err "unable to push repo $repo"
+	      fi
+	  fi
+      )
   done
-  echo "done."
-  echo "============================" >>/var/log/startup.log
 #+END_SRC
 
 #+RESULTS:
-: Updating repositories.done.
 
 * Ledger
 
