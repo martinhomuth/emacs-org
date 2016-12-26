@@ -14,7 +14,7 @@ here they are ;-)
 Load all the things I don't like to share with the world
 
 #+BEGIN_SRC emacs-lisp
-(load "~/.emacs.d/secrets")
+(load (concat (getenv "HOME") "/.emacs.d/secrets"))
 #+END_SRC
 
 #+RESULTS:
@@ -110,7 +110,7 @@ Sacha uses external (wrt not package) files, which I'll enable too,
 just to make sure it is there if I ever need it.
 
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'load-path "~/elisp")
+  (add-to-list 'load-path (concat (getenv "HOME") "/elisp"))
   (unless (package-installed-p 'use-package)
     (package-install 'use-package))
   (require 'use-package)
@@ -270,7 +270,7 @@ Load my personal org file after startup.
 
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-screen t
-        initial-buffer-choice (expand-file-name "~/git/CG_bitbucket/org/personal.org"))
+        initial-buffer-choice (expand-file-name (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org")))
 #+END_SRC
 
 #+RESULTS:
@@ -313,7 +313,7 @@ From Sacha Chuas Configuration for testing
       (yas-global-mode)
       (add-hook 'hippie-expand-try-functions-list 'yas-hippie-try-expand)
       (setq yas-key-syntaxes '("w_" "w_." "^ "))
-      (setq yas-installed-snippets-dir "~/elisp/yasnippet-snippets")
+      (setq yas-installed-snippets-dir (concat (getenv "HOME") "/elisp/yasnippet-snippets"))
       (setq yas-expand-only-for-last-commands nil)
       (yas-global-mode 1)
       (bind-key "\t" 'hippie-expand yas-minor-mode-map)))
@@ -793,9 +793,9 @@ have the time yet to steamline it.
         '(
 
           ("org-notes"
-           :base-directory "~/git/CG_bitbucket/blog/org/"
+           :base-directory (concat (getenv "HOME") "/git/CG_bitbucket/blog/org/")
            :base-extension "org"
-           :publishing-directory "~/git/CG_bitbucket/blog/public_html/"
+           :publishing-directory (concat (getenv "HOME") "/git/CG_bitbucket/blog/public_html/")
            :recursive t
            :publishing-function org-html-publish-to-html
            :headline-levels 4             ; Just the default for this project.
@@ -824,8 +824,8 @@ Setting the directories for the notes to be placed in - this will be
 synced soonish.
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-directory "~/git/CG_bitbucket/org")
-  (setq org-default-notes-file "~/git/CG_bitbucket/org/personal.org")
+  (setq org-directory (concat (getenv "HOME") "/git/CG_bitbucket/org"))
+  (setq org-default-notes-file (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org"))
 #+END_SRC
 
 #+RESULTS:
@@ -872,27 +872,27 @@ Let's use =org-capture= to quickly add the things that come to mind all the time
     "Journal Template")
   (setq org-capture-templates
         `(("t" "Tasks" entry
-           (file+headline "~/git/CG_bitbucket/org/personal.org" "INBOX")
+           (file+headline (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org" "INBOX"))
            ,martin/org-basic-task-template)
           ("T" "Quick Task" entry
-           (file+headline "~/git/CG_bitbucket/org/personal.org" "INBOX")
+           (file+headline (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org" "INBOX"))
            "* TODO %^{Task}"
            :immediate-finish t)
           ("j" "Journal entry" plain
-           (file+datetree "~/git/CG_bitbucket/org/journal.org")
+           (file+datetree (concat (getenv "HOME") "/git/CG_bitbucket/org/journal.org"))
            ,martin/org-journal-template
            :immediate-finish t)
           ("a" "Appointments" entry
-           (file+headline "~/git/CG_bitbucket/org/organizer.org" "Appointments")
+           (file+headline (concat (getenv "HOME") "/git/CG_bitbucket/org/organizer.org" "Appointments"))
            "* %?\n%i")
           ("d" "Decisions" entry
-           (file+headline "~/git/CG_bitbucket/org/personal.org" "Decisions")
+           (file+headline (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org" "Decisions"))
            "* %?\n%i")
           ("p" "Project" entry
-           (file+headline "~/git/CG_bitbucket/org/personal.org" "Projects")
+           (file+headline (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org" "Projects"))
            ,martin/org-project-template)
           ("W" "Workout" entry
-           (file+headline "~/git/CG_bitbucket/org/personal.org" "Primary Skills")
+           (file+headline (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org" "Primary Skills"))
            ,martin/org-programming-workout-template)))
   (bind-key "C-M-r" 'org-capture)
 #+END_SRC
@@ -926,16 +926,16 @@ them under.
     (setq org-caldav-calendars
           '((:calendar-id "personal"
                           :files
-			  ("~/git/CG_bitbucket/org/personal.org"
-			   "~/git/CG_bitbucket/org/organizer.org"
-			   "~/git/CG_bitbucket/org/journal.org")
+			  ((concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org")
+			   (concat (getenv "HOME") "/git/CG_bitbucket/org/organizer.org")
+			   (concat (getenv "HOME") "/git/CG_bitbucket/org/journal.org"))
                           :inbox
-			  "~/git/CG_bitbucket/org/inbox/frompersonal.org")
+			  (concat (getenv "HOME") "/git/CG_bitbucket/org/inbox/frompersonal.org"))
             (:calendar-id "work"
                           :files
-			  ("~/git/CG_bitbucket/org/work.org")
+			  ((concat (getenv "HOME") "/git/CG_bitbucket/org/work.org"))
                           :inbox
-			  "~/git/CG_bitbucket/org/inbox/fromwork.org"))))
+			  (concat (getenv "HOME") "/git/CG_bitbucket/org/inbox/fromwork.org")))))
 
 #+END_SRC
 
@@ -1095,14 +1095,11 @@ Too many clock entries clutter up a heading
   (setq org-agenda-files
         (delq nil
               (mapcar (lambda (x) (and (file-exists-p x) x))
-                      '("~/git/CG_bitbucket/org/personal.org"
-                        "~/git/CG_bitbucket/org/work.org"
-                        "~/git/CG_bitbucket/org/journal.org"
-                        "~/git/CG_bitbucket/org/organizer.org"))))
+                      '((concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org")
+                        (concat (getenv "HOME") "/git/CG_bitbucket/org/work.org")
+                        (concat (getenv "HOME") "/git/CG_bitbucket/org/journal.org")
+                        (concat (getenv "HOME") "/git/CG_bitbucket/org/organizer.org")))))
 #+END_SRC
-
-#+RESULTS:
-| ~/git/org/personal.org | ~/git/org/work.org | ~/git/org/journal.org | ~/git/org/organizer.org |
 
 This is some configuration of Sacha's
 #+BEGIN_SRC emacs-lisp
@@ -1189,15 +1186,12 @@ Linux kernel coding style adjustments
               (let ((filename (buffer-file-name)))
 		;; Enable kernel mode for the appropriate files
 		(when (and filename
-                           (string-match (expand-file-name "~/src/linux-trees")
+                           (string-match (expand-file-name (concat (getenv "HOME") "/src/linux-trees"))
 					 filename))
                   (setq indent-tabs-mode t)
                   (setq show-trailing-whitespace t)
                   (c-set-style "linux-tabs-only")))))
 #+END_SRC
-
-#+RESULTS:
-| (lambda nil (let ((filename (buffer-file-name))) (when (and filename (string-match (expand-file-name ~/src/linux-trees) filename)) (setq indent-tabs-mode t) (setq show-trailing-whitespace t) (c-set-style linux-tabs-only)))) | (lambda nil (let ((filename (buffer-file-name))) (when (and filename (string-match (expand-file-name ~/src/linux-trees) filename)) (setq indent-tabs-mode t) (setq show-trailing-whitespace t c-basic-offset 8 cdefault-style linux tab-width 8) (define-key c-mode-base-map (kbd RET) (quote newline-and-indent)) (c-set-style linux-tabs-only)))) | my:init-ac-c-headers | (lambda nil (let ((filename (buffer-file-name))) (if (and filename (string-match (expand-file-name ~/src/linux-trees) filename)) (progn (setq indent-tabs-mode t) (setq show-trailing-whitespace t c-basic-offset 8 cdefault-style linux tab-width 8) (define-key c-mode-base-map (kbd RET) (quote newline-and-indent)) (c-set-style linux-tabs-only))))) |
 
 #+BEGIN_SRC emacs-lisp
   (semantic-mode 1)
@@ -1378,8 +1372,8 @@ needed. [[http://truongtx.me][Truong TX]] gave a nice example.
   (use-package flymake-jslint
     :ensure t
     :config
-    (add-to-list 'load-path "~/git/lintnode")
-    (setq lintnode-location "~/git/lintnode")
+    (add-to-list 'load-path (concat (getenv "HOME") "/git/lintnode"))
+    (setq lintnode-location (concat (getenv "HOME") "/git/lintnode"))
     (setq lintnode-jslint-excludes (list 'nomen 'undef 'plusplus 'onevar 'white))
     (add-hook 'js-mode-hook
 	      (lambda()

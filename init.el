@@ -11,5 +11,5 @@
 (package-initialize t)
 (setq package-enable-at-startup nil)
 (require 'org)
-(org-babel-load-file (concat "~/.emacs.d/" user-login-name ".org"))
+(org-babel-load-file (concat (getenv "HOME") "/.emacs.d/" user-login-name ".org"))
 (put 'narrow-to-region 'disabled nil)
