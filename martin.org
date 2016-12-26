@@ -401,19 +401,6 @@ From Sacha Chuas Configuration for testing
 #+RESULTS:
 : magit-status
 
-** Auto fill mode
-#+BEGIN_SRC emacs-lisp
-  (setq-default major-mode 'text-mode)
-  (add-hook 'text-mode-hook 'turn-on-auto-fill)
-  (add-hook 'c-mode-hook 'turn-on-auto-fill)
-  (add-hook 'c++-mode-hook 'turn-on-auto-fill)
-  (add-hook 'org-mode-hook 'turn-on-auto-fill)
-  (add-hook 'tex-mode-hook 'turn-on-auto-fill)
-  (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
-#+END_SRC
-
-#+RESULTS:
-| turn-on-auto-fill |
 
 * Navigation
 ** Better Beginning Of The Line
@@ -1383,3 +1370,8 @@ needed. [[http://truongtx.me][Truong TX]] gave a nice example.
 #+RESULTS:
 : t
 
+** Common Lisp
+
+#+BEGIN_SRC emacs-lisp
+  (setq inferior-lisp-program "/usr/bin/clisp")
+#+END_SRC
