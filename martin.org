@@ -90,6 +90,16 @@ Starting the server at emacs start should be handy someday..
 
 #+RESULTS:
 
+** Backup
+
+The file backups emacs uses are pretty annoying, so I place them in a
+separate directory instead of next to the file in use. If needed these
+files are accessible there quite easily.
+
+#+BEGIN_SRC emacs-lisp
+  (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+#+END_SRC
+
 ** Add Package Sources
 
    #+BEGIN_SRC emacs-lisp
