@@ -270,11 +270,11 @@ Load my personal org file after startup.
 
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-screen t
-        initial-buffer-choice (expand-file-name (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org")))
+	initial-buffer-choice (expand-file-name (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org")))
 #+END_SRC
 
 #+RESULTS:
-| personal.org |
+: /home/martin/git/CG_bitbucket/org/personal.org
 
 ** Exit Confirmation
 
@@ -899,27 +899,27 @@ Let's use =org-capture= to quickly add the things that come to mind all the time
     "Journal Template")
   (setq org-capture-templates
         `(("t" "Tasks" entry
-           (file+headline (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org" "INBOX"))
+           (file+headline (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org") "INBOX")
            ,martin/org-basic-task-template)
           ("T" "Quick Task" entry
-           (file+headline (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org" "INBOX"))
+           (file+headline (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org") "INBOX")
            "* TODO %^{Task}"
            :immediate-finish t)
           ("j" "Journal entry" plain
-           (file+datetree (concat (getenv "HOME") "/git/CG_bitbucket/org/journal.org"))
+           (file+datetree (concat (getenv "HOME") "/git/CG_bitbucket/org/journal.org")
            ,martin/org-journal-template
-           :immediate-finish t)
+           :immediate-finish t))
           ("a" "Appointments" entry
-           (file+headline (concat (getenv "HOME") "/git/CG_bitbucket/org/organizer.org" "Appointments"))
+           (file+headline (concat (getenv "HOME") "/git/CG_bitbucket/org/organizer.org") "Appointments")
            "* %?\n%i")
           ("d" "Decisions" entry
-           (file+headline (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org" "Decisions"))
+           (file+headline (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org") "Decisions")
            "* %?\n%i")
           ("p" "Project" entry
-           (file+headline (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org" "Projects"))
+           (file+headline (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org") "Projects")
            ,martin/org-project-template)
           ("W" "Workout" entry
-           (file+headline (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org" "Primary Skills"))
+           (file+headline (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org") "Primary Skills")
            ,martin/org-programming-workout-template)))
   (bind-key "C-M-r" 'org-capture)
 #+END_SRC
@@ -1119,14 +1119,18 @@ Too many clock entries clutter up a heading
 
 *** Basic Configuration
 #+BEGIN_SRC emacs-lisp
-  (setq org-agenda-files
-        (delq nil
-              (mapcar (lambda (x) (and (file-exists-p x) x))
-                      '((concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org")
-                        (concat (getenv "HOME") "/git/CG_bitbucket/org/work.org")
-                        (concat (getenv "HOME") "/git/CG_bitbucket/org/journal.org")
-                        (concat (getenv "HOME") "/git/CG_bitbucket/org/organizer.org")))))
+  (setq my-org-agenda-files-list (list (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org")
+				       (concat (getenv "HOME") "/git/CG_bitbucket/org/work.org")
+				       (concat (getenv "HOME") "/git/CG_bitbucket/org/journal.org")
+				       (concat (getenv "HOME") "/git/CG_bitbucket/org/organizer.org"))
+	org-agenda-files
+	(delq nil
+	      (mapcar (lambda (x) (and (file-exists-p x) x))
+		      my-org-agenda-files-list)))
 #+END_SRC
+
+#+RESULTS:
+| /home/martin/git/CG_bitbucket/org/personal.org | /home/martin/git/CG_bitbucket/org/work.org | /home/martin/git/CG_bitbucket/org/journal.org | /home/martin/git/CG_bitbucket/org/organizer.org |
 
 This is some configuration of Sacha's
 #+BEGIN_SRC emacs-lisp
