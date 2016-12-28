@@ -701,6 +701,7 @@ Testing some scripts for startup
                    $GH/emacs-org \
                    $GH/algorithms \
                    $GH/psp \
+                   $GH/psp4android \
                    $GH/thelinuxprogramminginterface \
   "
 
