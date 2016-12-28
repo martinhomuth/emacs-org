@@ -1427,6 +1427,11 @@ needed. [[http://truongtx.me][Truong TX]] gave a nice example.
 
 ** Common Lisp
 
+I learned to love slime really quickly.
+
 #+BEGIN_SRC emacs-lisp
+  (use-package slime
+    :ensure t)
+
   (setq inferior-lisp-program "/usr/bin/clisp")
 #+END_SRC
