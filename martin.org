@@ -86,6 +86,10 @@ The file backups emacs uses are pretty annoying, so I place them in a
 separate directory instead of next to the file in use. If needed these
 files are accessible there quite easily.
 
+If this variable is nil, or it fails to match a filename, the backup
+is made in the original file's directory. This is what I really don't
+want.
+
 #+BEGIN_SRC emacs-lisp
   (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 #+END_SRC
