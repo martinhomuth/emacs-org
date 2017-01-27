@@ -70,16 +70,6 @@ leaking about differences.
 #+RESULTS:
 : t
 
-Let's not use any theme on terminal instances of Emacs..
-
-#+BEGIN_SRC emacs-lisp
-  (defun on-after-init()
-    (unless (display-graphic-p (selected-frame))
-      (set-face-background 'default "unspecified-bg" (selected-frame))))
-
-  (add-hook 'window-setup-hook 'on-after-init)
-#+END_SRC
-
 ** Server
 
 Starting the server at emacs start should be handy someday..
