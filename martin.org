@@ -1357,6 +1357,19 @@ This indentation is not working in the original c++-mode, thus a fix is needed:
 #+RESULTS:
 | fix-enum-class | my:init-ac-c-headers |
 
+** Linux
+*** dts mode
+
+After some time digging through device tree files it is time to use an
+appropriate mode..
+
+#+BEGIN_SRC emacs-lisp
+  (use-package dts-mode
+    :ensure t)
+#+END_SRC
+
+#+RESULTS:
+
 
 ** WebDev
 
