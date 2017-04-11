@@ -62,7 +62,7 @@ leaking about differences.
   ;;; As mytheme can be nil, guard it
   (if (not (eq mytheme nil))
       (load-theme mytheme t))
-  (setq-default cursor-type 'hbar)
+  (setq-default cursor-type 'box)
   (global-hl-line-mode)
 
 #+END_SRC
