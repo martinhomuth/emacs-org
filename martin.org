@@ -1250,8 +1250,6 @@ called for c/c++ hooks
 
   (defun my:init-ac-c-headers ()
     (require 'auto-complete-c-headers)
-    (add-to-list 'achead:include-directories '"/usr/lib/gcc/x86_64-linux-gnu/4.8/include")
-    (add-to-list 'achead:include-directories '"/usr/src/linux-headers-3.13.0-37/include/")
     (add-to-list 'achead:include-directories '"/usr/src/linux/include/"))
 
   (add-hook 'c++-mode-hook 'my:init-ac-c-headers)
@@ -1287,9 +1285,7 @@ Use flycheck for syntax checking
     (global-flycheck-mode)
     (add-hook 'c-mode-hook
               (lambda () (setq flycheck-gcc-include-path
-                               (list "/usr/src/linux-headers-3.13.0-37-generic/include"
-                                     "/usr/src/linux-headers-4.4.0-22/include"
-                                     "/usr/src/linux/include" ))))
+                               (list "/usr/src/linux/include" ))))
     (add-hook 'c-mode-hook
               (lambda () (setq flycheck-gcc-language-standard "c11"))))
 #+END_SRC
@@ -1337,8 +1333,7 @@ This indentation is not working in the original c++-mode, thus a fix is needed:
 
   (defun align-enum-class (langelem)
     (if (inside-class-enum-p (c-langelem-pos langelem))
-	0
-      (c-lineup-topmost-intro-cont langelem)))
+	(c-lineup-topmost-intro-cont langelem)))
 
   (defun align-enum-class-closing-brace (langelem)
     (if (inside-class-enum-p (c-langelem-pos langelem))
