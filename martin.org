@@ -356,7 +356,7 @@ From Sacha Chuas Configuration for testing
     "Return true if right after an expandable thing."
     (or (abbrev--before-point) (yasnippet-can-fire-p)))
 
-  (remove-hook 'post-command-hook 'my/change-cursor-color-when-can-expand)
+  (add-hook 'post-command-hook 'my/change-cursor-color-when-can-expand)
 
   (defun my/insert-space-or-expand ()
     "For binding to the SPC SPC keychord."
