@@ -1184,6 +1184,58 @@ confirmation of executing those blocks the following variables are set
 #+RESULTS:
 : t
 
+** rtags
+
+Build rtags first
+
+#+BEGIN_SRC sh :var path="/opt/rtags"
+  cd $path
+  git clone --recursive https://github.com/Andersbakken/rtags.git
+  cd rtags
+  cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .
+  make
+#+END_SRC
+
+Integrate in systemd
+
+#+BEGIN_SRC conf :file ~/.config/systemd/user/rdm.socket
+  [Unit]
+  Description=RTags daemon socket
+
+  [Socket]
+  ListenStream=%t/rdm.socket
+
+  [Install]
+  WantedBy=default.target
+#+END_SRC
+
+#+BEGIN_SRC conf :file ~/.config/systemd/user/rdm.service
+  [Unit]
+  Description=RTags daemon
+
+  Requires=rdm.socket
+
+  [Service]
+  Type=simple
+  ExecStart=$RDM -v --inactivity-timeout 300 --log-flush
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (use-package rtags
+    :ensure t)
+
+  (use-package flycheck-rtags
+    :ensure t)
+
+  (use-package ac-rtags
+    :ensure t)
+
+  (use-package helm-rtags
+    :ensure t)
+#+END_SRC
+
+#+RESULTS:
+
 ** C
 
 Linux kernel coding style adjustments
