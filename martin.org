@@ -1238,12 +1238,12 @@ Integrate in systemd
 #+RESULTS:
 : t
 
-** C
+** COMMENT C
 
 Linux kernel coding style adjustments
 
 #+BEGIN_SRC emacs-lisp
-  (defun c-lineup-arglist-tabs-only (ignored)
+  (defun c-lineup-arglist-tabs-only ()
     "Line up argument lists by tabs, not spaces"
     (let* ((anchor (c-langelem-pos c-syntactic-element))
            (column (c-langelem-2nd-pos c-syntactic-element))
@@ -1252,16 +1252,23 @@ Linux kernel coding style adjustments
       (* (max steps 1)
 	 c-basic-offset)))
 
-  (defun my:general-c-mode-configuration ()
+  (defun my/general-c-mode-configuration ()
     (setq indent-tabs-mode t)
     (setq show-trailing-whitespace t
           c-basic-offset 8
           cdefault-style "linux"
-          tab-width 8)
+          tab-width 8
+          indent-tabs-mode t
+	  show-trailing-whitespace t
+	  c-set-style "linux-tabs-only"))
     (define-key c-mode-base-map (kbd "RET") 'newline-and-indent))
 
-  (add-hook 'c-mode-common-hook 'my:general-c-mode-configuration)
+  (semantic-mode 1)
+  (defun my/add-semantic-to-autocomplete ()
+    (add-to-list 'ac-sources 'ac-source-semantic))
 
+  (add-hook 'c-mode-common-hook 'my/add-semantic-to-autocomplete)
+  (add-hook 'c-mode-common-hook 'my/general-c-mode-configuration)
   (add-hook 'c-mode-common-hook
             (lambda ()
               ;; Add kernel style
@@ -1271,23 +1278,6 @@ Linux kernel coding style adjustments
                           (arglist-cont-nonempty
                            c-lineup-gcc-asm-reg
                            c-lineup-arglist-tabs-only))))))
-  (add-hook 'c-mode-hook
-            (lambda ()
-              (let ((filename (buffer-file-name)))
-		;; Enable kernel mode for the appropriate files
-		(when (and filename
-                           (string-match (expand-file-name (concat (getenv "HOME") "/src/linux-trees"))
-					 filename))
-                  (setq indent-tabs-mode t)
-                  (setq show-trailing-whitespace t)
-                  (c-set-style "linux-tabs-only")))))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-  (semantic-mode 1)
-  (defun my/add-semantic-to-autocomplete ()
-    (add-to-list 'ac-sources 'ac-source-semantic))
-  (add-hook 'c-mode-common-hook 'my/add-semantic-to-autocomplete)
 #+END_SRC
 
 #+RESULTS:
@@ -1302,16 +1292,16 @@ called for c/c++ hooks
     :config
     (add-to-list 'ac-sources 'ac-source-c-headers))
 
-  (defun my:init-ac-c-headers ()
+  (defun my/init-ac-c-headers ()
     (require 'auto-complete-c-headers)
     (add-to-list 'achead:include-directories '"/usr/src/linux/include/"))
 
-  (add-hook 'c++-mode-hook 'my:init-ac-c-headers)
-  (add-hook 'c-mode-hook 'my:init-ac-c-headers)
+  (add-hook 'c++-mode-hook 'my/init-ac-c-headers)
+  (add-hook 'c-mode-hook 'my/init-ac-c-headers)
 #+END_SRC
 
 #+RESULTS:
-| my:init-ac-c-headers |
+| my/init-ac-c-headers |
 
 Use iedit for refactoring
 
@@ -1368,7 +1358,7 @@ Highlight TODO/FIXME/etc
 #+END_SRC
 
 #+RESULTS:
-| my-highlight-keywords-info | my-highlight-keywords-warning | fix-enum-class | my-highlight-keywords | my:init-ac-c-headers |
+| my-highlight-keywords-info | my-highlight-keywords-warning | fix-enum-class | my-highlight-keywords | my/init-ac-c-headers |
 
 ** C++
 *** Indentation enum class
@@ -1404,7 +1394,7 @@ This indentation is not working in the original c++-mode, thus a fix is needed:
 #+END_SRC
 
 #+RESULTS:
-| fix-enum-class | my:init-ac-c-headers |
+| fix-enum-class | my/init-ac-c-headers |
 
 ** Linux
 *** dts mode
