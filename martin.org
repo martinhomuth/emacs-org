@@ -1222,19 +1222,21 @@ Integrate in systemd
 
 #+BEGIN_SRC emacs-lisp
   (use-package rtags
-    :ensure t)
+    :ensure t
+    :config
+    (use-package flycheck-rtags
+      :ensure t)
 
-  (use-package flycheck-rtags
-    :ensure t)
+    (use-package ac-rtags
+      :ensure t)
 
-  (use-package ac-rtags
-    :ensure t)
-
-  (use-package helm-rtags
-    :ensure t)
+    (use-package helm-rtags
+      :ensure t)
+    )
 #+END_SRC
 
 #+RESULTS:
+: t
 
 ** C
 
