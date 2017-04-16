@@ -975,44 +975,6 @@ That way it is easy to see short tasks that i can finish fast
 
 #+RESULTS:
 
-*** Track Time
-#+BEGIN_SRC emacs-lisp
-
-  (defun martin/org-clock-in-set-state-to-started ()
-    "Mark STARTED when clocked in."
-    (save-excursion
-      (catch 'exit
-        (cond
-         ((derived-mode-p 'org-agenda-mode)
-          (let* ((marker (or (org-get-at-bol 'org-marker)
-                             (org-agenda-error)))
-                 (hdmarker (or (org-get-at-bol 'org-hd-marker) marker))
-                 (pos (marker-position marker))
-                 (col (current-column))
-                 newhead)
-            (org-with-remote-undo (marker-buffer marker)
-              (with-current-buffer (marker-buffer marker)
-                (widen)
-                (goto-char pos)
-                (org-back-to-heading t)
-                (if (org-get-todo-state)
-                    (org-todo "STARTED"))))))
-         (t (if (org-get-todo-state)
-                (org-todo "STARTED")))))))
-#+END_SRC
-
-#+RESULTS:
-: martin/org-clock-in-set-state-to-started
-
-Too many clock entries clutter up a heading
-#+BEGIN_SRC emacs-lisp
-  (setq org-log-into-drawer "LOGBOOK")
-  (setq org-clock-into-drawer 1)
-#+END_SRC
-
-#+RESULTS:
-: 1
-
 *** Habits
 
 #+BEGIN_SRC emacs-lisp
