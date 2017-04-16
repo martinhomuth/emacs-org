@@ -912,31 +912,6 @@ them under.
 
 #+RESULTS:
 
-** org-caldav
-
-#+BEGIN_SRC emacs-lisp
-  (use-package org-caldav
-    :ensure t
-    :config
-    (setq org-caldav-url martin-caldav-url)
-    (setq org-caldav-calendars
-          '((:calendar-id "personal"
-                          :files
-			  ((concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org")
-			   (concat (getenv "HOME") "/git/CG_bitbucket/org/organizer.org")
-			   (concat (getenv "HOME") "/git/CG_bitbucket/org/journal.org"))
-                          :inbox
-			  (concat (getenv "HOME") "/git/CG_bitbucket/org/inbox/frompersonal.org"))
-            (:calendar-id "work"
-                          :files
-			  ((concat (getenv "HOME") "/git/CG_bitbucket/org/work.org"))
-                          :inbox
-			  (concat (getenv "HOME") "/git/CG_bitbucket/org/inbox/fromwork.org")))))
-
-#+END_SRC
-
-#+RESULTS:
-: t
 
 ** Rifling
 
