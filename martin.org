@@ -913,24 +913,6 @@ them under.
 #+RESULTS:
 
 
-** Rifling
-
-While I do organize my org files in a way I can find information
-quite easily, a little help is always appreciated, let's see if
-helm-org-rifle is a viable candidate :)
-
-#+BEGIN_SRC emacs-lisp
-  (use-package s
-    :ensure t)
-
-  (use-package helm-org-rifle
-    :ensure t
-    :init
-    (require 'helm-org-rifle))
-#+END_SRC
-
-#+RESULTS:
-
 ** Managing Tasks
 
 *** Track TODO state
