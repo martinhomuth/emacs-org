@@ -814,42 +814,6 @@ Using actual circular bullets for bullet lists
 
 #+RESULTS:
 
-** Publish HTML
-
-Recently I played with writing my blog with org-mode but I did not
-have the time yet to steamline it.
-
-#+BEGIN_SRC emacs-lisp :export no
-  (require 'ox-publish)
-  (setq org-publish-project-alist
-        '(
-
-          ("org-notes"
-           :base-directory (concat (getenv "HOME") "/git/CG_bitbucket/blog/org/")
-           :base-extension "org"
-           :publishing-directory (concat (getenv "HOME") "/git/CG_bitbucket/blog/public_html/")
-           :recursive t
-           :publishing-function org-html-publish-to-html
-           :headline-levels 4             ; Just the default for this project.
-           :auto-preamble t
-           )
-
-          ("org-static"
-           :base-directory "~/git/CG_bitbucket/blog/org/"
-           :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
-           :publishing-directory "~/git/CG_bitbucket/blog/public_html/"
-           :recursive t
-           :publishing-function org-publish-attachment
-           )
-
-          ("org" :components ("org-notes" "org-static"))
-
-          ))
-#+END_SRC
-
-#+RESULTS:
-: t
-
 ** Taking Notes
 
 Setting the directories for the notes to be placed in - this will be
