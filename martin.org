@@ -1121,7 +1121,7 @@ Integrate in systemd
 #+RESULTS:
 : t
 
-** COMMENT C
+** C
 
 Linux kernel coding style adjustments
 
