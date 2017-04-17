@@ -385,6 +385,7 @@ From Sacha Chuas Configuration for testing
   (global-set-key (kbd "C-x g") 'magit-status)
   (global-set-key (kbd "C-+") 'text-scale-increase)
   (global-set-key (kbd "C--") 'text-scale-decrease)
+  (global-set-key (kbd "C-c o") 'ff-find-other-file)
   ;; Org-Mode
   (bind-key "C-c r" 'org-capture)
   (bind-key "C-c a" 'org-agenda)
