@@ -1144,10 +1144,9 @@ Linux kernel coding style adjustments
           tab-width 8
           indent-tabs-mode t
 	  show-trailing-whitespace t
-	  c-set-style "linux-tabs-only"))
-    (define-key c-mode-base-map (kbd "RET") 'newline-and-indent))
-
-  (semantic-mode 1)
+	  c-set-style "linux-tabs-only")
+    (define-key c-mode-base-map (kbd "RET") 'newline-and-indent)
+    (semantic-mode 1))
   (defun my/add-semantic-to-autocomplete ()
     (add-to-list 'ac-sources 'ac-source-semantic))
 
