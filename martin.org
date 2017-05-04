@@ -189,16 +189,6 @@ possibility to solve this:
   fi
 #+END_SRC
 
-Tramp itself can have various configurations for default settings.
-
-#+BEGIN_SRC emacs-lisp :eval no
-  (setq tramp-default-method "ssh"
-        tramp-default-user "martin")
-#+END_SRC
-
-#+RESULTS:
-: martin
-
 ** Helm - Interactive Completion
 
 #+BEGIN_SRC emacs-lisp
