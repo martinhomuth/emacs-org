@@ -637,6 +637,16 @@ Aaaand, it would be gread to use org tables in mails as well.
   (add-hook 'message-mode-hook 'turn-on-orgstruct++)
 #+END_SRC
 
+*** notmuch and such
+
+#+BEGIN_SRC emacs-lisp
+  (define-key global-map "\C-cm" 'notmuch)
+  (setq sendmail-program "/usr/bin/msmtp")
+#+END_SRC
+
+#+RESULTS:
+: /usr/bin/msmtp
+
 ** circe
 
 For work, I'd like to use an emacs IRC client. If it prooves to be
