@@ -26,8 +26,8 @@ These settings are for emacs internals, nothing specific.
 
 ** Emacs Font
 #+BEGIN_SRC emacs-lisp
-  ;; (add-to-list 'default-frame-alist
-  ;;              `(font . ,(concat "DejaVu Sans Mono-" (number-to-string fontsize))))
+  (add-to-list 'default-frame-alist
+	       `(font . ,(concat "DejaVu Sans Mono-" (number-to-string fontsize))))
   ;; (set-fontset-font "fontset-default" nil
   ;;                   (font-spec :size 20 :name "Symbola"))
   ;; disable CJK coding/encoding
