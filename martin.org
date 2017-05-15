@@ -641,11 +641,69 @@ Aaaand, it would be gread to use org tables in mails as well.
 
 #+BEGIN_SRC emacs-lisp
   (define-key global-map "\C-cm" 'notmuch)
-  (setq sendmail-program "/usr/bin/msmtp")
+  (setq sendmail-program "/usr/bin/msmtp"
+	notmuch-search-oldest-first nil
+	mail-specify-envelope-from t
+	message-sendmail-envelope-from 'header
+	mail-specify-envelope-from 'header
+	notmuch-show-all-multipart/alternative-parts nil)
 #+END_SRC
 
 #+RESULTS:
 : /usr/bin/msmtp
+
+Initial cursor position in hello window
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'notmuch-hello-refresh-hook
+		(lambda ()
+                  (if (and (eq (point) (point-min))
+                           (search-forward "Saved searches:" nil t))
+                      (progn
+			(forward-line)
+			(widget-forward 1))
+                    (if (eq (widget-type (widget-at)) 'editable-field)
+			(beginning-of-line)))))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+   (setq notmuch-crypto-process-mime t)
+#+END_SRC
+
+Faces
+
+#+BEGIN_SRC emacs-lisp
+  (setq notmuch-search-line-faces '(("unread" :weight bold)
+                                    ("flagged" :foreground "red")))
+#+END_SRC
+
+Modeline
+
+#+BEGIN_SRC emacs-lisp
+  (setq martin/notmuch-activity-string "")
+  (add-to-list 'global-mode-string '((:eval martin/notmuch-activity-string)) t)
+  (defun martin/get-notmuch-incoming-count ()
+    (string-trim
+     (shell-command-to-string
+      "notmuch count tag:inbox AND tag:unread AND '\(folder:INBOX or folder:INBOX.Eyeo\)'")))
+  (defun martin/format-notmuch-mode-string (count)
+    (concat " mails[" (if (string= count "0") "" count) "]"))
+  (defun martin/update-notmuch-activity-string (&rest args)
+    (setq martin/notmuch-activity-string
+          (martin/format-notmuch-mode-string (martin/get-notmuch-incoming-count)))
+    (force-mode-line-update))
+  (add-hook 'notmuch-after-tag-hook 'martin/update-notmuch-activity-string)
+  (defcustom notmuch-presync-hook nil
+    "Hook run before notmuch is synchronised"
+    :type 'hook)
+  (defcustom notmuch-postsync-hook '(martin/update-notmuch-activity-string)
+    "Hook run after notmuch has been synchronised"
+    :type 'hook)
+
+#+END_SRC
+
+#+RESULTS:
+: martin/update-notmuch-activity-string
 
 ** circe
 
