@@ -67,6 +67,10 @@ leaking about differences.
       (load-theme mytheme t))
   (setq-default cursor-type 'box)
   (global-hl-line-mode)
+  (set-face-attribute 'hl-line nil
+		      :foreground nil
+		      :background "RoyalBlue4")
+
 
 #+END_SRC
 
