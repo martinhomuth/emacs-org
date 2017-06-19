@@ -158,6 +158,9 @@ just to make sure it is there if I ever need it.
   (fset 'yes-or-no-p 'y-or-n-p)
   (prefer-coding-system 'utf-8)
   (delete-selection-mode t)
+  (show-paren-mode 1)
+  (setq show-paren-delay 0
+        show-paren-style 'parenthesis)
 #+END_SRC
 
 #+RESULTS:
