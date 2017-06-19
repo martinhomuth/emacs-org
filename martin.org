@@ -1255,6 +1255,20 @@ Highlight TODO/FIXME/etc
 #+RESULTS:
 | my-highlight-keywords-info | my-highlight-keywords-warning | fix-enum-class | my-highlight-keywords | my/init-ac-c-headers |
 
+** Shell
+
+Finally fixing the indentation of my shell mode.
+
+#+BEGIN_SRC emacs-lisp
+  (defun martin-setup-sh-mode()
+    "sh-mode customizations."
+    (interactive)
+    (setq sh-basic-offset 8
+          sh-indentation 8))
+
+  (add-hook 'sh-mode-hook 'martin-setup-sh-mode)
+#+END_SRC
+
 ** C++
 *** Indentation enum class
 
