@@ -848,7 +848,8 @@ As the most awesome people do, I too use org-mode! :)
     (eval-after-load 'org-agenda
       '(bind-key "i" 'org-agenda-clock-in org-agenda-mode-map))
     (setq org-hide-emphasis-markers t
-          org-src-window-setup 'current-window)
+          org-src-window-setup 'current-window
+	  org-use-speed-commands t)
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((shell . t)
@@ -867,8 +868,8 @@ As the most awesome people do, I too use org-mode! :)
     :config
     (add-hook 'org-mode-hook (lambda() (org-bullets-mode 1)))
     (setq
-     ;org-bullets-bullet-list '("✙" "♱" "♰" "☥" "✞" "✟" "✝" "†" "✠" "✚" "✜" "✛" "✢" "✣" "✤" "✥")
-          org-ellipsis "➔"))
+     org-bullets-bullet-list '("✙" "♱" "♰" "☥" "✞" "✟" "✝" "†" "✠" "✚" "✜" "✛" "✢" "✣" "✤" "✥")
+     org-ellipsis "➔"))
   #+END_SRC
 
 #+RESULTS:
