@@ -1078,18 +1078,16 @@ That way it is easy to see short tasks that i can finish fast
 
 *** Basic Configuration
 #+BEGIN_SRC emacs-lisp
-  (setq my-org-agenda-files-list (list (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org")
-				       (concat (getenv "HOME") "/git/CG_bitbucket/org/work.org")
-				       (concat (getenv "HOME") "/git/CG_bitbucket/org/journal.org")
-				       (concat (getenv "HOME") "/git/CG_bitbucket/org/organizer.org"))
-	org-agenda-files
-	(delq nil
-	      (mapcar (lambda (x) (and (file-exists-p x) x))
-		      my-org-agenda-files-list)))
+  (setq my-org-agenda-files-list (append
+                                  (file-expand-wildcards "~/git/CG_bitbucket/org/*.org"))
+        org-agenda-files
+        (delq nil
+              (mapcar (lambda (x) (and (file-exists-p x) x))
+                      my-org-agenda-files-list)))
 #+END_SRC
 
 #+RESULTS:
-| /home/martin/git/CG_bitbucket/org/personal.org | /home/martin/git/CG_bitbucket/org/work.org | /home/martin/git/CG_bitbucket/org/journal.org | /home/martin/git/CG_bitbucket/org/organizer.org |
+| /home/mhomuth/git/CG_bitbucket/org/personal.org | /home/mhomuth/git/CG_bitbucket/org/work.org | /home/mhomuth/git/CG_bitbucket/org/journal.org | /home/mhomuth/git/CG_bitbucket/org/organizer.org |
 
 This is some configuration of Sacha's
 #+BEGIN_SRC emacs-lisp
