@@ -1240,12 +1240,12 @@ Highlight TODO/FIXME/etc
   (defun my-highlight-keywords-warning()
     ""
     (font-lock-add-keywords nil
-			    '(("\\<\\(FIXME\\|TODO\\|XXX+\\|BUG\\):"
+			    '(("\\<\\(FIXME\\|TODO\\|XXX+\\|BUG\\|TBD\\):"
 			       1 font-lock-warning-face prepend))))
   (defun my-highlight-keywords-info()
     ""
     (font-lock-add-keywords nil
-			    '(("\\<\\(NOTE\\|INFO\\|\\):"
+			    '(("\\<\\(NOTE\\|INFO\\):"
 			       1 font-lock-comment-face prepend))))
 
   (add-hook 'c-mode-hook 'my-highlight-keywords-warning)
