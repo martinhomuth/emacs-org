@@ -1271,6 +1271,15 @@ Finally fixing the indentation of my shell mode.
   (add-hook 'sh-mode-hook 'martin-setup-sh-mode)
 #+END_SRC
 
+** XML
+
+Who on earth would want xml files to be indented only with 2 spaces?!?
+
+#+BEGIN_SRC emacs-lisp
+  (setq nxml-child-indent 8
+        nxml-attribute-indent 8)
+#+END_SRC
+
 ** C++
 *** Indentation enum class
 
