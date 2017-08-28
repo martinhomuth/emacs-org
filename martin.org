@@ -14,7 +14,7 @@ here they are ;-)
 Load all the things I don't like to share with the world
 
 #+BEGIN_SRC emacs-lisp
-(load (concat (getenv "HOME") "/.emacs.d/secrets"))
+(load (expand-file-name"~/.emacs.d/secrets"))
 #+END_SRC
 
 #+RESULTS:
@@ -122,7 +122,7 @@ Sacha uses external (wrt not package) files, which I'll enable too,
 just to make sure it is there if I ever need it.
 
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'load-path (concat (getenv "HOME") "/elisp"))
+  (add-to-list 'load-path (expand-file-name "~/elisp"))
   (unless (package-installed-p 'use-package)
     (package-install 'use-package))
   (require 'use-package)
@@ -275,7 +275,7 @@ Load my personal org file after startup.
 
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-screen t
-	initial-buffer-choice (expand-file-name (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org")))
+        initial-buffer-choice (expand-file-name "~/git/CG_bitbucket/org/personal.org"))
 #+END_SRC
 
 #+RESULTS:
@@ -318,7 +318,8 @@ From Sacha Chuas Configuration for testing
       (yas-global-mode)
       (add-hook 'hippie-expand-try-functions-list 'yas-hippie-try-expand)
       (setq yas-key-syntaxes '("w_" "w_." "^ "))
-      (setq yas-installed-snippets-dir (concat (getenv "HOME") "/elisp/yasnippet-snippets"))
+      (setq yas-snippet-dirs '("~/.emacs.d/snippets/"
+                               "~/.emacs.d/elpa/yasnippet-20170717.1946/snippets/"))
       (setq yas-expand-only-for-last-commands nil)
       (yas-global-mode 1)
       (bind-key "\t" 'hippie-expand yas-minor-mode-map)))
