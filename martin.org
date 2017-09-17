@@ -941,27 +941,27 @@ Let's use =org-capture= to quickly add the things that come to mind all the time
     "Journal Template")
   (setq org-capture-templates
         `(("t" "Tasks" entry
-           (file+headline (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org") "INBOX")
+           (file+headline (expand-file-name "~/git/CG_bitbucket/org/personal.org") "INBOX")
            ,martin/org-basic-task-template)
           ("T" "Quick Task" entry
-           (file+headline (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org") "INBOX")
+           (file+headline (expand-file-name "~/git/CG_bitbucket/org/personal.org") "INBOX")
            "* TODO %^{Task}"
            :immediate-finish t)
           ("j" "Journal entry" plain
-           (file+datetree (concat (getenv "HOME") "/git/CG_bitbucket/org/journal.org")
+           (file+olp+datetree "/home/martin/git/CG_bitbucket/org/journal.org")
            ,martin/org-journal-template
-           :immediate-finish t))
+           :immediate-finish t)
           ("a" "Appointments" entry
-           (file+headline (concat (getenv "HOME") "/git/CG_bitbucket/org/organizer.org") "Appointments")
+           (file+headline (expand-file-name "~/git/CG_bitbucket/org/organizer.org") "Appointments")
            "* %?\n%i")
           ("d" "Decisions" entry
-           (file+headline (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org") "Decisions")
+           (file+headline (expand-file-name "~/git/CG_bitbucket/org/personal.org") "Decisions")
            "* %?\n%i")
           ("p" "Project" entry
-           (file+headline (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org") "Projects")
+           (file+headline (expand-file-name "~/git/CG_bitbucket/org/personal.org") "Projects")
            ,martin/org-project-template)
           ("W" "Workout" entry
-           (file+headline (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org") "Primary Skills")
+           (file+headline (expand-file-name "~/git/CG_bitbucket/org/personal.org") "Primary Skills")
            ,martin/org-programming-workout-template)))
   (bind-key "C-M-r" 'org-capture)
 #+END_SRC
@@ -1391,8 +1391,8 @@ needed. [[http://truongtx.me][Truong TX]] gave a nice example.
   (use-package flymake-jslint
     :ensure t
     :config
-    (add-to-list 'load-path (concat (getenv "HOME") "/git/lintnode"))
-    (setq lintnode-location (concat (getenv "HOME") "/git/lintnode"))
+    (add-to-list 'load-path (expand-file-name (getenv "HOME") "/git/lintnode"))
+    (setq lintnode-location (expand-file-name (getenv "HOME") "/git/lintnode"))
     (setq lintnode-jslint-excludes (list 'nomen 'undef 'plusplus 'onevar 'white))
     (add-hook 'js-mode-hook
 	      (lambda()
