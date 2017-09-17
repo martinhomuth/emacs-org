@@ -1102,10 +1102,6 @@ This is some configuration of Sacha's
   (setq org-agenda-skip-scheduled-if-done t)
   (setq org-agenda-skip-deadline-if-done t)
   (setq org-agenda-skip-deadline-prewarning-if-scheduled 'pre-scheduled)
-  (setq org-agenda-time-grid
-        '((daily today require-timed)
-          "-------------"
-          (800 1000 1200 1400 1600 1800)))
   (setq org-columns-default-format "%50ITEM %12SCHEDULED %TODO %3PRIORITY %Effort{:} %TAGS")
 #+END_SRC
 
