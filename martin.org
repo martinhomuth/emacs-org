@@ -473,6 +473,15 @@ if the point is at the beginning of the line.
 #+RESULTS:
 : hungry-eat-line
 
+** NeoTree
+
+NeoTree seems really nice
+
+#+BEGIN_SRC emacs-lisp
+  (use-package neotree
+    :ensure t)
+#+END_SRC
+
 ** Helm-Swoop
 #+BEGIN_SRC emacs-lisp
   (use-package helm-swoop
