@@ -73,9 +73,6 @@ difference here. This is hidden in secrets.el to avoid information
 leaking about differences.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package base16-theme
-    :ensure t)
-
   ;;; As mytheme can be nil, guard it
   (if (not (eq mytheme nil))
       (load-theme mytheme t))
