@@ -81,7 +81,7 @@ leaking about differences.
   (set-face-attribute 'hl-line nil
                       :inherit nil
                       :foreground nil
-                      :background "RoyalBlue4")
+                      :background "gainsboro")
 
 
 #+END_SRC
@@ -723,27 +723,6 @@ Modeline
 
 #+RESULTS:
 : martin/update-notmuch-activity-string
-
-** circe
-
-For work, I'd like to use an emacs IRC client. If it prooves to be
-good, I will switch to it generally.
-
-#+BEGIN_SRC emacs-lisp :eval no
-  (use-package circe
-    :ensure t
-    :config
-    (setq circe-network-options
-          `((,work-irc-server
-           :tls nil
-           :port 6667
-           :nick "martin"
-           :channels (,work-irc-channel)
-           ))))
-#+END_SRC
-
-#+RESULTS:
-: t
 
 * Learning
 
