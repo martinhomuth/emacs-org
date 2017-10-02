@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: Create basic table
+# key: table
+# --
+\begin{tabular}{${1:Layout}}
+    \hline
+    $0
+    \hline
+\end{tabular}
