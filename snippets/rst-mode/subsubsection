@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: Subsubsection
+# key: subsubsection
+# --
+${1:Subsection}
+*************
+
+$0

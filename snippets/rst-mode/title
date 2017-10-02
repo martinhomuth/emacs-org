@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: title
+# key: title
+# --
+*************
+${1:Title}
+*************
+
+$0
