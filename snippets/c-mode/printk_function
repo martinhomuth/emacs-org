@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: simple printk current function
+# key: pkf
+# --
+printk("%s\n", __FUNCTION__);

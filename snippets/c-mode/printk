@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: simple printk snippet
+# key: pk
+# --
+printk("$0\n");

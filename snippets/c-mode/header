@@ -1,0 +1,20 @@
+# -*- mode: snippet -*-
+# name: Create Header
+# key: hdr
+# --
+/**
+ * \class ${1:Classname}
+ *
+ * \ingroup ${2:Package Name}
+ *
+ * \brief $3
+ *
+ * $4
+ */
+
+#ifndef __${1:$(upcase yas-text)}_H
+#define __${1:$(upcase yas-text)}_H
+
+$0
+
+#endif
