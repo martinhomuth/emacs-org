@@ -80,8 +80,14 @@ leaking about differences.
   (global-hl-line-mode)
   (set-face-attribute 'hl-line nil
                       :inherit nil
-                      :foreground nil
-                      :background "gainsboro")
+                      :foreground nil)
+
+  ;; special hl-line when using tao theme
+  (if (equal custom-enabled-themes '(tao-yang))
+      (set-face-attribute 'hl-line nil
+                          :background "dark gray")
+    (set-face-attribute 'hl-line nil
+                          :background "gainsboro"))
 
 
 #+END_SRC
