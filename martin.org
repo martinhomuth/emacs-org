@@ -558,6 +558,9 @@ Eshell seems to be a great tool, but sometimes it is kind of
 unhandy. There are two things that come to mind really quick:
 1. whitespace mode when ls-ing
 2. auto-completion tabs through the directories in the wrong order.
+   This is due to the fact, that the completion uses the last-modified
+   entry first. Basis for that is the function stored in
+   "eshell-cmpl-compare-entry-function".
 3. when re-entering eshell using <f1> the old position stays, I'd like
    the shell when entered with the key to change the wd to the buffer
    I entered the eshell with
@@ -568,6 +571,11 @@ Let's fix these things
   (add-hook 'eshell-mode-hook
             (lambda ()
               (setq show-trailing-whitespace nil)))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (setq eshell-cmpl-compare-entry-function (quote string-lessp))
+
 #+END_SRC
 
 ** Auto Fill
