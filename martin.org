@@ -282,7 +282,7 @@ Load my personal org file after startup.
 #+END_SRC
 
 #+RESULTS:
-: /home/martin/git/CG_bitbucket/org/personal.org
+: /home/mhomuth/git/CG_bitbucket/org/personal.org
 
 ** Exit Confirmation
 
@@ -962,7 +962,7 @@ Let's use =org-capture= to quickly add the things that come to mind all the time
            "* TODO %^{Task}"
            :immediate-finish t)
           ("j" "Journal entry" plain
-           (file+olp+datetree "/home/martin/git/CG_bitbucket/org/journal.org")
+           (file+olp+datetree (expand-file-name "~/git/CG_bitbucket/org/journal.org"))
            ,martin/org-journal-template)
           ("a" "Appointments" entry
            (file+headline (expand-file-name "~/git/CG_bitbucket/org/organizer.org") "Appointments")
