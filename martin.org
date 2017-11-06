@@ -910,8 +910,8 @@ Setting the directories for the notes to be placed in - this will be
 synced soonish.
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-directory (concat (getenv "HOME") "/git/CG_bitbucket/org"))
-  (setq org-default-notes-file (concat (getenv "HOME") "/git/CG_bitbucket/org/personal.org"))
+  (setq org-directory (concat (file-truename "~/git") "/CG_bitbucket/org"))
+  (setq org-default-notes-file (concat (file-truename "~/git") "/CG_bitbucket/org/personal.org"))
 #+END_SRC
 
 #+RESULTS:
