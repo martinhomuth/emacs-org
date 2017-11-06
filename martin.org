@@ -278,7 +278,7 @@ Load my personal org file after startup.
 
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-screen t
-        initial-buffer-choice (expand-file-name "~/git/CG_bitbucket/org/personal.org"))
+        initial-buffer-choice (file-truename "~/git/CG_bitbucket/org/personal.org"))
 #+END_SRC
 
 #+RESULTS:
@@ -955,26 +955,26 @@ Let's use =org-capture= to quickly add the things that come to mind all the time
     "Journal Template")
   (setq org-capture-templates
         `(("t" "Tasks" entry
-           (file+headline (expand-file-name "~/git/CG_bitbucket/org/personal.org") "INBOX")
+           (file+headline (file-truename "~/git/CG_bitbucket/org/personal.org") "INBOX")
            ,martin/org-basic-task-template)
           ("T" "Quick Task" entry
-           (file+headline (expand-file-name "~/git/CG_bitbucket/org/personal.org") "INBOX")
+           (file+headline (file-truename "~/git/CG_bitbucket/org/personal.org") "INBOX")
            "* TODO %^{Task}"
            :immediate-finish t)
           ("j" "Journal entry" plain
-           (file+olp+datetree (expand-file-name "~/git/CG_bitbucket/org/journal.org"))
+           (file+olp+datetree (file-truename "~/git/CG_bitbucket/org/journal.org"))
            ,martin/org-journal-template)
           ("a" "Appointments" entry
-           (file+headline (expand-file-name "~/git/CG_bitbucket/org/organizer.org") "Appointments")
+           (file+headline (file-truename "~/git/CG_bitbucket/org/organizer.org") "Appointments")
            "* %?\n%i")
           ("d" "Decisions" entry
-           (file+headline (expand-file-name "~/git/CG_bitbucket/org/personal.org") "Decisions")
+           (file+headline (file-truename "~/git/CG_bitbucket/org/personal.org") "Decisions")
            "* %?\n%i")
           ("p" "Project" entry
-           (file+headline (expand-file-name "~/git/CG_bitbucket/org/personal.org") "Projects")
+           (file+headline (file-truename "~/git/CG_bitbucket/org/personal.org") "Projects")
            ,martin/org-project-template)
           ("W" "Workout" entry
-           (file+headline (expand-file-name "~/git/CG_bitbucket/org/personal.org") "Primary Skills")
+           (file+headline (file-truename "~/git/CG_bitbucket/org/personal.org") "Primary Skills")
            ,martin/org-programming-workout-template)))
   (bind-key "C-M-r" 'org-capture)
 #+END_SRC
@@ -1404,8 +1404,8 @@ needed. [[http://truongtx.me][Truong TX]] gave a nice example.
   (use-package flymake-jslint
     :ensure t
     :config
-    (add-to-list 'load-path (expand-file-name (getenv "HOME") "/git/lintnode"))
-    (setq lintnode-location (expand-file-name (getenv "HOME") "/git/lintnode"))
+    (add-to-list 'load-path (file-truename "~/git/lintnode"))
+    (setq lintnode-location (file-truename "~/git/lintnode"))
     (setq lintnode-jslint-excludes (list 'nomen 'undef 'plusplus 'onevar 'white))
     (add-hook 'js-mode-hook
 	      (lambda()
