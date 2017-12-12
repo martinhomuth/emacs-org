@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: Create function
+# key: defun
+# --
+
+#
+# ${2:Description}
+# args:
+#	${3:args}
+# return:
+#	${4:return}
+function ${1:FunctionName}()
+{
+	$0
+}
