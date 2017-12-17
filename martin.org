@@ -222,11 +222,22 @@ possibility to solve this:
                       ("C-h a" . helm-apropos)
                       ("C-x C-f" . helm-find-files)
                       ("C-x C-b" . helm-buffers-list)
-                      ("C-x b" . helm-buffers-list)
                       ("M-y" . helm-show-kill-ring)
                       ("M-x" . helm-M-x)
                       ("C-x c o" . helm-occur)
                       ("C-x c s" . helm-scoop)))
+#+END_SRC
+
+** IDO mode
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ido
+    :ensure t
+    :config
+    (progn
+      (setq ido-enable-flex-matching t)
+      (setq ido-everywhere t)
+      (ido-mode 1)))
 #+END_SRC
 
 ** Hydra
