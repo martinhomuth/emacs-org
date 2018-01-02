@@ -87,7 +87,7 @@ leaking about differences.
       (set-face-attribute 'hl-line nil
                           :background "dark gray")
     (set-face-attribute 'hl-line nil
-                          :background "gainsboro"))
+                          :background "gray16"))
 
 
 #+END_SRC
