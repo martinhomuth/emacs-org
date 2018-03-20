@@ -73,23 +73,16 @@ difference here. This is hidden in secrets.el to avoid information
 leaking about differences.
 
 #+BEGIN_SRC emacs-lisp
-  ;;; As mytheme can be nil, guard it
+        ;;; As mytheme can be nil, guard it
   (if (not (eq mytheme nil))
       (load-theme mytheme t))
   (setq-default cursor-type 'box)
-  (global-hl-line-mode)
-  (set-face-attribute 'hl-line nil
-                      :inherit nil
-                      :foreground nil)
-
-  ;; special hl-line when using tao theme
-  (if (equal custom-enabled-themes '(tao-yang))
-      (set-face-attribute 'hl-line nil
-                          :background "dark gray")
-    (set-face-attribute 'hl-line nil
-                          :background "gray16"))
-
-
+  ;;; scroll along with the cursor
+  (centered-cursor-mode t)
+  (global-centered-cursor-mode t)
+  ;;; set transparency
+  (set-frame-parameter (selected-frame) 'alpha '(85 . 50))
+  (add-to-list 'default-frame-alist '(alpha . (85 . 50)))
 #+END_SRC
 
 #+RESULTS:
