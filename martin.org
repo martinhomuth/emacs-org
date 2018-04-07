@@ -1155,6 +1155,19 @@ confirmation of executing those blocks the following variables are set
 #+RESULTS:
 : t
 
+** Coverage
+
+This enables googles coverage. The repository has to be downloaded to
+the appropriate location and be enabled using the following snippet
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "/home/mhomuth/elisp/coverage")
+  (require 'coverage)
+#+END_SRC
+
+#+RESULTS:
+: coverage
+
 ** C
 
 Linux kernel coding style adjustments
