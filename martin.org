@@ -1316,7 +1316,17 @@ Who on earth would want xml files to be indented only with 2 spaces?!?
         nxml-attribute-indent 8)
 #+END_SRC
 
+** Java
+
+Indentation is important :)
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'java-mode-hook (lambda ()
+                              (setq c-basic-offset 4)))
+#+END_SRC
+
 ** C++
+
 *** Indentation enum class
 
 This indentation is not working in the original c++-mode, thus a fix is needed:
