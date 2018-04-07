@@ -1246,7 +1246,9 @@ Use flycheck for syntax checking
               (lambda () (setq flycheck-gcc-include-path
                                (list "/usr/src/linux/include" ))))
     (add-hook 'c-mode-hook
-              (lambda () (setq flycheck-gcc-language-standard "c11"))))
+              (lambda () (setq flycheck-gcc-language-standard "c11")))
+    (add-hook 'sh-mode-hook 'flycheck-mode))
+
 #+END_SRC
 
 #+RESULTS:
