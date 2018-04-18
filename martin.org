@@ -221,6 +221,17 @@ possibility to solve this:
                       ("C-x c s" . helm-scoop)))
 #+END_SRC
 
+As helm-find-files always shows the '.' and '..' directories,
+navigating through a tree is quite cumbersome. The following snippet
+filters the candidates that solely consist of '.' and '..' names.
+
+#+BEGIN_SRC emacs-lisp
+  (advice-add 'helm-ff-filter-candidate-one-by-one
+              :around (lambda (fcn file)
+                        (unless (string-match "\\(?:/\\|\\`\\)\\.\\{1,2\\}\\'" file)
+                          (funcall fcn file))))
+#+END_SRC
+
 ** IDO mode
 
 #+BEGIN_SRC emacs-lisp
