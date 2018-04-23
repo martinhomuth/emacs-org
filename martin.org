@@ -228,7 +228,7 @@ filters the candidates that solely consist of '.' and '..' names.
 #+BEGIN_SRC emacs-lisp
   (advice-add 'helm-ff-filter-candidate-one-by-one
               :around (lambda (fcn file)
-                        (unless (string-match "\\(?:/\\|\\`\\)\\.\\{1,2\\}\\'" file)
+                        (unless (string-match "\\(?:/\\|\\`\\)\\.\\{2\\}\\'" file)
                           (funcall fcn file))))
 #+END_SRC
 
