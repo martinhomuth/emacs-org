@@ -881,8 +881,6 @@ As the most awesome people do, I too use org-mode! :)
     :config
     (add-hook 'org-clock-in-hook 'martin/org-clock-in-set-state-to-started)
     (add-hook 'org-babel-after-execute-hook 'org-display-inline-images)
-    (eval-after-load 'org-agenda
-      '(bind-key "i" 'org-agenda-clock-in org-agenda-mode-map))
     (setq org-hide-emphasis-markers t
           org-src-window-setup 'current-window
 	  org-use-speed-commands t)
@@ -1126,7 +1124,7 @@ That way it is easy to see short tasks that i can finish fast
 
 This is some configuration of Sacha's
 #+BEGIN_SRC emacs-lisp
-  (setq org-agenda-span 2)
+  (setq org-agenda-span 'week)
   (setq org-agenda-sticky nil)
   (setq org-agenda-show-log t)
   (setq org-agenda-skip-scheduled-if-done t)
