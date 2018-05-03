@@ -1270,8 +1270,8 @@ Use flycheck for syntax checking
                                (list "/usr/src/linux/include" ))))
     (add-hook 'c-mode-hook
               (lambda () (setq flycheck-gcc-language-standard "c11")))
-    (add-hook 'sh-mode-hook 'flycheck-mode))
-
+    (add-hook 'sh-mode-hook 'flycheck-mode)
+    (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
 #+END_SRC
 
 #+RESULTS:
