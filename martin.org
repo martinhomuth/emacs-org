@@ -217,7 +217,7 @@ possibility to solve this:
                         ("M-y" . helm-show-kill-ring)
                         ("M-x" . helm-M-x)
                         ("C-x c o" . helm-occur)
-                        ("C-x c s" . helm-scoop))))
+                        ("C-x c s" . helm-scoop)))
 #+END_SRC
 
 #+RESULTS:
