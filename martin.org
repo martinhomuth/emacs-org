@@ -204,22 +204,24 @@ possibility to solve this:
                :diminish helm-mode
                :config
                (progn
-                 (require 'helm-config)
-                 (setq helm-candidate-number-limit 100)
-                 (setq helm-idle-delay 0.0
+                   (setq helm-candidate-number-limit 100)
+                   (setq helm-idle-delay 0.0
                        helm-input-idle-delay 0.01
                        helm-quick-update t
                        helm-M-x-requires-pattern nil)
-                 (helm-mode))
+                   (helm-mode))
                :bind (("C-c h" . helm-mini)
-                      ("C-h a" . helm-apropos)
-                      ("C-x C-f" . helm-find-files)
-                      ("C-x C-b" . helm-buffers-list)
-                      ("M-y" . helm-show-kill-ring)
-                      ("M-x" . helm-M-x)
-                      ("C-x c o" . helm-occur)
-                      ("C-x c s" . helm-scoop)))
+                        ("C-h a" . helm-apropos)
+                        ("C-x C-f" . helm-find-files)
+                        ("C-x C-b" . helm-buffers-list)
+                        ("M-y" . helm-show-kill-ring)
+                        ("M-x" . helm-M-x)
+                        ("C-x c o" . helm-occur)
+                        ("C-x c s" . helm-scoop))))
 #+END_SRC
+
+#+RESULTS:
+: helm-scoop
 
 As helm-find-files always shows the '.' and '..' directories,
 navigating through a tree is quite cumbersome. The following snippet
@@ -1158,7 +1160,6 @@ confirmation of executing those blocks the following variables are set
   (use-package auto-complete
     :ensure t
     :config
-    (require 'auto-complete-config)
     (ac-config-default)
     (global-auto-complete-mode t))
 #+END_SRC
@@ -1172,8 +1173,8 @@ This enables googles coverage. The repository has to be downloaded to
 the appropriate location and be enabled using the following snippet
 
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'load-path "/home/mhomuth/elisp/coverage")
-  (require 'coverage)
+  ;;(add-to-list 'load-path "/home/mhomuth/elisp/coverage")
+  ;;(require 'coverage)
 #+END_SRC
 
 #+RESULTS:
@@ -1226,17 +1227,16 @@ Define a function that intializes auto-complete-c-headers and gets
 called for c/c++ hooks
 
 #+BEGIN_SRC emacs-lisp
-  (use-package auto-complete-c-headers
-    :ensure t
-    :config
-    (add-to-list 'ac-sources 'ac-source-c-headers))
+    (use-package auto-complete-c-headers
+      :ensure t
+      :config
+      (add-to-list 'ac-sources 'ac-source-c-headers))
 
-  (defun my/init-ac-c-headers ()
-    (require 'auto-complete-c-headers)
-    (add-to-list 'achead:include-directories '"/usr/src/linux/include/"))
+    (defun my/init-ac-c-headers ()
+      (add-to-list 'achead:include-directories '"/usr/src/linux/include/"))
 
-  (add-hook 'c++-mode-hook 'my/init-ac-c-headers)
-  (add-hook 'c-mode-hook 'my/init-ac-c-headers)
+    (add-hook 'c++-mode-hook 'my/init-ac-c-headers)
+    (add-hook 'c-mode-hook 'my/init-ac-c-headers)
 #+END_SRC
 
 #+RESULTS:
@@ -1262,7 +1262,6 @@ Use flycheck for syntax checking
     :config
     (eval-after-load 'flycheck
       '(progn
-         (require 'flycheck-cstyle)
          (flycheck-cstyle-setup)
          (flycheck-add-next-checker 'c/c++-cppcheck '(warning . cstyle))))
     (global-flycheck-mode)
