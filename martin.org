@@ -569,7 +569,7 @@ reddit:
 #+RESULTS:
 : t
 
-* Input
+* Editing
 ** eshell
 
 Eshell seems to be a great tool, but sometimes it is kind of
@@ -606,6 +606,22 @@ Let's fix these things
 
    #+RESULTS:
    | turn-on-auto-fill |
+
+** Poporg
+
+For comment formatting the plugin 'poporg' is very useful, with it you
+can popup a buffer when the cursor is within a comment and edit the
+comment contents in an org-mode buffer. The result however is the
+plain text of course.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package poporg
+    :ensure t
+    :bind (("C-c /" . poporg-dwim)))
+#+END_SRC
+
+#+RESULTS:
+: poporg-dwim
 
 ** Default input method
 
