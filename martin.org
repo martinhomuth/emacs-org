@@ -442,32 +442,6 @@ Thanks to Howard Abrams for this neat function!
 #+RESULTS:
 : smarter-move-beginning-of-line
 
-** Better delete line
-
-I am used to delete my lines using C-k and with the previous changes
-from Better Beginning Of The Line this can be cumbersome. Therefore
-there is a need for changing this behavior to deleting the whole line
-if the point is at the beginning of the line.
-
-#+BEGIN_SRC emacs-lisp
-    (defun hungry-eat-line ()
-      ""
-      (interactive)
-      (save-excursion
-        (let ((indent-point
-               (save-excursion
-                 (back-to-indentation)
-                 (point))))
-          (if (= indent-point (point))
-              (kill-whole-line)
-            (kill-line nil)))))
-
-    (global-set-key (kbd "C-k") 'hungry-eat-line)
-#+END_SRC
-
-#+RESULTS:
-: hungry-eat-line
-
 ** NeoTree
 
 NeoTree seems really nice
