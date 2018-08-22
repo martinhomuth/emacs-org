@@ -182,20 +182,6 @@ A good addition is to toggle every whitespace character on demand.
 
 #+RESULTS:
 
-** Tramp
-
-It is really important, that the prompt that is going to be accessed
-by tamp is `simple`. The following excerpt from my zsh.theme shows a
-possibility to solve this:
-
-#+BEGIN_SRC sh :tangle no :eval no
-  if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-     PROMPT="%m> "
-  else
-     PROMPT="%(?.%(!.#.;).%F{1}%B;%b%f) "
-  fi
-#+END_SRC
-
 ** Helm - Interactive Completion
 
 #+BEGIN_SRC emacs-lisp
