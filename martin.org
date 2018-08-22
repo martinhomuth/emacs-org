@@ -220,18 +220,6 @@ filters the candidates that solely consist of '.' and '..' names.
                           (funcall fcn file))))
 #+END_SRC
 
-** IDO mode
-
-#+BEGIN_SRC emacs-lisp
-  (use-package ido
-    :ensure t
-    :config
-    (progn
-      (setq ido-enable-flex-matching t)
-      (setq ido-everywhere t)
-      (ido-mode 1)))
-#+END_SRC
-
 ** Hydra
 
 #+BEGIN_SRC emacs-lisp
