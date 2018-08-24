@@ -546,7 +546,6 @@ Let's fix these things
 
 ** Auto Fill
    #+BEGIN_SRC emacs-lisp
-     (setq major-mode 'org-mode)
      (add-hook 'org-mode-hook 'turn-on-auto-fill)
      (add-hook 'c-mode-hook 'turn-on-auto-fill)
      (add-hook 'TeX-mode-hook 'turn-on-auto-fill)
