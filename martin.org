@@ -1,4 +1,3 @@
-#+STARTUP: indent content hidestars
 * Personal Information
 
 If for some reason any application will need personal information,
@@ -11,10 +10,16 @@ here they are ;-)
 #+RESULTS:
 : Martin Homuth
 
-Load all the things I don't like to share with the world
+Load all the things I don't like to share with the world or think is
+better be extracted from this file. The following things are expected:
+- martin-caldav-url
+- user-mail-address
+- fontsize
+- mytheme
+- transparency
 
 #+BEGIN_SRC emacs-lisp
-(load (expand-file-name"~/.emacs.d/secrets"))
+  (load (expand-file-name"~/.emacs.d/secrets"))
 #+END_SRC
 
 #+RESULTS:
@@ -26,24 +31,30 @@ These settings are for emacs internals, nothing specific.
 
 ** Add Package Sources
 
+Use additional sources for the packages, and ensure that use-package
+is available
+
    #+BEGIN_SRC emacs-lisp
      (unless (assoc-default "melpa" package-archives)
        (add-to-list 'package-archives
-      	      '("melpa" . "http://melpa.org/packages/")))
+                    '("melpa" . "http://melpa.org/packages/")))
 
      (unless (assoc-default "org" package-archives)
        (add-to-list 'package-archives
-      	      '("org" . "http://orgmode.org/elpa/")))
+                    '("org" . "http://orgmode.org/elpa/")))
+
+     (unless (package-installed-p 'use-package)
+       (package-install 'use-package))
+     (require 'use-package)
+
    #+END_SRC
 
-   #+RESULTS:
+  /data/github/emacs-org/ #+RESULTS:
 
-** Emacs Font
+** Emacs Fonts and Locale
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'default-frame-alist
 	       `(font . ,(concat "DejaVu Sans Mono-" (number-to-string fontsize))))
-  ;; (set-fontset-font "fontset-default" nil
-  ;;                   (font-spec :size 20 :name "Symbola"))
   ;; disable CJK coding/encoding
   (setq utf-translate-cjk-mode nil)
   (set-language-environment 'utf-8)
@@ -67,22 +78,33 @@ These settings are for emacs internals, nothing specific.
 
 ** Themes
 
-My desktop machine(s) have a light i3 theme currently while the
-notebook maintains a dark theme. That's why I chose to make a
-difference here. This is hidden in secrets.el to avoid information
-leaking about differences.
+Move the theme setting to the personal file and load on demand as
+different machines might use different themes. Common stuff is still
+hard-coded in here.
 
 #+BEGIN_SRC emacs-lisp
-        ;;; As mytheme can be nil, guard it
+          ;;; As mytheme can be nil, guard it
   (if (not (eq mytheme nil))
       (load-theme mytheme t))
   (setq-default cursor-type 'box)
-  ;;; scroll along with the cursor
-  (centered-cursor-mode t)
-  (global-centered-cursor-mode t)
-  ;;; set transparency
-  (set-frame-parameter (selected-frame) 'alpha '(85 . 50))
-  (add-to-list 'default-frame-alist '(alpha . (85 . 50)))
+    ;;; set transparency
+  (if (eq transparency t)
+      (set-frame-parameter (selected-frame) 'alpha '(85 . 50))
+      (add-to-list 'default-frame-alist '(alpha . (85 . 50))))
+#+END_SRC
+
+#+RESULTS:
+: t
+
+*** Centered Cursor Mode
+
+#+BEGIN_SRC emacs-lisp
+  (use-package centered-cursor-mode
+    :ensure t
+    :config (progn
+    (centered-cursor-mode t)
+    (global-centered-cursor-mode t)))
+
 #+END_SRC
 
 #+RESULTS:
@@ -119,9 +141,6 @@ just to make sure it is there if I ever need it.
 
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path (expand-file-name "~/elisp"))
-  (unless (package-installed-p 'use-package)
-    (package-install 'use-package))
-  (require 'use-package)
   (setq use-package-verbose t)
   (use-package auto-compile
     :ensure t
@@ -135,28 +154,27 @@ just to make sure it is there if I ever need it.
 ** General Configuration
 
 #+BEGIN_SRC emacs-lisp
-  (when window-system
-    (tooltip-mode -1)
-    (tool-bar-mode -1)
-    (menu-bar-mode -1)
-    (scroll-bar-mode -1)
-    (line-number-mode -1)
-    (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)
-          visible-bell t))
-
-  (setq fill-column 85
-        initial-scratch-message "")
-
-  ; Whitespaces... A colleague of mine showed me the horror of not
-  ; considering whitespaces and thus they are shown always and everywhere!
-  (setq-default show-trailing-whitespace t)
-
+  (tooltip-mode -1)
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1)
+  (line-number-mode -1)
   (fset 'yes-or-no-p 'y-or-n-p)
-  (prefer-coding-system 'utf-8)
   (delete-selection-mode t)
   (show-paren-mode 1)
-  (setq show-paren-delay 0
-        show-paren-style 'parenthesis)
+
+  (setq fill-column 85
+        initial-scratch-message ""
+        show-paren-delay 0
+        show-paren-style 'parenthesis
+        visible-bell t
+        show-paren-delay 0
+        show-paren-style 'parenthesis
+        visible-bell t)
+
+  ;; Whitespaces... A colleague of mine showed me the horror of not
+  ;; considering whitespaces and thus they are shown always and everywhere!
+  (setq-default show-trailing-whitespace t)
 #+END_SRC
 
 #+RESULTS:
@@ -186,24 +204,24 @@ A good addition is to toggle every whitespace character on demand.
 
 #+BEGIN_SRC emacs-lisp
   (use-package helm
-               :ensure helm
-               :diminish helm-mode
-               :config
-               (progn
-                   (setq helm-candidate-number-limit 100)
-                   (setq helm-idle-delay 0.0
-                       helm-input-idle-delay 0.01
-                       helm-quick-update t
-                       helm-M-x-requires-pattern nil)
-                   (helm-mode))
-               :bind (("C-c h" . helm-mini)
-                        ("C-h a" . helm-apropos)
-                        ("C-x C-f" . helm-find-files)
-                        ("C-x C-b" . helm-buffers-list)
-                        ("M-y" . helm-show-kill-ring)
-                        ("M-x" . helm-M-x)
-                        ("C-x c o" . helm-occur)
-                        ("C-x c s" . helm-scoop)))
+    :ensure helm
+    :diminish helm-mode
+    :config
+    (progn
+      (setq helm-candidate-number-limit 100
+            helm-idle-delay 0.0
+            helm-input-idle-delay 0.01
+            helm-quick-update t
+            helm-M-x-requires-pattern nil)
+      (helm-mode))
+    :bind (("C-c h" . helm-mini)
+           ("C-h a" . helm-apropos)
+           ("C-x C-f" . helm-find-files)
+           ("C-x C-b" . helm-buffers-list)
+           ("M-y" . helm-show-kill-ring)
+           ("M-x" . helm-M-x)
+           ("C-x c o" . helm-occur)
+           ("C-x c s" . helm-scoop)))
 #+END_SRC
 
 #+RESULTS:
@@ -457,9 +475,7 @@ NeoTree seems really nice
     :ensure t
     :defer t
     :bind
-    (("C-S-s" . helm-swoop)
-     ("M-i" . helm-swoop)
-     ("M-s s" . helm-swoop)
+    (("M-i" . helm-swoop)
      ("C-x M-i" . helm-multi-swoop-all))
     :config
     (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
@@ -551,7 +567,7 @@ Let's fix these things
      (add-hook 'TeX-mode-hook 'turn-on-auto-fill)
    #+END_SRC
 
-   #+RESULTS:
+  /data/github/emacs-org/ #+RESULTS:
    | turn-on-auto-fill |
 
 ** Poporg
@@ -888,8 +904,8 @@ Setting the directories for the notes to be placed in - this will be
 synced soonish.
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-directory (concat (file-truename "~/git") "/CG_bitbucket/org"))
-  (setq org-default-notes-file (concat (file-truename "~/git") "/CG_bitbucket/org/personal.org"))
+  (setq org-directory (expand-file-name "~/git/CG_bitbucket/org"))
+  (setq org-default-notes-file (expand-file-name "~/git/CG_bitbucket/org/personal.org"))
 #+END_SRC
 
 #+RESULTS:
@@ -901,9 +917,9 @@ Let's use =org-capture= to quickly add the things that come to mind all the time
 
 #+BEGIN_SRC emacs-lisp
   (defvar martin/org-project-template "* %^{Project Description} %^g
-  :PROPERTIES:
+  /data/github/emacs-org/:PROPERTIES:
   :Effort: %^{effort|1:00|0:05|0:10|0:15|0:30|0:45|2:00|4:00|8:00}
-  :END:
+  /data/github/emacs-org/:END:
   SCHEDULED: %^t
   Why? %?
   What?
@@ -916,15 +932,15 @@ Let's use =org-capture= to quickly add the things that come to mind all the time
   " "Full Project Description")
   (defvar martin/org-basic-task-template "* TODO %^{Task}
   SCHEDULED: %^t
-  :PROPERTIES:
+  /data/github/emacs-org/:PROPERTIES:
   :Effort: %^{effort|1:00|0:05|0:10|0:15|0:30|0:45|2:00|4:00}
-  :END:
+  /data/github/emacs-org/:END:
   %?
   " "Basic task data")
   (defvar martin/org-programming-workout-template "* %^{Workout Description}
-  :PROPERTIES:
+  /data/github/emacs-org/:PROPERTIES:
   :Effort: %^{effort|0:05|0:10|0:15|0:20|0:25}
-  :END:
+  /data/github/emacs-org/:END:
   %^g%?
   " "Programming Workout Template")
   (defvar martin/org-journal-template
@@ -1067,8 +1083,8 @@ confirmation of executing those blocks the following variables are set
 
 #+BEGIN_SRC emacs-lisp
   (setq org-confirm-babel-evaluate nil
-	org-src-fontify-natively t
-	org-src-tab-acts-natively t)
+        org-src-fontify-natively t
+        org-src-tab-acts-natively t)
 #+END_SRC
 
 #+RESULTS:
@@ -1391,3 +1407,6 @@ I learned to love slime really quickly.
 
   (setq inferior-lisp-program "/usr/bin/clisp")
 #+END_SRC
+
+* Org Settings
+#+STARTUP: indent content hidestars
