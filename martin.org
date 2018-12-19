@@ -1157,7 +1157,7 @@ Linux kernel coding style adjustments
     (setq show-trailing-whitespace t
           c-basic-offset 4
           tab-width 4
-          indent-tabs-mode nil
+          indent-tabs-mode nil)
     (define-key c-mode-base-map (kbd "RET") 'newline-and-indent))
 
   (add-hook 'c-mode-common-hook 'my/add-semantic-to-autocomplete)
