@@ -1129,7 +1129,7 @@ Linux kernel coding style adjustments
            (offset (- (1+ column) anchor))
            (steps (floor offset c-basic-offset)))
       (* (max steps 1)
-	 c-basic-offset)))
+         c-basic-offset)))
 
   (defun my/general-c-mode-configuration ()
     (setq indent-tabs-mode t)
@@ -1138,14 +1138,31 @@ Linux kernel coding style adjustments
           cdefault-style "linux"
           tab-width 8
           indent-tabs-mode t
-	  show-trailing-whitespace t
-	  c-set-style "linux-tabs-only")
+          show-trailing-whitespace t
+          c-set-style "linux-tabs-only")
     (define-key c-mode-base-map (kbd "RET") 'newline-and-indent))
   (defun my/add-semantic-to-autocomplete ()
     (add-to-list 'ac-sources 'ac-source-semantic))
 
+  (defun my/general-c-mode-configuration ()
+    (setq show-trailing-whitespace t
+          c-basic-offset 4
+          cdefault-style "linux"
+          tab-width 4
+          indent-tabs-mode nil
+          c-set-style "linux-tabs-only")
+    (define-key c-mode-base-map (kbd "RET") 'newline-and-indent))
+
+  (defun my/general-c++-mode-configuration ()
+    (setq show-trailing-whitespace t
+          c-basic-offset 4
+          tab-width 4
+          indent-tabs-mode nil
+    (define-key c-mode-base-map (kbd "RET") 'newline-and-indent))
+
   (add-hook 'c-mode-common-hook 'my/add-semantic-to-autocomplete)
   (add-hook 'c-mode-common-hook 'my/general-c-mode-configuration)
+  (add-hook 'c++-mode-hook 'my/general-c++-mode-configuration)
   (add-hook 'c-mode-common-hook
             (lambda ()
               ;; Add kernel style
@@ -1157,8 +1174,15 @@ Linux kernel coding style adjustments
                            c-lineup-arglist-tabs-only))))))
 #+END_SRC
 
+clang-format
+
+#+BEGIN_SRC emacs-lisp
+  (fset 'c-indent-region 'clang-format-region)
+  (global-set-key (kbd "C-i") 'clang-format-region)
+#+END_SRC
+
 #+RESULTS:
-| my/add-semantic-to-autocomplete |
+: clang-format-region
 
 Define a function that intializes auto-complete-c-headers and gets
 called for c/c++ hooks
