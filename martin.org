@@ -1178,7 +1178,6 @@ clang-format
 
 #+BEGIN_SRC emacs-lisp
   (fset 'c-indent-region 'clang-format-region)
-  (global-set-key (kbd "C-i") 'clang-format-region)
 #+END_SRC
 
 #+RESULTS:
