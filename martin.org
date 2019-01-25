@@ -1144,15 +1144,6 @@ Linux kernel coding style adjustments
   (defun my/add-semantic-to-autocomplete ()
     (add-to-list 'ac-sources 'ac-source-semantic))
 
-  (defun my/general-c-mode-configuration ()
-    (setq show-trailing-whitespace t
-          c-basic-offset 4
-          cdefault-style "linux"
-          tab-width 4
-          indent-tabs-mode nil
-          c-set-style "linux-tabs-only")
-    (define-key c-mode-base-map (kbd "RET") 'newline-and-indent))
-
   (defun my/general-c++-mode-configuration ()
     (setq show-trailing-whitespace t
           c-basic-offset 4
