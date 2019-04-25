@@ -469,21 +469,6 @@ NeoTree seems really nice
     :ensure t)
 #+END_SRC
 
-** Helm-Swoop
-#+BEGIN_SRC emacs-lisp
-  (use-package helm-swoop
-    :ensure t
-    :defer t
-    :bind
-    (("M-i" . helm-swoop)
-     ("C-x M-i" . helm-multi-swoop-all))
-    :config
-    (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
-    (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop))
-#+END_SRC
-
-#+RESULTS:
-
 ** Moving Files
 
 Moving files using /rename-file/ or /dired-do-rename/ does not modify the
