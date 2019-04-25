@@ -201,7 +201,6 @@ A good addition is to toggle every whitespace character on demand.
 #+RESULTS:
 
 ** Helm - Interactive Completion
-
 #+BEGIN_SRC emacs-lisp
   (use-package helm
     :ensure helm
@@ -237,6 +236,33 @@ filters the candidates that solely consist of '.' and '..' names.
                         (unless (string-match "\\(?:/\\|\\`\\)\\.\\{2\\}\\'" file)
                           (funcall fcn file))))
 #+END_SRC
+
+** Ivy
+
+#+BEGIN_SRC emacs-lisp
+(use-package ivy :ensure t
+  :diminish (ivy-mode . "")
+  :bind
+  (:map ivy-mode-map
+   ("C-'" . ivy-avy))
+  :config
+  (ivy-mode 1)
+  ;; add ‘recentf-mode’ and bookmarks to ‘ivy-switch-buffer’.
+  (setq ivy-use-virtual-buffers t)
+  ;; number of result lines to display
+  (setq ivy-height 10)
+  ;; does not count candidates
+  (setq ivy-count-format "(%d/%d) ")
+  ;; no regexp by default
+  (setq ivy-initial-inputs-alist nil)
+  ;; configure regexp engine.
+  (setq ivy-re-builders-alist
+	;; allow input not in order
+        '((t   . ivy--regex-ignore-order))))
+#+END_SRC
+
+#+RESULTS:
+: ivy-avy
 
 ** Hydra
 
