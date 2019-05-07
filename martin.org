@@ -409,11 +409,6 @@ From Sacha Chuas Configuration for testing
 
 ** Key Bindings
 #+BEGIN_SRC emacs-lisp
-  (defun mh-prev-other-window()
-    "simple function wrapper to 'other-window' with a negative count"
-    (interactive
-     (other-window -1)))
-
   ;; General
   (global-set-key "\C-cw" 'compare-windows)
   (global-set-key "\C-x\C-m" 'execute-extended-command)
@@ -491,6 +486,18 @@ Thanks to Howard Abrams for this neat function!
 
 #+RESULTS:
 : smarter-move-beginning-of-line
+** Previous other window
+
+As there appears not to be any simple function to return to the
+previous window instead of directly passing a negative argument to
+
+#+BEGIN_SRC emacs-lisp
+  (defun mh-prev-other-window()
+    "Simple function wrapper to `other-window' with a negative argument"
+    (interactive)
+     (other-window -1))
+#+END_SRC
+
 
 ** NeoTree
 
