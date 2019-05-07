@@ -19,7 +19,9 @@ better be extracted from this file. The following things are expected:
 - transparency
 
 #+BEGIN_SRC emacs-lisp
-  (load (expand-file-name"~/.emacs.d/secrets"))
+  (let ((file (expand-file-name "~/.emacs.d/secrets")))
+    (if (file-exists-p file)
+        (load file)))
 #+END_SRC
 
 #+RESULTS:
@@ -53,8 +55,9 @@ is available
 
 ** Emacs Fonts and Locale
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'default-frame-alist
-	       `(font . ,(concat "DejaVu Sans Mono-" (number-to-string fontsize))))
+  (when (boundp 'fontsize)
+    (add-to-list 'default-frame-alist
+               `(font . ,(concat "DejaVu Sans Mono-" (number-to-string fontsize)))))
   ;; disable CJK coding/encoding
   (setq utf-translate-cjk-mode nil)
   (set-language-environment 'utf-8)
@@ -84,11 +87,13 @@ hard-coded in here.
 
 #+BEGIN_SRC emacs-lisp
           ;;; As mytheme can be nil, guard it
-  (if (not (eq mytheme nil))
+  (if (not (or (eq (boundp 'mytheme) nil)
+                (eq mytheme nil)))
       (load-theme mytheme t))
   (setq-default cursor-type 'box)
     ;;; set transparency
-  (if (eq transparency t)
+  (when (and (boundp 'transparency)
+            (eq transparency t))
       (set-frame-parameter (selected-frame) 'alpha '(85 . 50))
       (add-to-list 'default-frame-alist '(alpha . (85 . 50))))
 #+END_SRC
