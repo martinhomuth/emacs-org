@@ -510,7 +510,9 @@ NeoTree seems really nice
 
 #+BEGIN_SRC emacs-lisp
   (use-package neotree
-    :ensure t)
+    :ensure t
+    :bind (("M-n" . neotree-toggle))
+    )
 #+END_SRC
 
 ** Moving Files
