@@ -665,21 +665,22 @@ As switching between projects becomes more and more cumbersome, I
 decided to finally head over to projectile and give it a try.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package projectile
-    :ensure t
-    :ensure helm-projectile
-    :config
-    (projectile-global-mode)
-    (setq projectile-enable-caching t
-          projectile-switch-project-action 'projectile-dired
-          )
+    (use-package projectile
+      :ensure t
+      :ensure helm-projectile
+      :bind (("C-c P" . projectile-switch-project))
+      :config
+      (projectile-global-mode)
+      (setq projectile-enable-caching t
+            projectile-switch-project-action 'projectile-dired
+            )
 
-    )
+      )
 
 #+END_SRC
 
 #+RESULTS:
-: t
+: projectile-switch-project
 
 * Communication
 ** Mail
