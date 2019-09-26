@@ -428,6 +428,7 @@ From Sacha Chuas Configuration for testing
                               (bookmarks . 10))
             dashboard-center-content t
             )
+      ;; TODO: add check for package `all-the-icons`
       (setq dashboard-set-heading-icons t)
       (setq dashboard-set-file-icons t)
       (setq dashboard-set-navigator t)
