@@ -536,12 +536,13 @@ configuration until the blog is somewhat running.
              :publishing-function org-publish-attachment
              )
 
-            ("blog" :components ("blog-notes" "blog-static"))))
+            ("blog" :components ("blog-notes" "blog-static")))))
 
-    (add-to-list 'org-export-filter-link-functions 'filter-local-links))
+    (add-to-list 'org-export-filter-link-functions 'filter-local-links)
 #+END_SRC
 
 #+RESULTS:
+| filter-local-links |
 
 * Navigation
 ** Better Beginning Of The Line
@@ -1267,8 +1268,8 @@ Linux kernel coding style adjustments
 
   (defun my/general-c++-mode-configuration ()
     (setq show-trailing-whitespace t
-          c-basic-offset 4
-          tab-width 4
+          c-basic-offset 2
+          tab-width 2
           indent-tabs-mode nil)
     (define-key c-mode-base-map (kbd "RET") 'newline-and-indent))
 
