@@ -481,6 +481,68 @@ From Sacha Chuas Configuration for testing
 : magit-status
 
 
+* Blog
+
+** org-publish
+
+Thanks to [[https://diego.codes/post/blogging-with-org/][Diego Vicente]] for his post on blogging with emacs as a
+starting point. For the time being I'm going to go with his
+configuration until the blog is somewhat running.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ox-publish
+    :init
+
+    (setq my-blog-header-file "~/blogtest/org/partials/header.html"
+          my-blog-footer-file "~/blogtest/org/partials/footer.html"
+          org-html-validation-link nil)
+
+    ;; Load partials on memory
+    (defun my-blog-header (arg)
+      (with-temp-buffer
+        (insert-file-contents my-blog-header-file)
+        (buffer-string)))
+
+    (defun my-blog-footer (arg)
+      (with-temp-buffer
+        (insert-file-contents my-blog-footer-file)
+        (buffer-string)))
+
+    (defun filter-local-links (link backend info)
+      "Filter that converts all the /index.html links to /"
+      (if (org-export-derived-backend-p backend 'html)
+          (replace-regexp-in-string "/index.html" "/" link)))
+
+    (setq org-publish-project-alist
+          '(("blog-notes"
+             :base-directory "~/blogtest/org"
+             :base-extension "org"
+             :publishing-directory "~/blogtest/public"
+             :recursive t
+             :publishing-function org-html-publish-to-html
+             :headline-levels 4
+             :section-numbers nil
+             :html-head nil
+             :html-head-include-default-style nil
+             :html-head-include-scripts nil
+             :html-preamble my-blog-header
+             :html-postamble my-blog-footer)
+
+            ("blog-static"
+             :base-directory "~/blogtest/org/"
+             :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|eot\\|svg\\|woff\\|woff2\\|ttf"
+             :publishing-directory "~/blogtest/public"
+             :recursive t
+             :publishing-function org-publish-attachment
+             )
+
+            ("blog" :components ("blog-notes" "blog-static"))))
+
+    (add-to-list 'org-export-filter-link-functions 'filter-local-links))
+#+END_SRC
+
+#+RESULTS:
+
 * Navigation
 ** Better Beginning Of The Line
 
