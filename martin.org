@@ -1462,9 +1462,11 @@ needed. [[http://truongtx.me][Truong TX]] gave a nice example.
     (add-to-list 'load-path (file-truename "~/git/lintnode"))
     (setq lintnode-location (file-truename "~/git/lintnode"))
     (setq lintnode-jslint-excludes (list 'nomen 'undef 'plusplus 'onevar 'white))
-    (add-hook 'js-mode-hook
-	      (lambda()
-		(lintnode-hook))))
+    ;;; TODO: does not work currently, investigate
+                                          ; (add-hook 'js-mode-hook
+                                          ;	    (lambda()
+                                          ; (lintnode-hook))))
+)
 #+END_SRC
 
 #+RESULTS:
