@@ -18,6 +18,22 @@ better be extracted from this file. The following things are expected:
 - mytheme
 - transparency
 
+#+NAME Example of secrets.el
+#+BEGIN_SRC emacs-lisp :eval no
+  (if (equal "mhomuth" user-login-name)
+      (setq user-mail-address "martin.homuth@emlix.com"
+            mytheme 'nil)
+    (setq user-mail-address "martin@martinhomuth.de"
+          mytheme 'sanityinc-tomorrow-night))
+
+  (setq work-irc-server "irc.example.com"
+        work-irc-channel "#ircchannel"
+        transparency nil
+        fontsize 11
+        martin-caldav-url "https://caldav-url"))
+#+END_SRC
+
+
 #+BEGIN_SRC emacs-lisp
   (let ((file (expand-file-name "~/.emacs.d/secrets")))
     (if (file-exists-p file)
