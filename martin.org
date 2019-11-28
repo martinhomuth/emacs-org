@@ -71,13 +71,14 @@ is available
 #+BEGIN_SRC emacs-lisp
   (when (boundp 'fontsize)
     (add-to-list 'default-frame-alist
-               `(font . ,(concat "DejaVu Sans Mono-" (number-to-string fontsize)))))
+                 `(font . ,(concat "DejaVu Sans Mono-" (number-to-string fontsize)))))
+
   ;; disable CJK coding/encoding
-  (setq utf-translate-cjk-mode nil)
+  (setq utf-translate-cjk-mode nil
+        locale-coding-system 'utf-8
+        default-file-name-coding-system 'utf-8)
   (set-language-environment 'utf-8)
-  (setq locale-coding-system 'utf-8)
   (prefer-coding-system 'utf-8)
-  (setq default-file-name-coding-system 'utf-8)
   (set-default-coding-systems 'utf-8)
   (set-terminal-coding-system 'utf-8)
 
@@ -100,9 +101,7 @@ different machines might use different themes. Common stuff is still
 hard-coded in here.
 
 #+BEGIN_SRC emacs-lisp
-          ;;; As mytheme can be nil, guard it
-  (if (not (or (eq (boundp 'mytheme) nil)
-                (eq mytheme nil)))
+  (if (boundp 'mytheme)
       (load-theme mytheme t))
   (setq-default cursor-type 'box)
     ;;; set transparency
@@ -120,10 +119,7 @@ hard-coded in here.
 #+BEGIN_SRC emacs-lisp
   (use-package centered-cursor-mode
     :ensure t
-    :config (progn
-    (centered-cursor-mode t)
-    (global-centered-cursor-mode t)))
-
+    :config (global-centered-cursor-mode t))
 #+END_SRC
 
 #+RESULTS:
