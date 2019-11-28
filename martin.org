@@ -355,8 +355,7 @@ From Sacha Chuas Configuration for testing
       (yas-global-mode)
       (add-hook 'hippie-expand-try-functions-list 'yas-hippie-try-expand)
       (setq yas-key-syntaxes '("w_" "w_." "^ "))
-      (setq yas-snippet-dirs '("~/.emacs.d/snippets/"
-                               "~/.emacs.d/elpa/yasnippet-20170717.1946/snippets/"))
+      (setq yas-snippet-dirs '("~/.emacs.d/snippets/"))
       (setq yas-expand-only-for-last-commands nil)
       (yas-global-mode 1)
       (bind-key "\t" 'hippie-expand yas-minor-mode-map)))
