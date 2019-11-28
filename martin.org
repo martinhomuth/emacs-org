@@ -150,18 +150,17 @@ want.
   (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 #+END_SRC
 
-** Add elisp directory and other files
+** Auto-Compile
 
-Sacha uses external (wrt not package) files, which I'll enable too,
-just to make sure it is there if I ever need it.
+Enable auto compilation to ensure to never load out of date lisp modules
 
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'load-path (expand-file-name "~/elisp"))
-  (setq use-package-verbose t)
   (use-package auto-compile
     :ensure t
     :init (setq load-prefer-newer t)
-    :config (auto-compile-on-load-mode))
+    :config
+    (auto-compile-on-load-mode)
+    (auto-compile-on-save-mode))
 #+END_SRC
 
 #+RESULTS:
