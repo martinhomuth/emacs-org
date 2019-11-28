@@ -46,12 +46,10 @@ is available
                     '("org" . "http://orgmode.org/elpa/")))
 
      (unless (package-installed-p 'use-package)
+       (package-refresh-contents)
        (package-install 'use-package))
      (require 'use-package)
-
    #+END_SRC
-
-  /data/github/emacs-org/ #+RESULTS:
 
 ** Emacs Fonts and Locale
 #+BEGIN_SRC emacs-lisp
