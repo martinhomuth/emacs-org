@@ -318,18 +318,6 @@ filters the candidates that solely consist of '.' and '..' names.
 
 #+RESULTS:
 
-** Startup File
-
-Load my personal org file after startup.
-
-#+BEGIN_SRC emacs-lisp
-  (setq inhibit-startup-screen t
-        initial-buffer-choice (file-truename "~/git/CG_bitbucket/org/personal.org"))
-#+END_SRC
-
-#+RESULTS:
-: /home/mhomuth/git/CG_bitbucket/org/personal.org
-
 ** Exit Confirmation
 
 Even though unsaved buffers saved me lots of times due to prompting
