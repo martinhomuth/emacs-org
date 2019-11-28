@@ -181,10 +181,7 @@ Enable auto compilation to ensure to never load out of date lisp modules
   (setq fill-column 85
         initial-scratch-message ""
         show-paren-delay 0
-        show-paren-style 'parenthesis
-        visible-bell t
-        show-paren-delay 0
-        show-paren-style 'parenthesis
+        show-paren-style 'mixed
         visible-bell t)
 
   ;; Whitespaces... A colleague of mine showed me the horror of not
@@ -259,9 +256,6 @@ filters the candidates that solely consist of '.' and '..' names.
     :ensure t)
   (use-package ivy :ensure t
     :diminish (ivy-mode . "")
-    :bind
-    (:map ivy-mode-map
-          ("C-'" . ivy-avy))
     :config
     (ivy-mode 1)
     ;; add ‘recentf-mode’ and bookmarks to ‘ivy-switch-buffer’.
@@ -279,7 +273,7 @@ filters the candidates that solely consist of '.' and '..' names.
 #+END_SRC
 
 #+RESULTS:
-: ivy-avy
+: t
 
 ** Hydra
 
