@@ -655,6 +655,16 @@ reddit:
 : t
 
 * Editing
+** Expand Region
+
+#+BEGIN_SRC emacs-lisp
+  (use-package expand-region
+    :ensure t
+    :commands ( er/expand-region er/contract-region )
+    :bind ("C-=" . er/expand-region)
+    :bind ("C--" . er/contract-region)
+    )
+#+END_SRC
 ** eshell
 
 Eshell seems to be a great tool, but sometimes it is kind of
