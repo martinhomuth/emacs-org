@@ -810,13 +810,14 @@ Aaaand, it would be gread to use org tables in mails as well.
 *** notmuch and such
 
 #+BEGIN_SRC emacs-lisp
-  (define-key global-map "\C-cm" 'notmuch)
-  (setq sendmail-program "/usr/bin/msmtp"
-	notmuch-search-oldest-first nil
-	mail-specify-envelope-from t
-	message-sendmail-envelope-from 'header
-	mail-specify-envelope-from 'header
-	notmuch-show-all-multipart/alternative-parts nil)
+  (when (executable-find "notmuch")
+    (define-key global-map "\C-cm" 'notmuch)
+    (setq sendmail-program "/usr/bin/msmtp"
+          notmuch-search-oldest-first nil
+          mail-specify-envelope-from t
+          message-sendmail-envelope-from 'header
+          mail-specify-envelope-from 'header
+          notmuch-show-all-multipart/alternative-parts nil))
 #+END_SRC
 
 #+RESULTS:
