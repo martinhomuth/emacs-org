@@ -19,7 +19,7 @@ better be extracted from this file. The following things are expected:
 - transparency
 
 #+NAME Example of secrets.el
-#+BEGIN_SRC emacs-lisp :eval no
+#+BEGIN_SRC emacs-lisp :eval no :tangle no
   (if (equal "mhomuth" user-login-name)
       (setq user-mail-address "martin.homuth@emlix.com"
             mytheme 'nil)
@@ -30,7 +30,7 @@ better be extracted from this file. The following things are expected:
         work-irc-channel "#ircchannel"
         transparency nil
         fontsize 11
-        martin-caldav-url "https://caldav-url"))
+        martin-caldav-url "https://caldav-url")
 #+END_SRC
 
 
