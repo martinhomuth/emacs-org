@@ -130,7 +130,8 @@ hard-coded in here.
 Starting the server at emacs start should be handy someday..
 
 #+BEGIN_SRC emacs-lisp
-  (if (not (server-running-p))
+  (if (and (fboundp 'server-running-p)
+           (not (server-running-p)))
       (server-start))
 #+END_SRC
 
