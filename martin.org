@@ -412,7 +412,8 @@ From Sacha Chuas Configuration for testing
   (defun mh-idle-switch-to-dashboard()
     (when (get-buffer "*dashboard*")
       (switch-to-buffer "*dashboard*")
-      (dashboard-refresh-buffer)))
+      (dashboard-refresh-buffer)
+      (delete-other-windows)))
 
   (use-package all-the-icons
     :ensure t)
