@@ -409,23 +409,28 @@ From Sacha Chuas Configuration for testing
 ** Dashboard
 
 #+BEGIN_SRC emacs-lisp
+  (defun mh-idle-switch-to-dashboard()
+    (when (get-buffer "*dashboard*")
+      (switch-to-buffer "*dashboard*")
+      (dashboard-refresh-buffer)))
+
+  (use-package all-the-icons
+    :ensure t)
+
   (use-package dashboard
     :ensure t
     :config
-    (progn
-      (dashboard-setup-startup-hook)
-      (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))
-            dashboard-items '((agenda . 10)
-                              (projects . 10)
-                              (bookmarks . 10))
-            dashboard-center-content t
-            )
-      ;; TODO: add check for package `all-the-icons`
-      (setq dashboard-set-heading-icons t)
-      (setq dashboard-set-file-icons t)
-      (setq dashboard-set-navigator t)
-      )
-    )
+    (dashboard-setup-startup-hook)
+    (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))
+          dashboard-items '((agenda . 10)
+                            (projects . 10)
+                            (bookmarks . 10))
+          dashboard-center-content t
+          )
+    (setq dashboard-set-heading-icons t)
+    (setq dashboard-set-file-icons t)
+    (setq dashboard-set-navigator t)
+    (run-with-idle-timer 120 t 'mh-idle-switch-to-dashboard))
 #+END_SRC
 
 #+RESULTS:
