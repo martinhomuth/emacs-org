@@ -71,8 +71,7 @@ is available
 #+BEGIN_SRC emacs-lisp
   (when (boundp 'fontsize)
     (add-to-list 'default-frame-alist
-                 `(font . ,(concat "DejaVu Sans Mono-" (number-to-string fontsize)))))
-
+               `(font . ,(concat "Source Code Pro-" (number-to-string fontsize)))))
   ;; disable CJK coding/encoding
   (setq utf-translate-cjk-mode nil
         locale-coding-system 'utf-8
