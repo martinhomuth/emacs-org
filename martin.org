@@ -433,7 +433,7 @@ From Sacha Chuas Configuration for testing
     (setq dashboard-set-heading-icons t)
     (setq dashboard-set-file-icons t)
     (setq dashboard-set-navigator t)
-    (run-with-idle-timer 120 t 'mh-idle-switch-to-dashboard))
+    (run-with-idle-timer 300 t 'mh-idle-switch-to-dashboard))
 #+END_SRC
 
 #+RESULTS:
