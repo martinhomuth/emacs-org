@@ -834,11 +834,13 @@ Aaaand, it would be gread to use org tables in mails as well.
           mail-specify-envelope-from t
           message-sendmail-envelope-from 'header
           mail-specify-envelope-from 'header
-          notmuch-show-all-multipart/alternative-parts nil))
+          notmuch-show-all-multipart/alternative-parts nil
+          notmuch-fcc-dirs "emlix/Sent"
+          ))
 #+END_SRC
 
 #+RESULTS:
-: /usr/bin/msmtp
+: emlix/Sent
 
 Initial cursor position in hello window
 
@@ -1058,9 +1060,9 @@ Let's use =org-capture= to quickly add the things that come to mind all the time
 
 #+BEGIN_SRC emacs-lisp
   (defvar martin/org-project-template "* %^{Project Description} %^g
-  /data/github/emacs-org/:PROPERTIES:
+  /data/git/emacs-org/:PROPERTIES:
   :Effort: %^{effort|1:00|0:05|0:10|0:15|0:30|0:45|2:00|4:00|8:00}
-  /data/github/emacs-org/:END:
+  /data/git/emacs-org/:END:
   SCHEDULED: %^t
   Why? %?
   What?
@@ -1073,15 +1075,15 @@ Let's use =org-capture= to quickly add the things that come to mind all the time
   " "Full Project Description")
   (defvar martin/org-basic-task-template "* TODO %^{Task}
   SCHEDULED: %^t
-  /data/github/emacs-org/:PROPERTIES:
+  /data/git/emacs-org/:PROPERTIES:
   :Effort: %^{effort|1:00|0:05|0:10|0:15|0:30|0:45|2:00|4:00}
-  /data/github/emacs-org/:END:
+  /data/git/emacs-org/:END:
   %?
   " "Basic task data")
   (defvar martin/org-programming-workout-template "* %^{Workout Description}
-  /data/github/emacs-org/:PROPERTIES:
+  /data/git/emacs-org/:PROPERTIES:
   :Effort: %^{effort|0:05|0:10|0:15|0:20|0:25}
-  /data/github/emacs-org/:END:
+  /data/git/emacs-org/:END:
   %^g%?
   " "Programming Workout Template")
   (defvar martin/org-journal-template
