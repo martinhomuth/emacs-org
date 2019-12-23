@@ -662,7 +662,7 @@ reddit:
     :ensure t
     :commands ( er/expand-region er/contract-region )
     :bind ("C-=" . er/expand-region)
-    :bind ("C--" . er/contract-region)
+    ;:bind ("C--" . er/contract-region)
     )
 #+END_SRC
 ** eshell
