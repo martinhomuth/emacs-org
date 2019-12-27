@@ -835,12 +835,12 @@ Aaaand, it would be gread to use org tables in mails as well.
           message-sendmail-envelope-from 'header
           mail-specify-envelope-from 'header
           notmuch-show-all-multipart/alternative-parts nil
-          notmuch-fcc-dirs "emlix/Sent"
+          notmuch-fcc-dirs "emlix/Sent +sent -unread"
           ))
 #+END_SRC
 
 #+RESULTS:
-: emlix/Sent
+: emlix/Sent +sent -new
 
 Initial cursor position in hello window
 
