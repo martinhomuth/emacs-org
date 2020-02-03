@@ -150,6 +150,21 @@ want.
   (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 #+END_SRC
 
+** Auto-Revert
+
+I am working with different computers on the same text base controlled
+by git and some background jobs that keep the git repositories current
+by some means. As the files are always opened and essential to my
+organization, I need to make sure that the opened buffers are current
+all the time. Apparantly global-auto-revert-mode does the trick.
+
+#+begin_src emacs-lisp
+  (global-auto-revert-mode)
+#+end_src
+
+#+RESULTS:
+: t
+
 ** Auto-Compile
 
 Enable auto compilation to ensure to never load out of date lisp modules
