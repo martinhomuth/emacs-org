@@ -1075,9 +1075,9 @@ Let's use =org-capture= to quickly add the things that come to mind all the time
 
 #+BEGIN_SRC emacs-lisp
   (defvar martin/org-project-template "* %^{Project Description} %^g
-  /data/git/emacs-org/:PROPERTIES:
+  :PROPERTIES:
   :Effort: %^{effort|1:00|0:05|0:10|0:15|0:30|0:45|2:00|4:00|8:00}
-  /data/git/emacs-org/:END:
+  :END:
   SCHEDULED: %^t
   Why? %?
   What?
@@ -1090,15 +1090,15 @@ Let's use =org-capture= to quickly add the things that come to mind all the time
   " "Full Project Description")
   (defvar martin/org-basic-task-template "* TODO %^{Task}
   SCHEDULED: %^t
-  /data/git/emacs-org/:PROPERTIES:
+  :PROPERTIES:
   :Effort: %^{effort|1:00|0:05|0:10|0:15|0:30|0:45|2:00|4:00}
-  /data/git/emacs-org/:END:
+  :END:
   %?
   " "Basic task data")
   (defvar martin/org-programming-workout-template "* %^{Workout Description}
-  /data/git/emacs-org/:PROPERTIES:
+  :PROPERTIES:
   :Effort: %^{effort|0:05|0:10|0:15|0:20|0:25}
-  /data/git/emacs-org/:END:
+  :END:
   %^g%?
   " "Programming Workout Template")
   (defvar martin/org-journal-template
@@ -1107,26 +1107,26 @@ Let's use =org-capture= to quickly add the things that come to mind all the time
     "Journal Template")
   (setq org-capture-templates
         `(("t" "Tasks" entry
-           (file+headline (file-truename "~/git/CG_bitbucket/org/personal.org") "INBOX")
+           (file+headline "~/git/CG_bitbucket/org/personal.org" "INBOX")
            ,martin/org-basic-task-template)
           ("T" "Quick Task" entry
-           (file+headline (file-truename "~/git/CG_bitbucket/org/personal.org") "INBOX")
+           (file+headline "~/git/CG_bitbucket/org/personal.org" "INBOX")
            "* TODO %^{Task}"
            :immediate-finish t)
           ("j" "Journal entry" plain
-           (file+olp+datetree "/data/git/CG_bitbucket/org/journal.org")
+           (file+olp+datetree "~/git/CG_bitbucket/org/journal.org")
            ,martin/org-journal-template)
           ("a" "Appointments" entry
-           (file+headline (file-truename "~/git/CG_bitbucket/org/organizer.org") "Appointments")
+           (file+headline "~/git/CG_bitbucket/org/organizer.org" "Appointments")
            "* %?\n%i")
           ("d" "Decisions" entry
-           (file+headline (file-truename "~/git/CG_bitbucket/org/personal.org") "Decisions")
+           (file+headline "~/git/CG_bitbucket/org/personal.org" "Decisions")
            "* %?\n%i")
           ("p" "Project" entry
-           (file+headline (file-truename "~/git/CG_bitbucket/org/personal.org") "Projects")
+           (file+headline "~/git/CG_bitbucket/org/personal.org" "Projects")
            ,martin/org-project-template)
           ("W" "Workout" entry
-           (file+headline (file-truename "~/git/CG_bitbucket/org/personal.org") "Primary Skills")
+           (file+headline "~/git/CG_bitbucket/org/personal.org" "Primary Skills")
            ,martin/org-programming-workout-template)))
   (bind-key "C-M-r" 'org-capture)
 #+END_SRC
