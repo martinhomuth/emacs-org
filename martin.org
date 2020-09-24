@@ -19,12 +19,12 @@ better be extracted from this file. The following things are expected:
 - transparency
 
 #+NAME Example of secrets.el
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no :eval no
   (if (equal "mhomuth" user-login-name)
       (setq user-mail-address "martin.homuth@emlix.com"
             mytheme 'nil)
     (setq user-mail-address "martin@followthestack.tech"
-          mytheme "gruvbox-dark-soft"))
+          mytheme 'gruvbox-dark-soft))
 
   (setq work-irc-server "irc.example.com"
         work-irc-channel "#ircchannel"
@@ -35,7 +35,7 @@ better be extracted from this file. The following things are expected:
 
 
 #+BEGIN_SRC emacs-lisp
-  (let ((file (expand-file-name "~/.emacs.d/secrets")))
+  (let ((file (expand-file-name "~/.emacs.d/secrets.el")))
     (if (file-exists-p file)
         (load file)))
 #+END_SRC
@@ -73,6 +73,7 @@ is available
     :config
     (unicode-fonts-setup))
 
+  ;; TODO: add default font and fontsize
   (when (boundp 'fontsize)
     (add-to-list 'default-frame-alist
                  `(font . ,(concat "Source Code Pro-" (number-to-string fontsize)))))
