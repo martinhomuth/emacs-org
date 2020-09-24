@@ -252,17 +252,6 @@ A good addition is to toggle every whitespace character on demand.
 #+RESULTS:
 : helm-scoop
 
-As helm-find-files always shows the '.' and '..' directories,
-navigating through a tree is quite cumbersome. The following snippet
-filters the candidates that solely consist of '.' and '..' names.
-
-#+BEGIN_SRC emacs-lisp
-  (advice-add 'helm-ff-filter-candidate-one-by-one
-              :around (lambda (fcn file)
-                        (unless (string-match "\\(?:/\\|\\`\\)\\.\\{2\\}\\'" file)
-                          (funcall fcn file))))
-#+END_SRC
-
 ** Ivy
 
 #+BEGIN_SRC emacs-lisp
