@@ -96,6 +96,12 @@ is available
 
   ;; Treat clipboard as UTF-8 string first
   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
+
+  ;; see https://github.com/rolandwalker/unicode-fonts
+  (use-package unicode-fonts
+    :ensure t
+    :config
+    (unicode-fonts-setup))
 #+END_SRC
 
 #+RESULTS:
