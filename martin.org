@@ -123,6 +123,19 @@ is available
       (setq initial-frame-alist '( (tool-bar-lines . 0)))))
 #+END_SRC
 
+** Simple Terminal (st) fixup
+
+With st I experienced a rather large delay when opening files with
+emacsclient that initially showed some other buffer before switching
+to the desired file. The following hack should prevent this, for
+whatever reason.
+
+#+begin_src emacs-lisp
+  (if (not (assoc "xterm-256color" term-file-aliases))
+        (setq term-file-aliases (cons '("xterm-256color" . "rxvt")
+                                      term-file-aliases)))
+#+end_src
+
 ** Themes
 
 Move the theme setting to the personal file and load on demand as
