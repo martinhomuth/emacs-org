@@ -1309,7 +1309,20 @@ confirmation of executing those blocks the following variables are set
 #+RESULTS:
 : t
 
+** Language Server
+
+To enable language server support, apparently lsp-mode is the new
+standard for emacs integration.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package lsp-mode
+    :ensure t
+    )
+#+END_SRC
+
 ** Coverage
+
+** 
 
 This enables googles coverage. The repository has to be downloaded to
 the appropriate location and be enabled using the following snippet
