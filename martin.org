@@ -107,6 +107,22 @@ is available
 #+RESULTS:
 | UTF8_STRING | COMPOUND_TEXT | TEXT | STRING |
 
+** Window Position and Size
+
+#+BEGIN_SRC emacs-lisp
+  (if (display-graphic-p)
+      (progn
+        (setq initial-frame-alist
+              '(
+                (tool-bar-lines . 0)
+                (width . 224) ; chars
+                (height . 58) ; lines
+                (left . 50)
+                (top . 50))))
+    (progn
+      (setq initial-frame-alist '( (tool-bar-lines . 0)))))
+#+END_SRC
+
 ** Themes
 
 Move the theme setting to the personal file and load on demand as
