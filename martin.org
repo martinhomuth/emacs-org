@@ -96,10 +96,6 @@ is available
 
 ** Emacs Fonts and Locale
 #+BEGIN_SRC emacs-lisp
-  (use-package unicode-fonts
-    :config
-    (unicode-fonts-setup))
-
   ;; TODO: add default font and fontsize
   (when (boundp 'fontsize)
     (add-to-list 'default-frame-alist
