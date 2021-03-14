@@ -1151,11 +1151,12 @@ Let's use =org-capture= to quickly add the things that come to mind all the time
   " "Programming Workout Template")
   (defvar martin/org-journal-template
     "**** %^{Description} %^g
-  %?"
+       %?"
     "Journal Template")
   (defvar martin/org-work-journal-template
-    "**** %^{Description} %T
-  %?"
+    "**** %^{Description} %^g
+       %T
+       %?"
     "Work Journal Template")
   (setq org-capture-templates
         `(("t" "Tasks" entry
