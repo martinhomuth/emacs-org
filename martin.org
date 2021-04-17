@@ -13,19 +13,10 @@ here they are ;-)
 Load all the things I don't like to share with the world or think is
 better be extracted from this file. The following things are expected:
 - martin-caldav-url
-- user-mail-address
-- fontsize
-- mytheme
-- transparency
+- work-irc-server
 
 #+NAME Example of secrets.el
 #+BEGIN_SRC emacs-lisp :tangle no :eval no
-  (if (equal "mhomuth" user-login-name)
-      (setq user-mail-address "martin.homuth@emlix.com"
-            mytheme 'nil)
-    (setq user-mail-address "martin@followthestack.tech"
-          mytheme 'gruvbox-dark-soft))
-
   (setq work-irc-server "irc.example.com"
         work-irc-channel "#ircchannel"
         transparency nil
@@ -42,6 +33,30 @@ better be extracted from this file. The following things are expected:
 
 #+RESULTS:
 : t
+
+And configure some custom stuff that is also based on the system emacs
+is running on. There are four systems that I consider:
+ 1. Desktop (melchior)
+ 2. Work Desktop (devpool16)
+ 3. Work Laptop (mobilepool16)
+ 4. Any other system (servers)
+
+#+begin_src emacs-lisp
+  ;;; mail address based on username
+  (setq user-mail-address
+        (let ((username (getenv "USER")))
+          (cond ((string= username "martin") "martin@followthestack.tech")
+                ((string= username "mhomuth") "mh@emlix.com")
+                "martin@followthestack.tech")))
+
+  ;;; fontsize based on screen resolution
+  (setq fontsize
+        (let ((width (x-display-pixel-width)))
+          (cond ((eql width 6400) 10)
+                ((eql width 4240) 8))))
+
+  (setq mytheme 'gruvbox-dark-soft)
+#+end_src
 
 * Emacs Initialization
 
