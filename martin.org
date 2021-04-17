@@ -106,21 +106,41 @@ is available
 #+RESULTS:
 | UTF8_STRING | COMPOUND_TEXT | TEXT | STRING |
 
-** Window Position and Size
+** Frame Position and Size
 
+TODO: add function for calculating the appropriate sizes
+      top, bottom - 50
+      left, right - 30
 #+BEGIN_SRC emacs-lisp
   (if (display-graphic-p)
       (progn
         (setq initial-frame-alist
               '(
                 (tool-bar-lines . 0)
-                (width . 224) ; chars
-                (height . 58) ; lines
-                (left . 50)
-                (top . 50))))
+                (width . 415) ; chars
+                (height . 103) ; lines
+                (left . 30)
+                (top . 60))))
     (progn
       (setq initial-frame-alist '( (tool-bar-lines . 0)))))
 #+END_SRC
+
+** Window Handling
+
+As of yet I never tried understanding how window positioning and
+sizing works by default. Thanks to [[https://www.youtube.com/channel/UCAiiOTio8Yu69c3XnR7nQBQ][System Crafters]] I started to
+understand it a bit more, this is the first step towards a fully
+customized setup that fits my needs - and before I dive into the
+manual.
+
+#+begin_src emacs-lisp
+  (setq display-buffer-base-action
+        '((display-buffer-reuse-window
+           display-buffer-reuse-mode-window
+           display-buffer-same-window
+           display-buffer-in-previous-window)
+          . ((mode . (org-mode helpful-mode help-mode)))))
+#+end_src
 
 ** Simple Terminal (st) fixup
 
