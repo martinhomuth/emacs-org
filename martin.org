@@ -78,7 +78,6 @@ is available
     (add-to-list 'default-frame-alist
                  `(font . ,(concat "Source Code Pro-" (number-to-string fontsize)))
                  `(font . ,(concat "Noto Color Emoji" (number-to-string fontsize)))
-                 `(font . ,(concat "Noto Sans" (number-to-string fontsize)))
                  ))
   ;; disable CJK coding/encoding
   (setq utf-translate-cjk-mode nil
