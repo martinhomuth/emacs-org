@@ -132,8 +132,8 @@ TODO: add function for calculating the appropriate sizes
         (setq initial-frame-alist
               '(
                 (tool-bar-lines . 0)
-                (width . 415) ; chars
-                (height . 103) ; lines
+                (width . 285) ; chars
+                (height . 75) ; lines
                 (left . 30)
                 (top . 60))))
     (progn
