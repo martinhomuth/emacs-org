@@ -80,6 +80,14 @@ is available
        (package-refresh-contents)
        (package-install 'use-package))
      (require 'use-package)
+
+     ;; also keep the packages up to date
+     (use-package auto-package-update
+       :ensure t
+       :config
+       (setq auto-package-update-delete-old-versions t)
+       (setq auto-package-update-hide-results t)
+       (auto-package-update-maybe))
    #+END_SRC
 
 ** Emacs Fonts and Locale
