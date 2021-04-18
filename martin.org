@@ -174,8 +174,12 @@ whatever reason.
 
 #+begin_src emacs-lisp
   (if (not (assoc "xterm-256color" term-file-aliases))
-        (setq term-file-aliases (cons '("xterm-256color" . "rxvt")
-                                      term-file-aliases)))
+      (setq term-file-aliases (cons '("xterm-256color" . "rxvt")
+                                    term-file-aliases)))
+  (if (not (assoc "st" term-file-aliases))
+      (setq term-file-aliases (cons '("st" . "xterm-256color")
+                                    term-file-aliases)))
+
 #+end_src
 
 ** Themes
