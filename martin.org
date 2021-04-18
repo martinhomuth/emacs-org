@@ -1365,13 +1365,39 @@ confirmation of executing those blocks the following variables are set
 ** Language Server
 
 To enable language server support, apparently lsp-mode is the new
-standard for emacs integration.
+standard for emacs integration. As I am mostly developing C/C++ stuff
+for now, I use ccls as the language server of choice.
+
+Find the ccls executable first
+#+NAME: find-ccls
+#+begin_src sh :results output :tangle no
+  command -v ccls
+#+end_src
+
+#+RESULTS: find-ccls
+: /usr/bin/ccls
+
+#+RESULTS:
 
 #+BEGIN_SRC emacs-lisp
+  (use-package ccls
+    :ensure t
+    :config
+    (setq ccls-executable "/usr/bin/ccls")
+    :hook ((c-mode c++-mode) .
+           (lambda () (require 'ccls) (lsp)))
+    )
   (use-package lsp-mode
     :ensure t
+    :commands lsp
+    )
+  (use-package lsp-ui
+    :ensure t
+    :commands lsp-ui-mode
     )
 #+END_SRC
+
+#+RESULTS:
 
 ** Coverage
 
