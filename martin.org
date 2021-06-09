@@ -901,6 +901,76 @@ decided to finally head over to projectile and give it a try.
 | pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f | pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f |
 
 * Communication
+** IRC
+*** ERC
+
+Typical settings for work stuff.
+
+#+begin_src emacs-lisp
+  (use-package erc
+    :custom
+    (erc-server-alist '(("Emlix GmbH IRC Server" emlix "irc.emlix.com" 6667)("Libera.chat" libera "irc.libera.chat" 6697)))
+    (erc-autojoin-timing 'connect)
+    (erc-nick "martin_daheeme")
+    (erc-user-full-name "Martin H")
+    (erc-track-shorten-start 8)
+    (erc-autojoin-channels-alist '(("irc.emlix.com" "#emlix")))
+    (erc-kill-buffer-on-part t)
+    (erc-auto-query 'bury)
+    (erc-hide-list '("JOIN" "PART" "QUIT"))
+    :config
+    (add-hook 'erc-mode-hook
+              (lambda ()
+                (setq show-trailing-whitespace nil)))
+    (add-hook 'erc-list-mode-hook
+              (lambda ()
+                (setq show-trailing-whitespace nil)))
+    (add-to-list 'erc-modules 'notifications)
+    (add-to-list 'erc-modules 'spelling)
+    (erc-services-mode 1)
+    (erc-update-modules))
+#+end_src
+
+#+RESULTS:
+: t
+
+Message display optimizations. Align the column 20 characters to the
+right such that all texts are not left aligned and start wherever the
+name ends.
+
+#+begin_src emacs-lisp
+  (setq erc-fill-column 120
+        erc-fill-function 'erc-fill-static
+        erc-fill-static-center 20)
+#+end_src
+
+Change the prompt as having timestamps to the right is rather
+annoying.
+
+#+begin_src emacs-lisp
+  (setq erc-prompt "ERC >"
+        erc-fill-prefix "       | "
+        erc-timestamp-format "[%H:%M] | ")
+#+end_src
+
+I miss the colors in IRC so lets use a package for that.
+
+#+begin_src emacs-lisp
+  (use-package erc-hl-nicks
+    :ensure t
+    :after erc)
+#+end_src
+
+#+RESULTS:
+
+Showing images appears to be nice as well
+
+#+begin_src emacs-lisp
+  (use-package erc-image
+    :ensure t
+    :after erc)
+#+end_src
+
 ** Mail
 
 At work I am using mutt for handling my emails, mostly because the
