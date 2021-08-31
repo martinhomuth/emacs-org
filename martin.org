@@ -529,6 +529,32 @@ From Sacha Chuas Configuration for testing
 #+RESULTS:
 : t
 
+** Timeclock
+
+Tracking time in a different way than before. Lets use
+timeclock.el. Connecting `display-time-mode` to this functionality
+might not be the best way, but for now I think that fits only here
+well.
+
+#+begin_src emacs-lisp
+  (use-package timeclock
+    :ensure t
+    :init
+    (display-time-mode)
+    (timeclock-mode-line-display)
+    :config
+    (define-key ctl-x-map "ti" 'timeclock-in)
+    (define-key ctl-x-map "to" 'timeclock-out)
+    (define-key ctl-x-map "tc" 'timeclock-change)
+    (define-key ctl-x-map "tr" 'timeclock-reread-log)
+    (define-key ctl-x-map "tu" 'timeclock-update-mode-line)
+    (define-key ctl-x-map "tw" 'timeclock-when-to-leave-string)
+    (add-hook 'kill-emacs-query-functions #'timeclock-query-out))
+#+end_src
+
+#+RESULTS:
+: t
+
 ** Key Bindings
 #+BEGIN_SRC emacs-lisp
   ;; General
