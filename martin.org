@@ -53,10 +53,10 @@ is running on. There are four systems that I consider:
   (if (display-graphic-p)
       (setq fontsize
             (let ((width (x-display-pixel-width)))
-              (cond ((eql width 6336) 10)
-                    ((eql width 4240) 8)
-                    ((eql width 1920) 10)
-                    ((eql width 2496) 11)
+              (cond ((eql width 6336) 10) ;;; 2 monitor desktop pc
+                    ((eql width 4240) 8)  ;;; workstation
+                    ((eql width 1920) 10) ;;; laptop
+                    ((eql width 2592) 11) ;;; desktop pc
                     (t 11)))))
   
   (setq mytheme 'gruvbox-dark-soft)
