@@ -139,13 +139,13 @@ TODO: add function for calculating the appropriate sizes
       top, bottom - 50
       left, right - 30
 #+BEGIN_SRC emacs-lisp
-  (if (display-graphic-p)
+  (if (window-system)
       (progn
         (setq initial-frame-alist
               '(
                 (tool-bar-lines . 0)
-                (width . 285) ; chars
-                (height . 75) ; lines
+                (width . 180) ; chars
+                (height . 50) ; lines
                 (left . 30)
                 (top . 60))))
     (progn
