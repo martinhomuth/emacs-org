@@ -1581,7 +1581,7 @@ Linux kernel coding style adjustments
 
 clang-format
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no :eval no
   (fset 'c-indent-region 'clang-format-region)
 #+END_SRC
 
