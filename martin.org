@@ -585,10 +585,14 @@ well.
   (bind-key "C-c v" 'org-show-todo-tree org-mode-map)
   (bind-key "C-c C-r" 'org-refile org-mode-map)
   (bind-key "C-c R" 'org-reveal org-mode-map)
+
+  (global-set-key (kbd "M-u") 'upcase-dwim)
+  (global-set-key (kbd "M-l") 'downcase-dwim)
+  (global-set-key (kbd "M-c") 'capitalize-dwim)
 #+END_SRC
 
 #+RESULTS:
-: org-agenda-clock-in
+: org-reveal
 
 #+END_SRC
 
