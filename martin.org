@@ -993,9 +993,9 @@ Change the prompt as having timestamps to the right is rather
 annoying.
 
 #+begin_src emacs-lisp
-  (setq erc-prompt "ERC >"
-        erc-fill-prefix "       | "
-        erc-timestamp-format "[%H:%M] | ")
+  (setq erc-prompt (lambda () (concat "to " (buffer-name) " >")))
+  (setq erc-fill-prefix "       | ")
+  (setq erc-timestamp-format "[%H:%M] | ")
 #+end_src
 
 I miss the colors in IRC so lets use a package for that.
