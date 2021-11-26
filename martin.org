@@ -1016,6 +1016,63 @@ Showing images appears to be nice as well
     :after erc)
 #+end_src
 
+After the notifications work fine, I'd like to get notifications for
+specific channels, in this case especially for all channels related to
+my work IRC. [[https://jcubic.wordpress.com/2012/07/24/erc-notifications-on-channels-where-there-was-activity-after-some-inactivity/][Jakub Jankiewicz]] has a nice solution that I borrowed.
+
+#+begin_src emacs-lisp
+  (setq inactivity-buffer-alist '(("#emlix" (inactivity . 900))
+                                  ("#mhtest" (inactivity . 3))))
+  
+  (defun async-exec-command (command &rest success)
+    (interactive)
+    (let* ((buffer-name (generate-new-buffer-name "**shell**"))
+           (buffer (get-buffer-create buffer-name))
+           (process (apply #'start-process
+                           (append (list buffer-name buffer)
+                                   (split-string command " ")))))
+      (lexical-let ((buffer buffer) (success (car success)) (command command))
+        (set-process-sentinel process
+                              (if success (lambda (process str)
+                                            (if (string= str "finished\n")
+                                                (save-excursion
+                                                  (set-buffer buffer)
+                                                  (let ((content (buffer-string)))
+                                                    (kill-buffer buffer)
+                                                    (funcall success content)))))
+                                (lambda (proces str)
+                                  (kill-buffer buffer)))))
+      (concat "execute: " command)))
+  
+  (defun channel-activity (string &rest ignore)
+    "Notification when there is activity on a erc channel after inactivity"
+    (let* ((buffer (buffer-name))
+           (buffer-alist-pair (assoc buffer inactivity-buffer-alist))
+           (buffer-alist (cdr buffer-alist-pair))
+           (current-time (current-time)))
+      (if (not (null buffer-alist))
+          (let ((last-time-pair (assoc 'last-time buffer-alist))
+                (inactivity (cdr (assoc 'inactivity buffer-alist))))
+            (if (not (and (string-match "^\\*\\*\\*" string)
+                          (string-match "[freenode-info]" string)))
+                (progn
+                  (if (or (null last-time-pair)
+                          (> (float-time (time-subtract current-time
+                                                        (cdr last-time-pair)))
+                             inactivity))
+                      (async-exec-command "mpg123 -q /home/martin/sounds/beep.mp3"))
+                  (if (null last-time-pair)
+                      (setf (cdr buffer-alist-pair)
+                            (append buffer-alist
+                                    (list (cons 'last-time current-time))))
+                    (setf (cdr last-time-pair) current-time))))))))
+
+  (add-hook 'erc-insert-pre-hook 'channel-activity)
+#+end_src
+
+#+RESULTS:
+| channel-activity |
+
 ** Mail
 
 At work I am using mutt for handling my emails, mostly because the
