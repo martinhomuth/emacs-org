@@ -851,22 +851,6 @@ But, also allow unfilling
 #+RESULTS:
 : unfill-paragraph
 
-** Electric Pair
-
-For some reason I really enjoy the functionality of including the
-accompanying bracket automatically.
-
-#+begin_src emacs-lisp
-  (electric-pair-mode 1)
-  (setq electric-pair-pairs '(
-                              (?\" . ?\")
-                              (?\{ . ?\})
-                              (?\' . ?\')
-                              (?\< . ?\>)
-                              (?\| . ?\|)
-                              (?\`  . ?\`)))
-#+end_src
-
 ** Poporg
 
 For comment formatting the plugin 'poporg' is very useful, with it you
