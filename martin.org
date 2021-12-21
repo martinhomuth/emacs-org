@@ -1558,9 +1558,14 @@ Find the ccls executable first
 #+BEGIN_SRC emacs-lisp
   (use-package ccls
     :ensure t
+    :init
+    (setq lsp-use-plists t)
+    (setq lsp-lens-enable nil)
     :config
     (setq ccls-executable "/usr/bin/ccls")
-    (setq lsp-lens-enable nil)
+    (setq gc-cons-threshold (* 1024 1024 100))
+    (setq read-process-output-max (* 1024 1024)) ;; 1mb
+    (setq lsp-use-plists t)
     :hook ((c-mode c++-mode) .
            (lambda () (require 'ccls) (lsp)))
     )
