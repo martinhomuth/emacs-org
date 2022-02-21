@@ -76,9 +76,9 @@ is available
        (add-to-list 'package-archives
                     '("melpa" . "http://melpa.org/packages/")))
 
-     (unless (assoc-default "org" package-archives)
+     (unless (assoc-default "elpa" package-archives)
        (add-to-list 'package-archives
-                    '("org" . "http://orgmode.org/elpa/")))
+                    '("elpa" . "https://elpa.gnu.org/packages/")))
 
      (unless (package-installed-p 'use-package)
        (package-refresh-contents)
