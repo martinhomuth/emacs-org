@@ -510,16 +510,16 @@ From Sacha Chuas Configuration for testing
     (require 'org)
     (let ((org-files (org-files-list)))
       (dashboard-insert-section "INBOX: " nil list-size "i" nil nil)))
-  
+
   (defun mh-idle-switch-to-dashboard()
     (interactive)
     (switch-to-buffer "*dashboard*")
     (dashboard-refresh-buffer)
     (delete-other-windows))
-  
+
   (use-package all-the-icons
     :ensure t)
-  
+
   (use-package dashboard
     :ensure t
     :config
@@ -533,6 +533,7 @@ From Sacha Chuas Configuration for testing
           dashboard-set-heading-icons t
           dashboard-set-file-icons t
           dashboard-set-navigator t)
+
     (add-to-list 'dashboard-item-generators '(inbox . mh-dashboard-insert-inbox))
 
     (run-with-idle-timer 300 t 'mh-idle-switch-to-dashboard))
