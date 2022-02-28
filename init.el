@@ -7,6 +7,7 @@
 (add-to-list 'load-path "/usr/share/emacs/site-lisp")
 
 (setq package-enable-at-startup nil)
+(package-initialize)
 (require 'org)
 (org-babel-load-file (concat (getenv "HOME") "/.emacs.d/" user-login-name ".org"))
 (put 'narrow-to-region 'disabled nil)
