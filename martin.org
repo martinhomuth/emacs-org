@@ -1277,6 +1277,8 @@ I use ledger to collect any accounting data.
 
 As the most awesome people do, I too use org-mode! :)
 
+Thanks to Isa Mert Gurbuz (https://isamert.net/)
+
 #+BEGIN_SRC emacs-lisp
   (use-package org
     :ensure t
@@ -1288,7 +1290,8 @@ As the most awesome people do, I too use org-mode! :)
     (add-hook 'org-babel-after-execute-hook 'org-display-inline-images)
     (setq org-hide-emphasis-markers t
           org-src-window-setup 'current-window
-	  org-use-speed-commands t)
+          org-support-shift-select t
+          org-use-speed-commands t)
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((shell . t)
@@ -1304,11 +1307,31 @@ As the most awesome people do, I too use org-mode! :)
 
   (use-package org-bullets
     :ensure t
+    :hook (org-mode . org-bullets-mode)
     :config
-    (add-hook 'org-mode-hook (lambda() (org-bullets-mode 1)))
-    (setq
-     org-bullets-bullet-list '("✙" "♱" "♰" "☥" "✞" "✟" "✝" "†" "✠" "✚" "✜" "✛" "✢" "✣" "✤" "✥")
-     org-ellipsis "➔"))
+    (setq org-ellipsis "➔"))
+
+  (use-package org-fancy-priorities
+    :diminish
+    :ensure t
+    :hook (org-mode . org-fancy-priorities-mode)
+    :config (setq org-fancy-priorities-list '("🅰" "🅱" "🅲" "🅳" "🅴")))
+
+  ;; Also here is `isamert/prettify-mode' macro.
+  ;; You don't need this but it's a bit more convinient if you make use of
+  ;; prettify-symbols minor mode a lot
+  (defmacro isamert/prettify-mode (mode pairs)
+    "Prettify given PAIRS in given MODE. Just a simple wrapper around `prettify-symbols-mode`"
+    `(add-hook ,mode (lambda ()
+                       (mapc (lambda (pair)
+                               (push pair prettify-symbols-alist))
+                             ,pairs)
+                       (prettify-symbols-mode))))
+
+  (isamert/prettify-mode 'org-mode-hook
+                         '(("[ ]" . "☐")
+                           ("[X]" . "☑" )
+                           ("[-]" . "❍" )))
   #+END_SRC
 
 #+RESULTS:
