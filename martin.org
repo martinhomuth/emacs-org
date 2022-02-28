@@ -213,7 +213,7 @@ hard-coded in here.
 #+RESULTS:
 : t
 
-** Server
+** Emacs-Server
 
 Starting the server at emacs start should be handy someday..
 
@@ -504,22 +504,22 @@ From Sacha Chuas Configuration for testing
 
 ** Dashboard
 
-#+BEGIN_SRC emacs-lisp :tangle no :eval no
+#+BEGIN_SRC emacs-lisp
   (defun mh-dashboard-insert-inbox (list-size)
     "Add the list of LIST-SIZE items of inbox items"
     (require 'org)
     (let ((org-files (org-files-list)))
       (dashboard-insert-section "INBOX: " nil list-size "i" nil nil)))
-
+  
   (defun mh-idle-switch-to-dashboard()
-    (when (get-buffer "*dashboard*")
-      (switch-to-buffer "*dashboard*")
-      (dashboard-refresh-buffer)
-      (delete-other-windows)))
-
+    (interactive)
+    (switch-to-buffer "*dashboard*")
+    (dashboard-refresh-buffer)
+    (delete-other-windows))
+  
   (use-package all-the-icons
     :ensure t)
-
+  
   (use-package dashboard
     :ensure t
     :config
