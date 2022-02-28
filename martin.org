@@ -951,28 +951,32 @@ decided to finally head over to projectile and give it a try.
 Typical settings for work stuff.
 
 #+begin_src emacs-lisp
-  (use-package erc
-    :custom
-    (erc-server-alist '(("Emlix GmbH IRC Server" emlix "irc.emlix.com" 6667)("Libera.chat" libera "irc.libera.chat" 6697)))
-    (erc-autojoin-timing 'connect)
-    (erc-nick "martin_daheeme")
-    (erc-user-full-name "Martin H")
-    (erc-track-shorten-start 8)
-    (erc-autojoin-channels-alist '(("irc.emlix.com" "#emlix")))
-    (erc-kill-buffer-on-part t)
-    (erc-auto-query 'bury)
-    (erc-hide-list '("JOIN" "PART" "QUIT"))
-    :config
-    (add-hook 'erc-mode-hook
-              (lambda ()
-                (setq show-trailing-whitespace nil)))
-    (add-hook 'erc-list-mode-hook
-              (lambda ()
-                (setq show-trailing-whitespace nil)))
-    (add-to-list 'erc-modules 'notifications)
-    (add-to-list 'erc-modules 'spelling)
-    (erc-services-mode 1)
-    (erc-update-modules))
+    (use-package erc
+      :init
+      (setq erc-server-alist
+       '(("Emlix GmbH IRC Server" emlix "irc.emlix.com" 6667)
+       ))
+      (setq erc-autojoin-timing 'ident)
+      (setq erc-nick "martin_daheeme")
+      (setq erc-user-full-name "Martin H")
+      (setq erc-track-shorten-start 8)
+      (setq erc-autojoin-channels-alist
+       '(("irc.emlix.com" "#emlix")
+         ))
+      (setq erc-kill-buffer-on-part t)
+      (setq erc-auto-query 'bury)
+      :config
+      (add-hook 'erc-mode-hook
+                (lambda ()
+                  (setq show-trailing-whitespace nil)))
+      (add-hook 'erc-list-mode-hook
+                (lambda ()
+                  (setq show-trailing-whitespace nil)))
+      (add-to-list 'erc-modules 'notifications)
+      (add-to-list 'erc-modules 'spelling)
+      (add-to-list 'erc-modules 'log)
+      (erc-services-mode 1)
+      (erc-update-modules))
 #+end_src
 
 #+RESULTS:
@@ -1658,7 +1662,6 @@ Linux kernel coding style adjustments
           cdefault-style "linux"
           tab-width 8
           indent-tabs-mode t
-          show-trailing-whitespace t
           c-set-style "linux-tabs-only")
     (define-key c-mode-base-map (kbd "RET") 'newline-and-indent))
   (defun my/add-semantic-to-autocomplete ()
