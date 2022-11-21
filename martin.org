@@ -54,11 +54,11 @@ is running on. There are four systems that I consider:
       (setq fontsize
             (let ((width (x-display-pixel-width)))
               (cond ((eql width 6336) 10) ;;; 2 monitor desktop pc
-                    ((eql width 4240) 8)  ;;; workstation
-                    ((eql width 1920) 9) ;;; laptop
+                    ((eql width 3840) 8)  ;;; workstation
+                    ((eql width 1920) 10) ;;; laptop
                     ((eql width 2592) 11) ;;; desktop pc
                     (t 11)))))
-  
+
   (setq mytheme 'gruvbox-dark-soft)
 #+end_src
 
