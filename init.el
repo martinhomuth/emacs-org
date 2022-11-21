@@ -2,6 +2,8 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
+(setq vc-follow-symlinks t)
+
 (add-to-list 'load-path "~/elisp/org-mode/lisp")
 (add-to-list 'load-path "~/elisp/org-mode/contrib/lisp")
 (add-to-list 'load-path "/usr/share/emacs/site-lisp")
