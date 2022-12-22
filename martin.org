@@ -615,6 +615,57 @@ well.
 : magit-status
 
 
+* Pomodoro Timer
+
+I am using the pomodoro technique for focus sessions and the org-mode
+built-in timer gives me all the things that I need. So first we are
+defining the required keybinds
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-x p i") 'mh-pomodoro-start-focus)
+  (global-set-key (kbd "C-x p b") 'mh-pomodoro-start-break)
+  (global-set-key (kbd "C-x p o") 'mh-pomodoro-stop)
+#+end_src
+
+Then we need the functions of course. Starting the focus period (as
+well as all other functions) are based on 'org-timer-set-timer with
+a predefined value for a pomodoro: 25 minutes.
+
+#+begin_src emacs-lisp
+  (defun mh-pomodoro-start-focus()
+    """ Starts a focus period """
+    (interactive)
+    (let ((focus-period 25))
+      (org-timer-set-timer focus-period)))
+#+end_src
+
+A break is basically the same with only 5 minutes to go.
+
+#+begin_src emacs-lisp
+  (defun mh-pomodoro-start-break()
+    """ Starts a break period """
+    (interactive)
+    (let ((break-period 5))
+      (org-timer-set-timer break-period)))
+#+end_src
+
+And finally to stop the timer, we use the appropriate function
+
+#+begin_src emacs-lisp
+  (defun mh-pomodoro-stop()
+    """ Stops the pomodoro timer """
+    (interactive)
+    (org-timer-stop))
+#+end_src
+
+As having timer is nice and all, a little bit more feedback is
+required. I simply use some downloaded bell sound for that, which is
+stored in the nextcloud thus available on all machines.
+
+#+begin_src emacs-lisp
+  (setq org-clock-sound "~/Nextcloud/Martin/bell.wav")
+#+end_src
+
 * Blog
 
 ** org-publish
