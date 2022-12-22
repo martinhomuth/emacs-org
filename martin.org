@@ -48,14 +48,14 @@ is running on. There are four systems that I consider:
           (cond ((string= username "martin") "martin@followthestack.tech")
                 ((string= username "mhomuth") "mh@emlix.com")
                 "martin@followthestack.tech")))
-  
+
   ;;; fontsize based on screen resolution
   (if (display-graphic-p)
       (setq fontsize
             (let ((width (x-display-pixel-width)))
               (cond ((eql width 6336) 10) ;;; 2 monitor desktop pc
                     ((eql width 4240) 8)  ;;; workstation
-                    ((eql width 1920) 10) ;;; laptop
+                    ((eql width 1920) 9) ;;; laptop
                     ((eql width 2592) 11) ;;; desktop pc
                     (t 11)))))
   
