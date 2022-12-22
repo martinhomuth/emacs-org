@@ -619,7 +619,7 @@ well.
 
 I am using the pomodoro technique for focus sessions and the org-mode
 built-in timer gives me all the things that I need. So first we are
-defining the required keybinds
+defining the required keybinds:
 
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-x p i") 'mh-pomodoro-start-focus)
@@ -629,13 +629,21 @@ defining the required keybinds
 
 Then we need the functions of course. Starting the focus period (as
 well as all other functions) are based on 'org-timer-set-timer with
-a predefined value for a pomodoro: 25 minutes.
+a predefined value for a pomodoro: 25 minutes. It should also notify
+me additionally about the timer being started, similarly as it
+notifies me about the finished timer:
 
 #+begin_src emacs-lisp
+  (require 'notifications)
   (defun mh-pomodoro-start-focus()
     """ Starts a focus period """
     (interactive)
     (let ((focus-period 25))
+      (notifications-notify
+       :title "Focus period started"
+       :on-action 'mh-pomodoro-start-focus
+       :timeout 1500
+       )
       (org-timer-set-timer focus-period)))
 #+end_src
 
@@ -646,6 +654,11 @@ A break is basically the same with only 5 minutes to go.
     """ Starts a break period """
     (interactive)
     (let ((break-period 5))
+      (notifications-notify
+       :title "Break period started"
+       :on-action 'mh-pomodoro-start-focus
+       :timeout 1500
+       )
       (org-timer-set-timer break-period)))
 #+end_src
 
@@ -655,6 +668,11 @@ And finally to stop the timer, we use the appropriate function
   (defun mh-pomodoro-stop()
     """ Stops the pomodoro timer """
     (interactive)
+    (notifications-notify
+     :title "Pomodoro Timer stopped"
+     :on-action 'mh-pomodoro-start-focus
+     :timeout 1500
+     )
     (org-timer-stop))
 #+end_src
 
