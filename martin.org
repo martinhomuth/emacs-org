@@ -608,6 +608,7 @@ defining the required keybinds:
   (global-set-key (kbd "C-x p i") 'mh-pomodoro-start-focus)
   (global-set-key (kbd "C-x p b") 'mh-pomodoro-start-break)
   (global-set-key (kbd "C-x p o") 'mh-pomodoro-stop)
+  (global-set-key (kbd "C-x p r") 'mh-pomodoro-remaining-time)
 #+end_src
 
 Then we need the functions of course. Starting the focus period (as
@@ -627,6 +628,7 @@ notifies me about the finished timer:
        :on-action 'mh-pomodoro-start-focus
        :timeout 1500
        )
+
       (org-timer-set-timer focus-period)))
 #+end_src
 
@@ -665,6 +667,22 @@ stored in the nextcloud thus available on all machines.
 
 #+begin_src emacs-lisp
   (setq org-clock-sound "~/Nextcloud/Martin/bell.wav")
+#+end_src
+
+In between sessions it is also helpful to be able to obtain the
+current remaining time. This should be retrievable and also notified
+to the system.
+
+#+begin_src emacs-lisp
+  (defun mh-pomodoro-remaining-time()
+    """ Reports the remaining time """
+    (interactive)
+    (let ((remaining-time (org-timer-show-remaining-time)))
+      (notifications-notify
+       :title "Remaining time"
+       :body remaining-time
+       :timeout 1500
+       )))
 #+end_src
 
 * Blog
