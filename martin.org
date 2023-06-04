@@ -202,17 +202,6 @@ hard-coded in here.
 #+RESULTS:
 : t
 
-*** Centered Cursor Mode
-
-#+BEGIN_SRC emacs-lisp
-  (use-package centered-cursor-mode
-    :ensure t
-    :config (global-centered-cursor-mode t))
-#+END_SRC
-
-#+RESULTS:
-: t
-
 ** Emacs-Server
 
 Starting the server at emacs start should be handy someday..
