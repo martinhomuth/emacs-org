@@ -19,8 +19,6 @@ better be extracted from this file. The following things are expected:
 #+BEGIN_SRC emacs-lisp :tangle no :eval no
   (setq work-irc-server "irc.example.com"
         work-irc-channel "#ircchannel"
-        transparency nil
-        fontsize 11
         martin-caldav-url "https://caldav-url")
 #+END_SRC
 
@@ -54,12 +52,11 @@ is running on. There are four systems that I consider:
       (setq fontsize
             (let ((width (x-display-pixel-width)))
               (cond ((eql width 6336) 10) ;;; 2 monitor desktop pc
-                    ((eql width 3840) 8)  ;;; workstation
+                    ((eql width 3120) 8)  ;;; workstation
                     ((eql width 1920) 10) ;;; laptop
                     ((eql width 2592) 11) ;;; desktop pc
-                    (t 11)))))
+                    (t 10)))))
 
-  (setq mytheme 'gruvbox-dark-soft)
 #+end_src
 
 * Emacs Initialization
@@ -142,8 +139,8 @@ TODO: add function for calculating the appropriate sizes
                 (tool-bar-lines . 0)
                 (width . 180) ; chars
                 (height . 50) ; lines
-                (left . 30)
-                (top . 60))))
+                (left . 1261)
+                (top . 514))))
     (progn
       (setq initial-frame-alist '( (tool-bar-lines . 0)))))
 #+END_SRC
@@ -189,14 +186,11 @@ different machines might use different themes. Common stuff is still
 hard-coded in here.
 
 #+BEGIN_SRC emacs-lisp
-  (if (boundp 'mytheme)
-      (load-theme mytheme t))
+  (unless (package-installed-p 'gruvbox-theme)
+    (package-refresh-contents)
+    (package-install 'gruvbox-theme))
+  (load-theme 'gruvbox-theme t)
   (setq-default cursor-type 'box)
-    ;;; set transparency
-  (when (and (boundp 'transparency)
-            (eq transparency t))
-      (set-frame-parameter (selected-frame) 'alpha '(85 . 50))
-      (add-to-list 'default-frame-alist '(alpha . (85 . 50))))
 #+END_SRC
 
 #+RESULTS:
