@@ -189,7 +189,7 @@ hard-coded in here.
   (unless (package-installed-p 'gruvbox-theme)
     (package-refresh-contents)
     (package-install 'gruvbox-theme))
-  (load-theme 'gruvbox-theme t)
+  (load-theme 'gruvbox t)
   (setq-default cursor-type 'box)
 #+END_SRC
 
