@@ -126,23 +126,22 @@ is available
 #+RESULTS:
 | UTF8_STRING | COMPOUND_TEXT | TEXT | STRING |
 
-** Frame Position and Size
+** TODO Frame Position and Size
 
 TODO: add function for calculating the appropriate sizes
       top, bottom - 50
       left, right - 30
+
 #+BEGIN_SRC emacs-lisp
-  (if (window-system)
-      (progn
-        (setq initial-frame-alist
+  (progn
+    (setq initial-frame-alist '( (tool-bar-lines . 0)))
+    (if (window-system)
+        (nconc initial-frame-alist
               '(
-                (tool-bar-lines . 0)
                 (width . 180) ; chars
                 (height . 50) ; lines
                 (left . 1261)
-                (top . 514))))
-    (progn
-      (setq initial-frame-alist '( (tool-bar-lines . 0)))))
+                (top . 514)))))
 #+END_SRC
 
 ** Window Handling
