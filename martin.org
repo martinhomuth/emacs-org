@@ -55,7 +55,7 @@ is running on. There are four systems that I consider:
                     ((eql width 3120) 8)  ;;; workstation
                     ((eql width 1920) 10) ;;; laptop
                     ((eql width 2592) 11) ;;; desktop pc
-                    (t 10)))))
+                    (t 9)))))
 
 #+end_src
 
