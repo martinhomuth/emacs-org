@@ -180,9 +180,8 @@ whatever reason.
 
 ** Themes
 
-Move the theme setting to the personal file and load on demand as
-different machines might use different themes. Common stuff is still
-hard-coded in here.
+For now I use the same theme for all my machines. This will be
+refactored later for allowing different themes.
 
 #+BEGIN_SRC emacs-lisp
   (unless (package-installed-p 'gruvbox-theme)
