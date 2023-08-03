@@ -268,7 +268,7 @@ Enable auto compilation to ensure to never load out of date lisp modules
         show-paren-delay 0
         show-paren-style 'mixed
         visible-bell t
-        browse-url-browser-function 'browse-url-firefox
+        browse-url-browser-function 'browse-url-chromium
         browse-url-new-window-flag  t
         browse-url-firefox-new-window-is-tab t)
 
@@ -794,7 +794,6 @@ previous window instead of directly passing a negative argument to
     (interactive)
      (other-window -1))
 #+END_SRC
-
 
 ** NeoTree
 
@@ -1580,6 +1579,7 @@ This defines the key commands for those, too.
 ** Org Agenda
 
 *** Basic Configuration
+
 #+BEGIN_SRC emacs-lisp
   (setq my-org-agenda-files-list (append
                                   (file-expand-wildcards "~/git/CG_bitbucket/org/*.org"))
