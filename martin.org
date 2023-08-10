@@ -1620,6 +1620,27 @@ confirmation of executing those blocks the following variables are set
 #+RESULTS:
 : t
 
+* Org-GTD
+
+#+begin_src emacs-lisp
+  (use-package org-gtd
+    :after org
+    :ensure t
+    :init
+    (setq org-edna-use-inheritance t
+          org-gtd-directory (file-truename "~/Nextcloud/private/org/gtd")
+          org-gtd-clarify-show-horizons 'right
+          org-gtd-areas-of-focus '("Home" "Health" "Family" "Career" "Beer")
+          )
+    (org-edna-mode 1)
+    :bind (("C-c d c" . org-gtd-capture)
+           ("C-c d e" . org-gtd-engage)
+           :map org-gtd-clarify-map
+           ("C-c c" . org-gtd-organize)
+           ("C-c t" . org-gtd-clarify-toggle-horizons-window))
+  )
+#+end_src
+
 * Org-Roam
 
 #+begin_src emacs-lisp
