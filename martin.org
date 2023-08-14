@@ -543,8 +543,11 @@ well.
     (define-key ctl-x-map "tr" 'timeclock-reread-log)
     (define-key ctl-x-map "tu" 'timeclock-update-mode-line)
     (define-key ctl-x-map "tw" 'timeclock-when-to-leave-string)
+    (define-key ctl-x-map "tR" 'timeclock-generate-report)
     (add-hook 'kill-emacs-query-functions #'timeclock-query-out)
-    (setq timeclock-file "~/Nextcloud/work/timelog"))
+    (setq timeclock-file "~/Nextcloud/work/timelog"
+          display-time-default-load-average nil
+          timeclock-relative nil))
 #+end_src
 
 #+RESULTS:
