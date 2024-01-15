@@ -1700,9 +1700,10 @@ Find the ccls executable first
     :init
     (setq lsp-lens-enable nil)
     :config
-    (setq ccls-executable "/usr/bin/ccls")
-    (setq gc-cons-threshold (* 1024 1024 100))
-    (setq read-process-output-max (* 1024 1024)) ;; 1mb
+    (setq ccls-executable "/usr/bin/ccls"
+          gc-cons-threshold (* 1024 1024 100)
+          read-process-output-max (* 1024 1024) ;; 1mb
+          lsp-enable-on-type-formatting nil)
     :hook ((c-mode c++-mode) .
            (lambda () (require 'ccls) (lsp)))
     )
