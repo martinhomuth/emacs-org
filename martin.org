@@ -546,7 +546,7 @@ well.
     (define-key ctl-x-map "tR" 'timeclock-generate-report)
     (add-hook 'kill-emacs-query-functions #'timeclock-query-out)
     (setq timeclock-file "~/Nextcloud/work/timelog"
-          display-time-default-load-average nil
+          display-time-load-average nil
           timeclock-relative nil))
 #+end_src
 
