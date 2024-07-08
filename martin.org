@@ -1648,11 +1648,17 @@ confirmation of executing those blocks the following variables are set
     (org-edna-mode 1)
     :bind (("C-c d c" . org-gtd-capture)
            ("C-c d e" . org-gtd-engage)
+           ("C-c d f" . org-gtd-area-of-focus-set-on-item-at-point)
+           ("C-c d l" . org-gtd-clarify-item)
            :map org-gtd-clarify-map
            ("C-c c" . org-gtd-organize)
+           ("C-c f" . org-gtd-area-of-focus-set-on-item-at-point)
            ("C-c t" . org-gtd-clarify-toggle-horizons-window))
   )
 #+end_src
+
+#+RESULTS:
+: org-gtd-clarify-toggle-horizons-window
 
 * Org-Roam
 
