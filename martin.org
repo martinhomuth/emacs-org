@@ -599,6 +599,16 @@ well.
 : magit-status
 
 
+* Ediff
+
+#+begin_src emacs-lisp
+  (setq ediff-split-window-function 'split-window-horizontally
+        ediff-window-setup-function 'ediff-setup-windows-plain)
+#+end_src
+
+#+RESULTS:
+: ediff-setup-windows-plain
+
 * Pomodoro Timer
 
 I am using the pomodoro technique for focus sessions and the org-mode
