@@ -23,7 +23,7 @@ better be extracted from this file.
 : t
 
 And configure some custom stuff that is also based on the system emacs
-is running on. There are four systems that I consider:
+pis running on. There are four systems that I consider:
  1. Desktop (melchior)
  2. Work Desktop (devpool16)
  3. Work Laptop (mobilepool16)
@@ -41,10 +41,7 @@ is running on. There are four systems that I consider:
   (if (display-graphic-p)
       (setq fontsize
             (let ((width (x-display-pixel-width)))
-              (cond ((eql width 6336) 10) ;;; 2 monitor desktop pc
-                    ((eql width 3120) 8)  ;;; workstation
-                    ((eql width 1920) 10) ;;; laptop
-                    ((eql width 2592) 11) ;;; desktop pc
+              (cond ((eql width 6336) 10) ;;; 2 monitor workstation in office
                     (t 9)))))
 
 #+end_src
