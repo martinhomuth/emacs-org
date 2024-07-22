@@ -11,17 +11,7 @@ here they are ;-)
 : Martin Homuth
 
 Load all the things I don't like to share with the world or think is
-better be extracted from this file. The following things are expected:
-- martin-caldav-url
-- work-irc-server
-
-#+NAME Example of secrets.el
-#+BEGIN_SRC emacs-lisp :tangle no :eval no
-  (setq work-irc-server "irc.example.com"
-        work-irc-channel "#ircchannel"
-        martin-caldav-url "https://caldav-url")
-#+END_SRC
-
+better be extracted from this file.
 
 #+BEGIN_SRC emacs-lisp
   (let ((file (expand-file-name "~/.emacs.d/secrets.el")))
