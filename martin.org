@@ -1424,8 +1424,8 @@ Setting the directories for the notes to be placed in - this will be
 synced soonish.
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-directory (expand-file-name "~/git/CG_bitbucket/org"))
-  (setq org-default-notes-file (expand-file-name "~/git/CG_bitbucket/org/personal.org"))
+  (setq org-directory (expand-file-name "~/git/org-files"))
+  (setq org-default-notes-file (expand-file-name "~/git/org-files/personal.org"))
 #+END_SRC
 
 #+RESULTS:
@@ -1475,29 +1475,29 @@ Let's use =org-capture= to quickly add the things that come to mind all the time
     "Work Journal Template")
   (setq org-capture-templates
         `(("t" "Tasks" entry
-           (file+headline "~/git/CG_bitbucket/org/personal.org" "INBOX")
+           (file+headline "~/git/org-files/personal.org" "INBOX")
            ,martin/org-basic-task-template)
           ("T" "Quick Task" entry
-           (file+headline "~/git/CG_bitbucket/org/personal.org" "INBOX")
+           (file+headline "~/git/org-files/personal.org" "INBOX")
            "* TODO %^{Task}"
            :immediate-finish t)
           ("j" "Journal entry" plain
-           (file+olp+datetree "~/git/CG_bitbucket/org/journal.org")
+           (file+olp+datetree "~/git/org-files/journal.org")
            ,martin/org-journal-template)
           ("a" "Appointments" entry
-           (file+headline "~/git/CG_bitbucket/org/organizer.org" "Appointments")
+           (file+headline "~/git/org-files/organizer.org" "Appointments")
            "* %?\n%i")
           ("d" "Decisions" entry
-           (file+headline "~/git/CG_bitbucket/org/personal.org" "Decisions")
+           (file+headline "~/git/org-files/personal.org" "Decisions")
            "* %?\n%i")
           ("p" "Project" entry
-           (file+headline "~/git/CG_bitbucket/org/personal.org" "Projects")
+           (file+headline "~/git/org-files/personal.org" "Projects")
            ,martin/org-project-template)
           ("w" "Work journal entry" plain
-           (file+olp+datetree "~/git/CG_bitbucket/org/work-journal.org")
+           (file+olp+datetree "~/git/org-files/work-journal.org")
            ,martin/org-work-journal-template)
           ("W" "Workout" entry
-           (file+headline "~/git/CG_bitbucket/org/personal.org" "Primary Skills")
+           (file+headline "~/git/org-files/personal.org" "Primary Skills")
            ,martin/org-programming-workout-template)))
   (bind-key "C-M-r" 'org-capture)
 #+END_SRC
@@ -1582,15 +1582,12 @@ This defines the key commands for those, too.
 
 #+BEGIN_SRC emacs-lisp
   (setq my-org-agenda-files-list (append
-                                  (file-expand-wildcards "~/git/CG_bitbucket/org/*.org"))
+                                  (file-expand-wildcards "~/git/org-files/*.org"))
         org-agenda-files
         (delq nil
               (mapcar (lambda (x) (and (file-exists-p x) x))
                       my-org-agenda-files-list)))
 #+END_SRC
-
-#+RESULTS:
-| /home/mhomuth/git/CG_bitbucket/org/personal.org | /home/mhomuth/git/CG_bitbucket/org/work.org | /home/mhomuth/git/CG_bitbucket/org/journal.org | /home/mhomuth/git/CG_bitbucket/org/organizer.org |
 
 This is some configuration of Sacha's
 #+BEGIN_SRC emacs-lisp
