@@ -1,16 +1,640 @@
-(setq custom-file (expand-file-name "custom.el" (concat (getenv "HOME") "/.emacs.d/")))
-(when (file-exists-p custom-file)
-  (load custom-file))
+(setq user-full-name "Martin Homuth")
+
+(let ((file (expand-file-name "~/.emacs.d/secrets.el")))
+  (if (file-exists-p file)
+      (load file)))
+
+;;; mail address based on username
+(setq user-mail-address
+      (let ((username (getenv "USER")))
+        (cond ((string= username "martin") "martin@followthestack.tech")
+              ((string= username "mhomuth") "mh@emlix.com")
+              "martin@followthestack.tech")))
+
+;;; fontsize based on screen resolution
+(if (display-graphic-p)
+    (setq fontsize
+          (let ((width (x-display-pixel-width)))
+            (cond ((eql width 6336) 10) ;;; 2 monitor workstation in office
+                  (t 9)))))
+
+;; TODO: add default font and fontsize
+(when (boundp 'fontsize)
+  (add-to-list 'default-frame-alist
+               `(font . ,(concat "Source Code Pro-" (number-to-string fontsize)))
+               `(font . ,(concat "Noto Color Emoji" (number-to-string fontsize)))
+               ))
+
+  ;; Treat clipboard as UTF-8 string first
+(setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
+
+;; see https://github.com/rolandwalker/unicode-fonts
+(use-package unicode-fonts
+  :ensure t
+  :config
+  (unicode-fonts-setup))
+
+(setq display-buffer-base-action
+      '((display-buffer-reuse-window
+         display-buffer-reuse-mode-window
+         display-buffer-same-window
+         display-buffer-in-previous-window)
+        . ((mode . (org-mode helpful-mode help-mode)))))
+
+(if (not (assoc "xterm-256color" term-file-aliases))
+    (setq term-file-aliases (cons '("xterm-256color" . "rxvt")
+                                  term-file-aliases)))
+(if (not (assoc "st" term-file-aliases))
+    (setq term-file-aliases (cons '("st" . "xterm-256color")
+                                  term-file-aliases)))
+
+(unless (package-installed-p 'gruvbox-theme)
+  (package-refresh-contents)
+  (package-install 'gruvbox-theme))
+(load-theme 'gruvbox t)
+(setq-default cursor-type 'box)
+
+(if (or (not (fboundp 'server-running-p))
+        (not (server-running-p)))
+    (server-start))
+
+(global-auto-revert-mode)
+
+(use-package auto-compile
+  :ensure t
+  :init (setq load-prefer-newer t)
+  :config
+  (auto-compile-on-load-mode)
+  (auto-compile-on-save-mode))
+
+(global-set-key (kbd "C-c T w") 'whitespace-mode)
+(setq whitespace-line-column nil
+      whitespace-display-mappings '((space-mark 32 [183] [46])
+                                    (newline-mark 10 [9166 10])
+                                    (tab-mark 9 [9654 9] [92 9])))
+
+(use-package helm
+  :ensure helm
+  :diminish helm-mode
+  :config
+  (progn
+    (setq helm-candidate-number-limit 100
+          helm-idle-delay 0.0
+          helm-input-idle-delay 0.01
+          helm-quick-update t
+          helm-M-x-requires-pattern nil)
+    (helm-mode))
+  :bind (("C-c h" . helm-mini)
+         ("C-h a" . helm-apropos)
+         ("C-x C-f" . helm-find-files)
+         ("C-x C-b" . helm-buffers-list)
+         ("M-y" . helm-show-kill-ring)
+         ("M-x" . helm-M-x)
+         ("C-x c o" . helm-occur)
+         ("C-x c s" . helm-scoop)))
+
+(use-package counsel
+  :ensure t)
+(use-package ivy :ensure t
+  :diminish (ivy-mode . "")
+  :config
+  (ivy-mode 1)
+  ;; add ‘recentf-mode’ and bookmarks to ‘ivy-switch-buffer’.
+  (setq ivy-use-virtual-buffers t)
+  ;; number of result lines to display
+  (setq ivy-height 10)
+  ;; does not count candidates
+  (setq ivy-count-format "(%d/%d) ")
+  ;; no regexp by default
+  (setq ivy-initial-inputs-alist nil)
+  ;; configure regexp engine.
+  (setq ivy-re-builders-alist
+        ;; allow input not in order
+        '((t   . ivy--regex-ignore-order))))
+
+(use-package hydra
+  :ensure ace-window
+  :ensure hydra
+  :init
+  (defhydra hydra-zoom (global-map "<f2>")
+    "zoom"
+    ("g" text-scale-increase "in")
+    ("l" text-scale-decrease "out"))
+  (global-set-key
+   (kbd "C-M-o")
+   (defhydra hydra-window ()
+     "window"
+     ("v" (\lambda ()
+           (interactive)
+           (split-window-right)
+           (other-window 1))
+      "vert")
+     ("x" (\lambda ()
+           (interactive)
+           (split-window-below)
+           (other-window 1))
+      "horz")
+     ("t" transpose-frame "'")
+     ("o" delete-other-windows "one" :color blue)
+     ("a" ace-window "ace")
+     ("s" ace-swap-window "swap")
+     ("d" ace-delete-window "del")
+     ("i" ace-maximize-window "ace-one" :color blue)
+     ("b" switch-to-buffer "buf")
+     ("m" headlong-bookmark-jump "bmk")
+     ("q" nil "cancel"))))
+
+(defun martin-save-buffers-kill-emacs-with-confirm ()
+  "Thanks to jsled for this method"
+  (interactive)
+  (if (window-system)
+      (if (null current-prefix-arg)
+	  (if (y-or-n-p "Are you sure you want to quit?")
+	      (save-buffers-kill-emacs))
+	(save-buffers-kill-emacs))
+    (save-buffers-kill-terminal)))
+(global-set-key "\C-x\C-c" 'martin-save-buffers-kill-emacs-with-confirm)
+
+(defun pulse-line (&rest _)
+      "Pulse the current line."
+      (pulse-momentary-highlight-one-line (point)))
+
+(dolist (command '(scroll-up-command scroll-down-command
+                   recenter-top-bottom other-window))
+  (advice-add command :after #'pulse-line))
+
+(use-package yasnippet
+  :ensure t
+  :diminish yas-minor-mode ;; used to remove mode line information that is not used
+  :init (yas-global-mode)
+  :config
+  (progn
+    (yas-global-mode)
+    (add-hook 'hippie-expand-try-functions-list 'yas-hippie-try-expand)
+    (setq yas-key-syntaxes '("w_" "w_." "^ "))
+    (setq yas-snippet-dirs '("~/.emacs.d/snippets/"))
+    (setq yas-expand-only-for-last-commands nil)
+    (yas-global-mode 1)
+    (bind-key "\t" 'hippie-expand yas-minor-mode-map)))
+
+(setq default-cursor-color "gray")
+(setq yasnippet-can-fire-cursor-color "purple")
+
+;; It will test whether it can expand, if yes, cursor color -> green.
+(defun yasnippet-can-fire-p (&optional field)
+  (interactive)
+  (setq yas--condition-cache-timestamp (current-time))
+  (let (templates-and-pos)
+    (unless (and yas-expand-only-for-last-commands
+                 (not (member last-command yas-expand-only-for-last-commands)))
+      (setq templates-and-pos (if field
+                                  (save-restriction
+                                    (narrow-to-region (yas--field-start field)
+						      (yas--field-end field))
+                                    (yas--templates-for-key-at-point))
+                                (yas--templates-for-key-at-point))))
+    (and templates-and-pos (first templates-and-pos))))
+
+(defun my/change-cursor-color-when-can-expand (&optional field)
+  (interactive)
+  (when (eq last-command 'self-insert-command)
+    (set-cursor-color (if (my/can-expand)
+                          yasnippet-can-fire-cursor-color
+                        default-cursor-color))))
+
+(defun my/can-expand ()
+  "Return true if right after an expandable thing."
+  (or (abbrev--before-point) (yasnippet-can-fire-p)))
+
+(add-hook 'post-command-hook 'my/change-cursor-color-when-can-expand)
+
+(defun my/insert-space-or-expand ()
+  "For binding to the SPC SPC keychord."
+  (interactive)
+  (condition-case nil (or (my/hippie-expand-maybe nil) (insert "  "))))
+
+(defun mh-dashboard-insert-inbox (list-size)
+  "Add the list of LIST-SIZE items of inbox items"
+  (require 'org)
+  (let ((org-files (org-files-list)))
+    (dashboard-insert-section "INBOX: " nil list-size "i" nil nil)))
+
+(defun mh-idle-switch-to-dashboard()
+  (interactive)
+  (switch-to-buffer "*dashboard*")
+  (dashboard-refresh-buffer)
+  (delete-other-windows))
+
+(use-package all-the-icons
+  :ensure t)
+
+(use-package dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook)
+  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))
+        dashboard-items '((inbox . 20)
+                          (agenda . 10)
+                          (projects . 5)
+                          (bookmarks . 5))
+        dashboard-center-content t
+        dashboard-set-heading-icons t
+        dashboard-set-file-icons t
+        dashboard-set-navigator t)
+
+  (add-to-list 'dashboard-item-generators '(inbox . mh-dashboard-insert-inbox))
+
+  (run-with-idle-timer 300 t 'mh-idle-switch-to-dashboard))
+
+(use-package timeclock
+  :ensure t
+  :init
+  (display-time-mode)
+  (timeclock-mode-line-display)
+  :config
+  (define-key ctl-x-map "ti" 'timeclock-in)
+  (define-key ctl-x-map "to" 'timeclock-out)
+  (define-key ctl-x-map "tc" 'timeclock-change)
+  (define-key ctl-x-map "tr" 'timeclock-reread-log)
+  (define-key ctl-x-map "tu" 'timeclock-update-mode-line)
+  (define-key ctl-x-map "tw" 'timeclock-when-to-leave-string)
+  (define-key ctl-x-map "tR" 'timeclock-generate-report)
+  (add-hook 'kill-emacs-query-functions #'timeclock-query-out)
+  (setq timeclock-file "~/Nextcloud/work/timelog"
+        display-time-load-average nil
+        timeclock-relative nil))
+
+;; General
+(global-set-key "\C-cw" 'compare-windows)
+(global-set-key "\C-x\C-m" 'execute-extended-command)
+(global-set-key "\C-c\C-m" 'execute-extended-command)
+(global-set-key "\C-w" 'backward-kill-word)
+(global-set-key "\C-x\C-k" 'kill-region)
+(global-set-key "\C-c\C-k" 'kill-region)
+(global-set-key (kbd "C-s") 'isearch-forward-regexp)
+(global-set-key (kbd "C-r") 'isearch-backward-regexp)
+(global-unset-key (kbd "C-z")) ;; who needs that anyways?
+(global-set-key (kbd "M-o") 'other-window)
+(global-set-key (kbd "M-O") 'mh-prev-other-window)
+(global-unset-key "\C-xf")
+(global-set-key [f1] 'eshell)
+(global-set-key (kbd "C-x g") 'magit-status)
+(global-set-key (kbd "C-+") 'text-scale-increase)
+(global-set-key (kbd "C--") 'text-scale-decrease)
+(global-set-key (kbd "C-c o") 'ff-find-other-file)
+(global-set-key (kbd "C-x r l") 'counsel-bookmark)
+;; Org-Mode
+(bind-key "C-c r" 'org-capture)
+(bind-key "C-c a" 'org-agenda)
+(bind-key "C-c l" 'org-store-link)
+(bind-key "C-c L" 'org-insert-link-global)
+(bind-key "C-c O" 'org-open-at-point-global)
+(bind-key "<f9>" 'org-agenda-list)
+
+(global-set-key (kbd "M-u") 'upcase-dwim)
+(global-set-key (kbd "M-l") 'downcase-dwim)
+(global-set-key (kbd "M-c") 'capitalize-dwim)
+
+(setq ediff-split-window-function 'split-window-horizontally
+      ediff-window-setup-function 'ediff-setup-windows-plain)
+
+(global-set-key (kbd "C-x p i") 'mh-pomodoro-start-focus)
+(global-set-key (kbd "C-x p b") 'mh-pomodoro-start-break)
+(global-set-key (kbd "C-x p o") 'mh-pomodoro-stop)
+(global-set-key (kbd "C-x p r") 'mh-pomodoro-remaining-time)
+
+(require 'notifications)
+(defun mh-pomodoro-start-focus()
+  """ Starts a focus period """
+  (interactive)
+  (let ((focus-period 25))
+    (notifications-notify
+     :title "Focus period started"
+     :on-action 'mh-pomodoro-start-focus
+     :timeout 1500
+     )
+
+    (org-timer-set-timer focus-period)))
+
+(defun mh-pomodoro-start-break()
+  """ Starts a break period """
+  (interactive)
+  (let ((break-period 5))
+    (notifications-notify
+     :title "Break period started"
+     :on-action 'mh-pomodoro-start-focus
+     :timeout 1500
+     )
+    (org-timer-set-timer break-period)))
+
+(defun mh-pomodoro-stop()
+  """ Stops the pomodoro timer """
+  (interactive)
+  (notifications-notify
+   :title "Pomodoro Timer stopped"
+   :on-action 'mh-pomodoro-start-focus
+   :timeout 1500
+   )
+  (org-timer-stop))
+
+(setq org-clock-sound "~/Nextcloud/Martin/bell.wav")
+
+(defun mh-pomodoro-remaining-time()
+  """ Reports the remaining time """
+  (interactive)
+  (let ((remaining-time (org-timer-show-remaining-time)))
+    (notifications-notify
+     :title "Remaining time"
+     :body remaining-time
+     :timeout 1500
+     )))
+
+(defun smarter-move-beginning-of-line (arg)
+  "Move point back to indentation of beginning of line.
+
+Move point to the first non-whitespace character on this line.
+If point is already there, move to the beginning of the line.
+Effectively toggle between the first non-whitespace character and
+the beginning of the line.
+
+If ARG is not nil or 1, move forward ARG - 1 lines first.  If
+point reaches the beginning or end of the buffer, stop there."
+  (interactive "^p")
+  (setq arg (or arg 1))
+
+  ;; Move lines first
+  (when (/= arg 1)
+    (let ((line-move-visual nil))
+      (forward-line (1- arg))))
+
+  (let ((orig-point (point)))
+    (back-to-indentation)
+    (when (= orig-point (point))
+      (move-beginning-of-line 1))))
+
+;; remap C-a to `smarter-move-beginning-of-line'
+(global-set-key [remap move-beginning-of-line] 'smarter-move-beginning-of-line)
+(global-set-key [remap org-beginning-of-line]  'smarter-move-beginning-of-line)
+
+(defun mh-prev-other-window()
+  "Simple function wrapper to `other-window' with a negative argument"
+  (interactive)
+   (other-window -1))
+
+(defun move-file (new-location)
+  "Write this file to NEW-LOCATION, and delete the old one."
+  (interactive (list (if buffer-file-name
+			 (read-file-name "Move file to: ")
+		       (read-file-name "Move file to: "
+				       default-directory
+				       (expand-file-name (file-name-nondirectory (buffer-name))
+							 default-directory)))))
+  (when (file-exists-p new-location)
+    (delete-file new-location))
+  (let ((old-location (buffer-file-name)))
+    (write-file new-location t)
+    (when (and old-location
+	       (file-exists-p new-location)
+	       (not (string-equal old-location new-location)))
+      (delete-file old-location))))
+
+(bind-key "C-x C-m" 'move-file)
+
+(use-package dired-subtree
+  :ensure t
+  :after dired
+  :config
+  (setq dired-subtree-use-backgrounds nil)
+  (bind-key "<tab>" #'dired-subtree-toggle dired-mode-map)
+  (bind-key "<backtab>" #'dired-subtree-cycle dired-mode-map))
+
+(use-package expand-region
+  :ensure t
+  :commands ( er/expand-region er/contract-region )
+  :bind ("C-=" . er/expand-region)
+  ;:bind ("C--" . er/contract-region)
+  )
+
+(add-hook 'eshell-mode-hook
+          (lambda ()
+            (setq show-trailing-whitespace nil)))
+
+(setq eshell-cmpl-compare-entry-function (quote string-lessp))
+
+(add-hook 'org-mode-hook 'turn-on-auto-fill)
+(add-hook 'c-mode-hook 'turn-on-auto-fill)
+(add-hook 'TeX-mode-hook 'turn-on-auto-fill)
+
+;;; It is the opposite of fill-paragraph    
+(defun unfill-paragraph ()
+  "Takes a multi-line paragraph and makes it into a single line of text."
+  (interactive)
+  (let ((fill-column (point-max)))
+    (fill-paragraph nil)))
+
+ ;; Handy key definition
+ (define-key global-map "\M-Q" 'unfill-paragraph)
+
+(use-package magit
+  :ensure t
+  :init
+  (setq magit-auto-revert-mode nil)
+  (setq magit-last-seen-setup-instructions "1.4.0"))
 
 (setq vc-follow-symlinks t)
 
-(add-to-list 'load-path "~/elisp/org-mode/lisp")
-(add-to-list 'load-path "~/elisp/org-mode/contrib/lisp")
-(add-to-list 'load-path "/usr/share/emacs/site-lisp")
+(use-package projectile
+  :ensure t
+  :ensure helm-projectile
+  :bind (("C-c P" . projectile-switch-project))
+  :config
+  (projectile-global-mode)
+  (setq projectile-enable-caching t
+        projectile-switch-project-action 'projectile-dired
+        )
 
-(setq package-enable-at-startup nil)
-(package-initialize)
-(require 'org)
-(org-babel-load-file (concat (getenv "HOME") "/.emacs.d/" user-login-name ".org"))
-(put 'narrow-to-region 'disabled nil)
-(put 'list-timers 'disabled nil)
+  )
+
+(setq org-latex-listings 'minted
+      org-latex-packages-alist '(("" "minted"))
+      org-latex-pdf-process
+      '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+
+(add-to-list 'auto-mode-alist '(".*mutt.*" . message-mode))
+(setq mail-header-separator "")
+(add-hook 'message-mode-hook
+	  'turn-on-auto-fill
+	  (function
+	   (lambda ()
+	     (progn
+	       (local-unset-key "\C-c\C-c")
+	       (define-key message-mode-map "\C-c\C-c" '(lambda ()
+							  "save and exit quickly"
+							  (interactive)
+							  (save-buffer)))))))
+
+(add-hook 'message-mode-hook 'turn-on-orgtbl)
+
+(when (executable-find "notmuch")
+  (define-key global-map "\C-cm" 'notmuch)
+  (setq sendmail-program "/usr/bin/msmtp"
+        notmuch-search-oldest-first nil
+        mail-specify-envelope-from t
+        message-sendmail-envelope-from 'header
+        mail-specify-envelope-from 'header
+        notmuch-show-all-multipart/alternative-parts nil
+        notmuch-fcc-dirs "emlix/Sent +sent -unread"
+        ))
+
+(add-hook 'notmuch-hello-refresh-hook
+	      (lambda ()
+                (if (and (eq (point) (point-min))
+                         (search-forward "Saved searches:" nil t))
+                    (progn
+		      (forward-line)
+		      (widget-forward 1))
+                  (if (eq (widget-type (widget-at)) 'editable-field)
+		      (beginning-of-line)))))
+
+ (setq notmuch-crypto-process-mime t)
+
+(setq notmuch-search-line-faces '(("unread" :weight bold)
+                                  ("flagged" :foreground "red")))
+
+(setq martin/notmuch-activity-string "")
+(add-to-list 'global-mode-string '((:eval martin/notmuch-activity-string)) t)
+(defun martin/get-notmuch-incoming-count ()
+  (string-trim
+   (shell-command-to-string
+    "notmuch count tag:inbox AND tag:unread AND '\(folder:INBOX or folder:INBOX.Eyeo\)'")))
+(defun martin/format-notmuch-mode-string (count)
+  (concat " mails[" (if (string= count "0") "" count) "]"))
+(defun martin/update-notmuch-activity-string (&rest args)
+  (setq martin/notmuch-activity-string
+        (martin/format-notmuch-mode-string (martin/get-notmuch-incoming-count)))
+  (force-mode-line-update))
+(add-hook 'notmuch-after-tag-hook 'martin/update-notmuch-activity-string)
+(defcustom notmuch-presync-hook nil
+  "Hook run before notmuch is synchronised"
+  :type 'hook)
+(defcustom notmuch-postsync-hook '(martin/update-notmuch-activity-string)
+  "Hook run after notmuch has been synchronised"
+  :type 'hook)
+
+(use-package auto-complete
+  :ensure t
+  :config
+  (ac-config-default)
+  (global-auto-complete-mode t))
+
+(setq lsp-use-plists t)
+(use-package ccls
+  :ensure t
+  :init
+  (setq lsp-lens-enable nil)
+  :config
+  (setq ccls-executable "/usr/bin/ccls"
+        gc-cons-threshold (* 1024 1024 100)
+        read-process-output-max (* 1024 1024) ;; 1mb
+        lsp-enable-on-type-formatting nil)
+  :hook ((c-mode c++-mode) .
+         (lambda () (require 'ccls) (lsp)))
+  )
+(use-package lsp-mode
+  :ensure t
+  :commands lsp
+  )
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode
+  )
+
+(defun martin-setup-sh-mode()
+  "sh-mode customizations."
+  (interactive)
+  (setq sh-basic-offset 8
+        sh-indentation 8))
+
+(add-hook 'sh-mode-hook 'martin-setup-sh-mode)
+
+(add-hook 'sh-mode-hook 'flycheck-mode)
+
+(defun inside-class-enum-p (pos)
+  "Checks if POS is within the braces of a C++ \"enum class\"."
+  (ignore-errors
+    (save-excursion
+      (goto-char pos)
+      (up-list -1)
+      (backward-sexp 1)
+      (looking-back "enum[ \t]+class[ \t]+[^}]+"))))
+
+(defun align-enum-class (langelem)
+  (if (inside-class-enum-p (c-langelem-pos langelem))
+      (c-lineup-topmost-intro-cont langelem)))
+
+(defun align-enum-class-closing-brace (langelem)
+  (if (inside-class-enum-p (c-langelem-pos langelem))
+      '-
+    '+))
+
+(defun fix-enum-class ()
+  "Setup `c++-mode' to better handle \"class enum\"."
+  (add-to-list 'c-offsets-alist '(topmost-intro-cont . align-enum-class))
+  (add-to-list 'c-offsets-alist
+	       '(statement-cont . align-enum-class-closing-brace)))
+
+(add-hook 'c++-mode-hook 'fix-enum-class)
+
+(use-package dts-mode
+  :ensure t)
+
+(use-package web-mode
+  :ensure t
+  :config
+  (defun my-setup-php ()
+    ;; enable web mode
+    (web-mode)
+
+    ;; make these variables local
+    (make-local-variable 'web-mode-code-indent-offset)
+    (make-local-variable 'web-mode-markup-indent-offset)
+    (make-local-variable 'web-mode-css-indent-offset)
+
+    ;; set indentation, can set different indentation level for different code type
+    (setq web-mode-code-indent-offset 4)
+    (setq web-mode-css-indent-offset 2)
+    (setq web-mode-markup-indent-offset 2))
+  (add-to-list 'auto-mode-alist '("\\.php$" . my-setup-php))
+  )
+
+(add-to-list 'auto-mode-alist '("\\.json$" . js-mode))
+
+  (use-package js2-mode
+    :ensure t
+    :init
+    (add-hook 'js-mode-hook 'js2-minor-mode)
+    (setq js2-highlight-level 3))
+
+  (use-package ac-js2
+    :ensure t
+    :init
+    (add-hook 'js2-mode-hook 'ac-js2-mode))
+
+
+  (use-package flymake-jslint
+    :ensure t
+    :config
+    (add-to-list 'load-path (file-truename "~/git/lintnode"))
+    (setq lintnode-location (file-truename "~/git/lintnode"))
+    (setq lintnode-jslint-excludes (list 'nomen 'undef 'plusplus 'onevar 'white))
+    ;;; TODO: does not work currently, investigate
+                                          ; (add-hook 'js-mode-hook
+                                          ;	    (lambda()
+                                          ; (lintnode-hook))))
+)
+
+(use-package slime
+  :ensure t)
+
+(setq inferior-lisp-program "/usr/bin/clisp")

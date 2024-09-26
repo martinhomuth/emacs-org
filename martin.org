@@ -1,9 +1,24 @@
+#+TITLE Literate Emacs Configuration
+#+AUTHOR: Martin Homuth
+#+EMAIL: martin@followthestack.tech
+
+Inspired by [[https://protesilaos.com/][Protesilaos Stavrou]] I changed my Emacs configuration to a
+literate configuration. That especially includes a structuring process
+allowing me to clean up the files to be generated. This file is the
+source of the new setup which is then tangled into the sub structures
+as follows
+
+- early-init.el
+- init.el
+- mh-modules
+- mh-lisp
+
 * Personal Information
 
 If for some reason any application will need personal information,
 here they are ;-)
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (setq user-full-name "Martin Homuth")
 #+END_SRC
 
@@ -13,7 +28,7 @@ here they are ;-)
 Load all the things I don't like to share with the world or think is
 better be extracted from this file.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (let ((file (expand-file-name "~/.emacs.d/secrets.el")))
     (if (file-exists-p file)
         (load file)))
@@ -29,7 +44,7 @@ pis running on. There are four systems that I consider:
  3. Work Laptop (mobilepool16)
  4. Any other system (servers)
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "init.el"
   ;;; mail address based on username
   (setq user-mail-address
         (let ((username (getenv "USER")))
@@ -50,24 +65,47 @@ pis running on. There are four systems that I consider:
 
 These settings are for emacs internals, nothing specific.
 
-** Add Package Sources
+** the =early-init.el= file
+
+Just to make sure specific things are loaded as soon as possible
+
+#+begin_src emacs-lisp :tangle early-init.el
+  (setq custom-file (expand-file-name "custom.el" (concat (getenv "HOME") "/.emacs.d/")))
+  (when (file-exists-p custom-file)
+    (load custom-file))
+
+  (add-to-list 'load-path "~/elisp/org-mode/lisp")
+  (add-to-list 'load-path "~/elisp/org-mode/contrib/lisp")
+  (add-to-list 'load-path "/usr/share/emacs/site-lisp")
+
+  (mapc
+   (lambda (string)
+     (add-to-list 'load-path (locate-user-emacs-file string)))
+   '("mh-lisp" "mh-modules"))
+#+end_src
+
+** add Package Sources
 
 Use additional sources for the packages, and ensure that use-package
 is available
 
-   #+BEGIN_SRC emacs-lisp
-     (unless (assoc-default "melpa" package-archives)
-       (add-to-list 'package-archives
-                    '("melpa" . "http://melpa.org/packages/")))
+   #+BEGIN_SRC emacs-lisp :tangle early-init.el
+     (setq package-archives
+           '(("gnu-elpa" . "https://elpa.gnu.org/packages/")
+             ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+             ("melpa" . "https://melpa.org/packages/")))
 
-     (unless (assoc-default "elpa" package-archives)
-       (add-to-list 'package-archives
-                    '("elpa" . "https://elpa.gnu.org/packages/")))
+     ;; Highest number gets priority (what is not mentioned has priority 0)
+     (setq package-archive-priorities
+           '(("gnu-elpa" . 3)
+             ("melpa" . 2)
+             ("nongnu" . 1)))
 
      (unless (package-installed-p 'use-package)
        (package-refresh-contents)
        (package-install 'use-package))
-     (require 'use-package)
+     (eval-when-compile
+       (require 'use-package))
 
      ;; also keep the packages up to date
      (use-package auto-package-update
@@ -79,28 +117,15 @@ is available
    #+END_SRC
 
 ** Emacs Fonts and Locale
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   ;; TODO: add default font and fontsize
   (when (boundp 'fontsize)
     (add-to-list 'default-frame-alist
                  `(font . ,(concat "Source Code Pro-" (number-to-string fontsize)))
                  `(font . ,(concat "Noto Color Emoji" (number-to-string fontsize)))
                  ))
-  ;; disable CJK coding/encoding
-  (setq utf-translate-cjk-mode nil
-        locale-coding-system 'utf-8
-        default-file-name-coding-system 'utf-8)
-  (set-language-environment 'utf-8)
-  (prefer-coding-system 'utf-8)
-  (set-default-coding-systems 'utf-8)
-  (set-terminal-coding-system 'utf-8)
 
-  ;; backwards compatibility
-  (if (boundp buffer-file-coding-system)
-      (setq buffer-file-coding-system 'utf-8)
-    (setq default-buffer-file-coding-system 'utf-8))
-
-  ;; Treat clipboard as UTF-8 string first
+    ;; Treat clipboard as UTF-8 string first
   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
   ;; see https://github.com/rolandwalker/unicode-fonts
@@ -113,20 +138,18 @@ is available
 #+RESULTS:
 | UTF8_STRING | COMPOUND_TEXT | TEXT | STRING |
 
-** TODO Frame Position and Size
+** Frame Position and Size
 
-TODO: add function for calculating the appropriate sizes
-      top, bottom - 50
-      left, right - 30
+TODO: add configuration that is different accross all devices
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle early-init.el
   (progn
     (setq initial-frame-alist '( (tool-bar-lines . 0)))
     (if (window-system)
         (nconc initial-frame-alist
               '(
-                (width . 180) ; chars
-                (height . 50) ; lines
+                (width . 230) ; chars
+                (height . 60) ; lines
                 (left . 1261)
                 (top . 514)))))
 #+END_SRC
@@ -134,12 +157,12 @@ TODO: add function for calculating the appropriate sizes
 ** Window Handling
 
 As of yet I never tried understanding how window positioning and
-sizing works by default. Thanks to [[https://www.youtube.com/channel/UCAiiOTio8Yu69c3XnR7nQBQ][System Crafters]] I started to
+sizing works by default. Thanks to [[https://www.youtube.com/watch?v=-H2nU0rsUMY][System Crafters]] I started to
 understand it a bit more, this is the first step towards a fully
 customized setup that fits my needs - and before I dive into the
 manual.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "init.el"
   (setq display-buffer-base-action
         '((display-buffer-reuse-window
            display-buffer-reuse-mode-window
@@ -155,7 +178,7 @@ emacsclient that initially showed some other buffer before switching
 to the desired file. The following hack should prevent this, for
 whatever reason.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "init.el"
   (if (not (assoc "xterm-256color" term-file-aliases))
       (setq term-file-aliases (cons '("xterm-256color" . "rxvt")
                                     term-file-aliases)))
@@ -170,7 +193,7 @@ whatever reason.
 For now I use the same theme for all my machines. This will be
 refactored later for allowing different themes.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (unless (package-installed-p 'gruvbox-theme)
     (package-refresh-contents)
     (package-install 'gruvbox-theme))
@@ -185,7 +208,7 @@ refactored later for allowing different themes.
 
 Starting the server at emacs start should be handy someday..
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (if (or (not (fboundp 'server-running-p))
           (not (server-running-p)))
       (server-start))
@@ -203,7 +226,7 @@ If this variable is nil, or it fails to match a filename, the backup
 is made in the original file's directory. This is what I really don't
 want.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle early-init.el
   (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 #+END_SRC
 
@@ -215,7 +238,7 @@ by some means. As the files are always opened and essential to my
 organization, I need to make sure that the opened buffers are current
 all the time. Apparantly global-auto-revert-mode does the trick.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "init.el"
   (global-auto-revert-mode)
 #+end_src
 
@@ -226,7 +249,7 @@ all the time. Apparantly global-auto-revert-mode does the trick.
 
 Enable auto compilation to ensure to never load out of date lisp modules
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (use-package auto-compile
     :ensure t
     :init (setq load-prefer-newer t)
@@ -240,7 +263,7 @@ Enable auto compilation to ensure to never load out of date lisp modules
 
 ** General Configuration
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle early-init.el
   (tooltip-mode -1)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
@@ -269,7 +292,7 @@ Enable auto compilation to ensure to never load out of date lisp modules
 
 A good addition is to toggle every whitespace character on demand.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (global-set-key (kbd "C-c T w") 'whitespace-mode)
   (setq whitespace-line-column nil
         whitespace-display-mappings '((space-mark 32 [183] [46])
@@ -280,7 +303,8 @@ A good addition is to toggle every whitespace character on demand.
 #+RESULTS:
 
 ** Helm - Interactive Completion
-#+BEGIN_SRC emacs-lisp
+
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (use-package helm
     :ensure helm
     :diminish helm-mode
@@ -307,7 +331,7 @@ A good addition is to toggle every whitespace character on demand.
 
 ** Ivy
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (use-package counsel
     :ensure t)
   (use-package ivy :ensure t
@@ -333,7 +357,7 @@ A good addition is to toggle every whitespace character on demand.
 
 ** Hydra
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (use-package hydra
     :ensure ace-window
     :ensure hydra
@@ -376,7 +400,7 @@ for save, it happened quite often that I closed Emacs because of
 mistyping. Maybe a confirmation helps and is not really annoying -
 when in window system.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (defun martin-save-buffers-kill-emacs-with-confirm ()
     "Thanks to jsled for this method"
     (interactive)
@@ -394,7 +418,7 @@ when in window system.
 
 ** Pulse Cursor
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "init.el"
   (defun pulse-line (&rest _)
         "Pulse the current line."
         (pulse-momentary-highlight-one-line (point)))
@@ -410,7 +434,7 @@ when in window system.
 
 From Sacha Chuas Configuration for testing
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (use-package yasnippet
     :ensure t
     :diminish yas-minor-mode ;; used to remove mode line information that is not used
@@ -429,7 +453,7 @@ From Sacha Chuas Configuration for testing
 #+RESULTS:
 : t
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (setq default-cursor-color "gray")
   (setq yasnippet-can-fire-cursor-color "purple")
 
@@ -472,7 +496,7 @@ From Sacha Chuas Configuration for testing
 
 ** Dashboard
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (defun mh-dashboard-insert-inbox (list-size)
     "Add the list of LIST-SIZE items of inbox items"
     (require 'org)
@@ -517,7 +541,7 @@ timeclock.el. Connecting `display-time-mode` to this functionality
 might not be the best way, but for now I think that fits only here
 well.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "init.el"
   (use-package timeclock
     :ensure t
     :init
@@ -541,7 +565,7 @@ well.
 : t
 
 ** Key Bindings
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   ;; General
   (global-set-key "\C-cw" 'compare-windows)
   (global-set-key "\C-x\C-m" 'execute-extended-command)
@@ -568,9 +592,6 @@ well.
   (bind-key "C-c L" 'org-insert-link-global)
   (bind-key "C-c O" 'org-open-at-point-global)
   (bind-key "<f9>" 'org-agenda-list)
-  (bind-key "C-c v" 'org-show-todo-tree org-mode-map)
-  (bind-key "C-c C-r" 'org-refile org-mode-map)
-  (bind-key "C-c R" 'org-reveal org-mode-map)
 
   (global-set-key (kbd "M-u") 'upcase-dwim)
   (global-set-key (kbd "M-l") 'downcase-dwim)
@@ -588,7 +609,7 @@ well.
 
 * Ediff
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "init.el"
   (setq ediff-split-window-function 'split-window-horizontally
         ediff-window-setup-function 'ediff-setup-windows-plain)
 #+end_src
@@ -602,7 +623,7 @@ I am using the pomodoro technique for focus sessions and the org-mode
 built-in timer gives me all the things that I need. So first we are
 defining the required keybinds:
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "init.el"
   (global-set-key (kbd "C-x p i") 'mh-pomodoro-start-focus)
   (global-set-key (kbd "C-x p b") 'mh-pomodoro-start-break)
   (global-set-key (kbd "C-x p o") 'mh-pomodoro-stop)
@@ -615,7 +636,7 @@ a predefined value for a pomodoro: 25 minutes. It should also notify
 me additionally about the timer being started, similarly as it
 notifies me about the finished timer:
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "init.el"
   (require 'notifications)
   (defun mh-pomodoro-start-focus()
     """ Starts a focus period """
@@ -632,7 +653,7 @@ notifies me about the finished timer:
 
 A break is basically the same with only 5 minutes to go.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "init.el"
   (defun mh-pomodoro-start-break()
     """ Starts a break period """
     (interactive)
@@ -647,7 +668,7 @@ A break is basically the same with only 5 minutes to go.
 
 And finally to stop the timer, we use the appropriate function
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "init.el"
   (defun mh-pomodoro-stop()
     """ Stops the pomodoro timer """
     (interactive)
@@ -663,7 +684,7 @@ As having timer is nice and all, a little bit more feedback is
 required. I simply use some downloaded bell sound for that, which is
 stored in the nextcloud thus available on all machines.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "init.el"
   (setq org-clock-sound "~/Nextcloud/Martin/bell.wav")
 #+end_src
 
@@ -671,7 +692,7 @@ In between sessions it is also helpful to be able to obtain the
 current remaining time. This should be retrievable and also notified
 to the system.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "init.el"
   (defun mh-pomodoro-remaining-time()
     """ Reports the remaining time """
     (interactive)
@@ -751,7 +772,7 @@ configuration until the blog is somewhat running.
 
 Thanks to Howard Abrams for this neat function!
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (defun smarter-move-beginning-of-line (arg)
     "Move point back to indentation of beginning of line.
 
@@ -788,22 +809,11 @@ Thanks to Howard Abrams for this neat function!
 As there appears not to be any simple function to return to the
 previous window instead of directly passing a negative argument to
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (defun mh-prev-other-window()
     "Simple function wrapper to `other-window' with a negative argument"
     (interactive)
      (other-window -1))
-#+END_SRC
-
-** NeoTree
-
-NeoTree seems really nice
-
-#+BEGIN_SRC emacs-lisp
-  (use-package neotree
-    :ensure t
-    :bind (("M-n" . neotree-toggle))
-    )
 #+END_SRC
 
 ** Moving Files
@@ -813,7 +823,7 @@ buffer of that file, which is not what I usually want. Taken from [[http://zck.m
 is a method to not just rename the file but also the buffer associated
 with the file.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (defun move-file (new-location)
     "Write this file to NEW-LOCATION, and delete the old one."
     (interactive (list (if buffer-file-name
@@ -842,7 +852,7 @@ enter. This is not bad per se, but not really what I would
 like. Following the great emacs news by Sacha Chua, I found [[http://xenodium.com/#drill-down-emacs-dired-with-dired-subtree][this]] on
 reddit:
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (use-package dired-subtree
     :ensure t
     :after dired
@@ -858,7 +868,7 @@ reddit:
 * Editing
 ** Expand Region
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (use-package expand-region
     :ensure t
     :commands ( er/expand-region er/contract-region )
@@ -881,19 +891,16 @@ unhandy. There are two things that come to mind really quick:
 
 Let's fix these things
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (add-hook 'eshell-mode-hook
             (lambda ()
               (setq show-trailing-whitespace nil)))
-#+END_SRC
 
-#+BEGIN_SRC emacs-lisp
   (setq eshell-cmpl-compare-entry-function (quote string-lessp))
-
 #+END_SRC
 
 ** Auto Fill
-   #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp :tangle "init.el"
      (add-hook 'org-mode-hook 'turn-on-auto-fill)
      (add-hook 'c-mode-hook 'turn-on-auto-fill)
      (add-hook 'TeX-mode-hook 'turn-on-auto-fill)
@@ -904,7 +911,7 @@ Let's fix these things
 
 But, also allow unfilling
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   ;;; It is the opposite of fill-paragraph    
   (defun unfill-paragraph ()
     "Takes a multi-line paragraph and makes it into a single line of text."
@@ -919,42 +926,13 @@ But, also allow unfilling
 #+RESULTS:
 : unfill-paragraph
 
-** Poporg
-
-For comment formatting the plugin 'poporg' is very useful, with it you
-can popup a buffer when the cursor is within a comment and edit the
-comment contents in an org-mode buffer. The result however is the
-plain text of course.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package poporg
-    :ensure t
-    :bind (("C-c /" . poporg-dwim)))
-#+END_SRC
-
-#+RESULTS:
-: poporg-dwim
-
-** Default input method
-
-I use the 'german-prefix' input method regularly and thus this should
-be the default all the time. Maybe I'll tweak that someday if becomes
-cumbersome.
-
-#+BEGIN_SRC emacs-lisp
-  (setq default-input-method "german-prefix")
-#+END_SRC
-
-#+RESULTS:
-: german-prefix
-
 * Version Control
 ** Git
 
 Magit seems to be the one and only package when dealing with git
 repositories. We will see, if there is something else needed ever.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
 (use-package magit
   :ensure t
   :init
@@ -971,7 +949,7 @@ links or not. If not following the link, the `file` is opened, but
 there can't be interaction with the version control (magit) and thus I
 like the default behavior to be follow the links.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (setq vc-follow-symlinks t)
 #+END_SRC
 
@@ -980,7 +958,7 @@ like the default behavior to be follow the links.
 As switching between projects becomes more and more cumbersome, I
 decided to finally head over to projectile and give it a try.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
     (use-package projectile
       :ensure t
       :ensure helm-projectile
@@ -1000,7 +978,7 @@ decided to finally head over to projectile and give it a try.
 
 * Latex
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (setq org-latex-listings 'minted
         org-latex-packages-alist '(("" "minted"))
         org-latex-pdf-process
@@ -1154,7 +1132,7 @@ emails. Let's fix that.
 
 [[https://www.emacswiki.org/emacs/MuttInEmacs][Emacs Wiki]]
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (add-to-list 'auto-mode-alist '(".*mutt.*" . message-mode))
   (setq mail-header-separator "")
   (add-hook 'message-mode-hook
@@ -1174,13 +1152,13 @@ emails. Let's fix that.
 
 Aaaand, it would be gread to use org tables in mails as well.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (add-hook 'message-mode-hook 'turn-on-orgtbl)
 #+END_SRC
 
 *** notmuch and such
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (when (executable-find "notmuch")
     (define-key global-map "\C-cm" 'notmuch)
     (setq sendmail-program "/usr/bin/msmtp"
@@ -1198,7 +1176,7 @@ Aaaand, it would be gread to use org tables in mails as well.
 
 Initial cursor position in hello window
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (add-hook 'notmuch-hello-refresh-hook
 		(lambda ()
                   (if (and (eq (point) (point-min))
@@ -1208,22 +1186,20 @@ Initial cursor position in hello window
 			(widget-forward 1))
                     (if (eq (widget-type (widget-at)) 'editable-field)
 			(beginning-of-line)))))
-#+END_SRC
 
-#+BEGIN_SRC emacs-lisp
    (setq notmuch-crypto-process-mime t)
 #+END_SRC
 
 Faces
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (setq notmuch-search-line-faces '(("unread" :weight bold)
                                     ("flagged" :foreground "red")))
 #+END_SRC
 
 Modeline
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (setq martin/notmuch-activity-string "")
   (add-to-list 'global-mode-string '((:eval martin/notmuch-activity-string)) t)
   (defun martin/get-notmuch-incoming-count ()
@@ -1350,7 +1326,7 @@ As the most awesome people do, I too use org-mode! :)
 
 Thanks to Isa Mert Gurbuz (https://isamert.net/)
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "mh-modules/mh-org.el"
   (use-package org
     :ensure t
     :init
@@ -1375,6 +1351,10 @@ Thanks to Isa Mert Gurbuz (https://isamert.net/)
        (plantuml . t)
        (emacs-lisp . t)))
     )
+
+  (bind-key "C-c v" 'org-show-todo-tree org-mode-map)
+  (bind-key "C-c C-r" 'org-refile org-mode-map)
+  (bind-key "C-c R" 'org-reveal org-mode-map)
 
   (use-package org-bullets
     :ensure t
@@ -1410,7 +1390,7 @@ Thanks to Isa Mert Gurbuz (https://isamert.net/)
 
 Using actual circular bullets for bullet lists
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "mh-modules/mh-org.el"
   (font-lock-add-keywords 'org-mode
                           '(("^ +\\([-*]\\) "
                              (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
@@ -1423,7 +1403,7 @@ Using actual circular bullets for bullet lists
 Setting the directories for the notes to be placed in - this will be
 synced soonish.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "mh-modules/mh-org.el"
   (setq org-directory (expand-file-name "~/git/org-files"))
   (setq org-default-notes-file (expand-file-name "~/git/org-files/personal.org"))
 #+END_SRC
@@ -1435,7 +1415,7 @@ synced soonish.
 
 Let's use =org-capture= to quickly add the things that come to mind all the time :)
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "mh-modules/mh-org.el"
   (defvar martin/org-project-template "* %^{Project Description} %^g
   :PROPERTIES:
   :Effort: %^{effort|1:00|0:05|0:10|0:15|0:30|0:45|2:00|4:00|8:00}
@@ -1510,7 +1490,7 @@ Let's use =org-capture= to quickly add the things that come to mind all the time
 =org-refile= lets you organize notes by typing in the headline to file
 them under.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "mh-modules/mh-org.el"
   (setq org-reverse-note-order t)
   (setq org-refile-use-outline-path nil)
   (setq org-refile-allow-creating-parent-nodes 'confirm)
@@ -1526,7 +1506,7 @@ them under.
 
 *** Track TODO state
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "mh-modules/mh-org.el"
   (setq org-todo-keywords
         '((sequence
            "TODO(t)"   ; next action
@@ -1556,7 +1536,7 @@ them under.
 
 This defines the key commands for those, too.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "mh-modules/mh-org.el"
   (setq org-tag-alist '(("call" . ?c)
                         ("@computer" . ?l)
                         ("@home" . ?h)
@@ -1580,7 +1560,7 @@ This defines the key commands for those, too.
 
 *** Basic Configuration
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "mh-modules/mh-org.el"
   (setq my-org-agenda-files-list (append
                                   (file-expand-wildcards "~/git/org-files/*.org"))
         org-agenda-files
@@ -1590,7 +1570,7 @@ This defines the key commands for those, too.
 #+END_SRC
 
 This is some configuration of Sacha's
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "mh-modules/mh-org.el"
   (setq org-agenda-span 'week)
   (setq org-agenda-sticky nil)
   (setq org-agenda-show-log t)
@@ -1608,7 +1588,7 @@ This is some configuration of Sacha's
 For syntax highlighting of org src blocks and disabling the
 confirmation of executing those blocks the following variables are set
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "mh-modules/mh-org.el"
   (setq org-confirm-babel-evaluate nil
         org-src-fontify-natively t
         org-src-tab-acts-natively t)
@@ -1619,7 +1599,7 @@ confirmation of executing those blocks the following variables are set
 
 * Org-GTD
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "mh-modules/mh-org.el"
   (use-package org-gtd
     :after org
     :ensure t
@@ -1646,7 +1626,7 @@ confirmation of executing those blocks the following variables are set
 
 * Org-Roam
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "mh-modules/mh-org.el"
   (use-package org-roam
     :ensure t
     :init
@@ -1665,7 +1645,7 @@ confirmation of executing those blocks the following variables are set
 * Programming
 ** General
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (use-package auto-complete
     :ensure t
     :config
@@ -1693,7 +1673,7 @@ Find the ccls executable first
 
 #+RESULTS:
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (setq lsp-use-plists t)
   (use-package ccls
     :ensure t
@@ -1719,26 +1699,11 @@ Find the ccls executable first
 
 #+RESULTS:
 
-** Coverage
-
-** 
-
-This enables googles coverage. The repository has to be downloaded to
-the appropriate location and be enabled using the following snippet
-
-#+BEGIN_SRC emacs-lisp
-  ;;(add-to-list 'load-path "/home/mhomuth/elisp/coverage")
-  ;;(require 'coverage)
-#+END_SRC
-
-#+RESULTS:
-: coverage
-
-** C
+** COMMENT C
 
 Linux kernel coding style adjustments
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (defun c-lineup-arglist-tabs-only ()
     "Line up argument lists by tabs, not spaces"
     (let* ((anchor (c-langelem-pos c-syntactic-element))
@@ -1779,19 +1744,10 @@ Linux kernel coding style adjustments
                            c-lineup-arglist-tabs-only))))))
 #+END_SRC
 
-clang-format
-
-#+BEGIN_SRC emacs-lisp :tangle no :eval no
-  (fset 'c-indent-region 'clang-format-region)
-#+END_SRC
-
-#+RESULTS:
-: clang-format-region
-
 Define a function that intializes auto-complete-c-headers and gets
 called for c/c++ hooks
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
     (use-package auto-complete-c-headers
       :ensure t
       :config
@@ -1804,24 +1760,9 @@ called for c/c++ hooks
     (add-hook 'c-mode-hook 'my/init-ac-c-headers)
 #+END_SRC
 
-#+RESULTS:
-| my/init-ac-c-headers |
-
-Use iedit for refactoring
-
-#+BEGIN_SRC emacs-lisp
-  (use-package iedit
-    :ensure t
-    :config
-    (define-key global-map (kbd "C-c ;") 'iedit-mode))
-#+END_SRC
-
-#+RESULTS:
-: t
-
 Use flycheck for syntax checking
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (use-package flycheck
     :ensure flycheck-cstyle
     :config
@@ -1846,7 +1787,7 @@ Use flycheck for syntax checking
 
 Highlight TODO/FIXME/etc
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (defun my-highlight-keywords-warning()
     ""
     (font-lock-add-keywords nil
@@ -1869,7 +1810,7 @@ Highlight TODO/FIXME/etc
 
 Add compile keybinding and adjust initial command
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (add-hook 'c-mode-common-hook
             (lambda () (define-key c-mode-base-map (kbd "C-c C-l") 'compile)))
 
@@ -1881,7 +1822,7 @@ Add compile keybinding and adjust initial command
 
 Finally fixing the indentation of my shell mode.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (defun martin-setup-sh-mode()
     "sh-mode customizations."
     (interactive)
@@ -1893,26 +1834,8 @@ Finally fixing the indentation of my shell mode.
 
 Use shellcheck
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (add-hook 'sh-mode-hook 'flycheck-mode)
-#+END_SRC
-
-** XML
-
-Who on earth would want xml files to be indented only with 2 spaces?!?
-
-#+BEGIN_SRC emacs-lisp
-  (setq nxml-child-indent 8
-        nxml-attribute-indent 8)
-#+END_SRC
-
-** Java
-
-Indentation is important :)
-
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'java-mode-hook (lambda ()
-                              (setq c-basic-offset 4)))
 #+END_SRC
 
 ** C++
@@ -1921,7 +1844,7 @@ Indentation is important :)
 
 This indentation is not working in the original c++-mode, thus a fix is needed:
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (defun inside-class-enum-p (pos)
     "Checks if POS is within the braces of a C++ \"enum class\"."
     (ignore-errors
@@ -1958,7 +1881,7 @@ This indentation is not working in the original c++-mode, thus a fix is needed:
 After some time digging through device tree files it is time to use an
 appropriate mode..
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (use-package dts-mode
     :ensure t)
 #+END_SRC
@@ -1971,7 +1894,7 @@ appropriate mode..
 For work I need some php/javascript combination support. Web-mode
 gives me what I need so far.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (use-package web-mode
     :ensure t
     :config
@@ -1998,7 +1921,7 @@ gives me what I need so far.
 I started coding Javascript lately and thus an appropriate mode is
 needed. [[http://truongtx.me][Truong TX]] gave a nice example.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (add-to-list 'auto-mode-alist '("\\.json$" . js-mode))
 
   (use-package js2-mode
@@ -2033,7 +1956,7 @@ needed. [[http://truongtx.me][Truong TX]] gave a nice example.
 
 I learned to love slime really quickly.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (use-package slime
     :ensure t)
 
