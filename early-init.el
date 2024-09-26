@@ -36,16 +36,6 @@
   (setq auto-package-update-hide-results t)
   (auto-package-update-maybe))
 
-(progn
-  (setq initial-frame-alist '( (tool-bar-lines . 0)))
-  (if (window-system)
-      (nconc initial-frame-alist
-            '(
-              (width . 230) ; chars
-              (height . 60) ; lines
-              (left . 1261)
-              (top . 514)))))
-
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 
 (tooltip-mode -1)

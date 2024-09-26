@@ -142,7 +142,7 @@ is available
 
 TODO: add configuration that is different accross all devices
 
-#+BEGIN_SRC emacs-lisp :tangle early-init.el
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (progn
     (setq initial-frame-alist '( (tool-bar-lines . 0)))
     (if (window-system)
@@ -151,7 +151,16 @@ TODO: add configuration that is different accross all devices
                 (width . 230) ; chars
                 (height . 60) ; lines
                 (left . 1261)
-                (top . 514)))))
+                (top . 514))))
+    (setq default-frame-alist '( (tool-bar-lines . 0)))
+    (if (window-system)
+        (nconc default-frame-alist
+              '(
+                (width . 230) ; chars
+                (height . 60) ; lines
+                (left . 1261)
+                (top . 514))))
+  )
 #+END_SRC
 
 ** Window Handling
