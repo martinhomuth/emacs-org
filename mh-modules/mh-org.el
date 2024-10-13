@@ -217,3 +217,5 @@ SCHEDULED: %^t
          ("C-c n i" . org-roam-node-insert))
   :config
   (org-roam-setup))
+
+(provide 'mh-org)

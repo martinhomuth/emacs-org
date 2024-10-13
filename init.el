@@ -1,3 +1,8 @@
+(mapc
+ (lambda (string)
+   (add-to-list 'load-path (locate-user-emacs-file string)))
+ '("mh-lisp" "mh-modules"))
+
 (setq user-full-name "Martin Homuth")
 
 (let ((file (expand-file-name "~/.emacs.d/secrets.el")))
@@ -17,6 +22,8 @@
           (let ((width (x-display-pixel-width)))
             (cond ((eql width 6336) 10) ;;; 2 monitor workstation in office
                   (t 9)))))
+
+(require 'mh-org)
 
 ;; TODO: add default font and fontsize
 (when (boundp 'fontsize)

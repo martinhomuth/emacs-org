@@ -13,6 +13,21 @@ as follows
 - mh-modules
 - mh-lisp
 
+* Structural Commands
+
+To ensure the modules are loaded properly, they need to be adeed to
+the load path and all modules have to be required. For now we
+explicitly require them, but in the future I'd like to have a macro
+for it to automatically obtain the provisioning and requirement via
+the =init.el=.
+
+  #+begin_src emacs-lisp :tangle "init.el"
+    (mapc
+     (lambda (string)
+       (add-to-list 'load-path (locate-user-emacs-file string)))
+     '("mh-lisp" "mh-modules"))
+  #+end_src
+
 * Personal Information
 
 If for some reason any application will need personal information,
@@ -82,6 +97,12 @@ Just to make sure specific things are loaded as soon as possible
    (lambda (string)
      (add-to-list 'load-path (locate-user-emacs-file string)))
    '("mh-lisp" "mh-modules"))
+#+end_src
+
+** the final =init.el= call to submodules
+
+#+begin_src emacs-lisp :tangle "init.el"
+  (require 'mh-org)
 #+end_src
 
 ** add Package Sources
@@ -1328,8 +1349,10 @@ I use ledger to collect any accounting data.
 (getenv "PATH")
 #+RESULTS:
 
-* Org-Mode
-** General
+* Org
+
+** Org-Mode
+*** General
 
 As the most awesome people do, I too use org-mode! :)
 
@@ -1407,7 +1430,7 @@ Using actual circular bullets for bullet lists
 
 #+RESULTS:
 
-** Taking Notes
+*** Taking Notes
 
 Setting the directories for the notes to be placed in - this will be
 synced soonish.
@@ -1420,7 +1443,7 @@ synced soonish.
 #+RESULTS:
 : ~/git/org/personal.org
 
-*** Templates
+**** Templates
 
 Let's use =org-capture= to quickly add the things that come to mind all the time :)
 
@@ -1494,7 +1517,7 @@ Let's use =org-capture= to quickly add the things that come to mind all the time
 #+RESULTS:
 : org-capture
 
-*** Refiling
+**** Refiling
 
 =org-refile= lets you organize notes by typing in the headline to file
 them under.
@@ -1511,9 +1534,9 @@ them under.
 #+RESULTS:
 
 
-** Managing Tasks
+*** Managing Tasks
 
-*** Track TODO state
+**** Track TODO state
 
 #+BEGIN_SRC emacs-lisp :tangle "mh-modules/mh-org.el"
   (setq org-todo-keywords
@@ -1541,7 +1564,7 @@ them under.
 | WAITING | :foreground | red   | :weight | bold |
 | SOMEDAY | :foregound  | gray  | :weight | bold |
 
-*** Tag Tasks with GTD-ish contexts
+**** Tag Tasks with GTD-ish contexts
 
 This defines the key commands for those, too.
 
@@ -1565,9 +1588,9 @@ This defines the key commands for those, too.
 
 #+RESULTS:
 
-** Org Agenda
+*** Org Agenda
 
-*** Basic Configuration
+**** Basic Configuration
 
 #+BEGIN_SRC emacs-lisp :tangle "mh-modules/mh-org.el"
   (setq my-org-agenda-files-list (append
@@ -1592,7 +1615,7 @@ This is some configuration of Sacha's
 #+RESULTS:
 : %50ITEM %12SCHEDULED %TODO %3PRIORITY %Effort{:} %TAGS
 
-** Literate Programming
+*** Literate Programming
 
 For syntax highlighting of org src blocks and disabling the
 confirmation of executing those blocks the following variables are set
@@ -1606,7 +1629,7 @@ confirmation of executing those blocks the following variables are set
 #+RESULTS:
 : t
 
-* Org-GTD
+** Org-GTD
 
 #+begin_src emacs-lisp :tangle "mh-modules/mh-org.el"
   (use-package org-gtd
@@ -1633,7 +1656,7 @@ confirmation of executing those blocks the following variables are set
 #+RESULTS:
 : org-gtd-clarify-toggle-horizons-window
 
-* Org-Roam
+** Org-Roam
 
 #+begin_src emacs-lisp :tangle "mh-modules/mh-org.el"
   (use-package org-roam
@@ -1650,6 +1673,12 @@ confirmation of executing those blocks the following variables are set
 #+end_src
 
 #+RESULTS:
+
+** Provide =mh-org.el= module
+
+#+begin_src emacs-lisp :tangle "mh-modules/mh-org.el"
+  (provide 'mh-org)
+#+end_src
 
 * Programming
 ** General
