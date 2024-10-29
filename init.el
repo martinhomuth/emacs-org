@@ -239,39 +239,6 @@
   (interactive)
   (condition-case nil (or (my/hippie-expand-maybe nil) (insert "  "))))
 
-(defun mh-dashboard-insert-inbox (list-size)
-  "Add the list of LIST-SIZE items of inbox items"
-  (require 'org)
-  (let ((org-files (org-files-list)))
-    (dashboard-insert-section "INBOX: " nil list-size "i" nil nil)))
-
-(defun mh-idle-switch-to-dashboard()
-  (interactive)
-  (switch-to-buffer "*dashboard*")
-  (dashboard-refresh-buffer)
-  (delete-other-windows))
-
-(use-package all-the-icons
-  :ensure t)
-
-(use-package dashboard
-  :ensure t
-  :config
-  (dashboard-setup-startup-hook)
-  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))
-        dashboard-items '((inbox . 20)
-                          (agenda . 10)
-                          (projects . 5)
-                          (bookmarks . 5))
-        dashboard-center-content t
-        dashboard-set-heading-icons t
-        dashboard-set-file-icons t
-        dashboard-set-navigator t)
-
-  (add-to-list 'dashboard-item-generators '(inbox . mh-dashboard-insert-inbox))
-
-  (run-with-idle-timer 300 t 'mh-idle-switch-to-dashboard))
-
 (use-package timeclock
   :ensure t
   :init

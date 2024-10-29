@@ -526,7 +526,7 @@ From Sacha Chuas Configuration for testing
 
 ** Dashboard
 
-#+BEGIN_SRC emacs-lisp :tangle "init.el"
+#+BEGIN_SRC emacs-lisp :tangle no
   (defun mh-dashboard-insert-inbox (list-size)
     "Add the list of LIST-SIZE items of inbox items"
     (require 'org)
