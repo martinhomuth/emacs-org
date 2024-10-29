@@ -28,6 +28,22 @@ the =init.el=.
      '("mh-lisp" "mh-modules"))
   #+end_src
 
+Also I want to make sure that this file is always tangled as soon as
+it is saved.
+
+#+begin_src emacs-lisp
+  (defun mh--tangle-this-file()
+    """
+     Tangles this buffers file.
+    """
+    (org-babel-tangle-file (buffer-file-name (current-buffer))))
+
+  (add-hook 'after-save-hook 'mh--tangle-this-file nil t)
+#+end_src
+
+#+RESULTS:
+| mh--tangle-this-file | t |
+
 * Personal Information
 
 If for some reason any application will need personal information,
