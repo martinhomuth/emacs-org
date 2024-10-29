@@ -99,26 +99,6 @@
                                     (newline-mark 10 [9166 10])
                                     (tab-mark 9 [9654 9] [92 9])))
 
-(use-package helm
-  :ensure helm
-  :diminish helm-mode
-  :config
-  (progn
-    (setq helm-candidate-number-limit 100
-          helm-idle-delay 0.0
-          helm-input-idle-delay 0.01
-          helm-quick-update t
-          helm-M-x-requires-pattern nil)
-    (helm-mode))
-  :bind (("C-c h" . helm-mini)
-         ("C-h a" . helm-apropos)
-         ("C-x C-f" . helm-find-files)
-         ("C-x C-b" . helm-buffers-list)
-         ("M-y" . helm-show-kill-ring)
-         ("M-x" . helm-M-x)
-         ("C-x c o" . helm-occur)
-         ("C-x c s" . helm-scoop)))
-
 (use-package counsel
   :ensure t)
 (use-package ivy :ensure t
@@ -438,7 +418,6 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package projectile
   :ensure t
-  :ensure helm-projectile
   :bind (("C-c P" . projectile-switch-project))
   :config
   (projectile-global-mode)

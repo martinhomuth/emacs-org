@@ -332,33 +332,6 @@ A good addition is to toggle every whitespace character on demand.
 
 #+RESULTS:
 
-** Helm - Interactive Completion
-
-#+BEGIN_SRC emacs-lisp :tangle "init.el"
-  (use-package helm
-    :ensure helm
-    :diminish helm-mode
-    :config
-    (progn
-      (setq helm-candidate-number-limit 100
-            helm-idle-delay 0.0
-            helm-input-idle-delay 0.01
-            helm-quick-update t
-            helm-M-x-requires-pattern nil)
-      (helm-mode))
-    :bind (("C-c h" . helm-mini)
-           ("C-h a" . helm-apropos)
-           ("C-x C-f" . helm-find-files)
-           ("C-x C-b" . helm-buffers-list)
-           ("M-y" . helm-show-kill-ring)
-           ("M-x" . helm-M-x)
-           ("C-x c o" . helm-occur)
-           ("C-x c s" . helm-scoop)))
-#+END_SRC
-
-#+RESULTS:
-: helm-scoop
-
 ** Ivy
 
 #+BEGIN_SRC emacs-lisp :tangle "init.el"
@@ -991,7 +964,6 @@ decided to finally head over to projectile and give it a try.
 #+BEGIN_SRC emacs-lisp :tangle "init.el"
     (use-package projectile
       :ensure t
-      :ensure helm-projectile
       :bind (("C-c P" . projectile-switch-project))
       :config
       (projectile-global-mode)
