@@ -116,7 +116,19 @@
   ;; configure regexp engine.
   (setq ivy-re-builders-alist
         ;; allow input not in order
-        '((t   . ivy--regex-ignore-order))))
+        '((t   . ivy--regex-ignore-order)))
+  :bind (("C-s" . 'swiper)
+         ("M-x" . 'counsel-M-x)
+         ("C-x C-f" . 'counsel-find-file)
+         ("M-y" . 'counsel-yank-pop)
+         ("C-h a" . 'counsel-apropos)
+         ("C-h v" . 'counsel-describe-variable)
+         ("C-h f" . 'counsel-describe-function)
+         ("C-h u" . 'counsel-unicode-char)
+         ("C-x b" . 'counsel-switch-buffer)
+         ("C-c j" . 'counsel-git-grep)
+         ("C-c L" . 'counsel-git-log)
+         ))
 
 (use-package hydra
   :ensure ace-window
@@ -244,7 +256,6 @@
 (global-set-key "\C-w" 'backward-kill-word)
 (global-set-key "\C-x\C-k" 'kill-region)
 (global-set-key "\C-c\C-k" 'kill-region)
-(global-set-key (kbd "C-s") 'isearch-forward-regexp)
 (global-set-key (kbd "C-r") 'isearch-backward-regexp)
 (global-unset-key (kbd "C-z")) ;; who needs that anyways?
 (global-set-key (kbd "M-o") 'other-window)
