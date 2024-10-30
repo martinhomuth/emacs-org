@@ -898,6 +898,22 @@ reddit:
 : t
 
 * Editing
+** yaml-mode
+
+#+begin_src emacs-lisp :tangle "init.el"
+  (use-package yaml-mode
+    :ensure t
+    :config
+    (add-to-list 'auto-mode-alist '("\\.yml\\'" .  yaml-mode))
+    (add-hook 'yaml-mode-hook
+              '(lambda ()
+                 (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
+    )
+#+end_src
+
+#+RESULTS:
+: t
+
 ** Expand Region
 
 #+BEGIN_SRC emacs-lisp :tangle "init.el"

@@ -395,6 +395,15 @@ point reaches the beginning or end of the buffer, stop there."
   (bind-key "<tab>" #'dired-subtree-toggle dired-mode-map)
   (bind-key "<backtab>" #'dired-subtree-cycle dired-mode-map))
 
+(use-package yaml-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.yml\\'" .  yaml-mode))
+  (add-hook 'yaml-mode-hook
+            '(lambda ()
+               (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
+  )
+
 (use-package expand-region
   :ensure t
   :commands ( er/expand-region er/contract-region )
