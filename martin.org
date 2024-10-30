@@ -381,10 +381,12 @@ A good addition is to toggle every whitespace character on demand.
            ("C-c j" . 'counsel-git-grep)
            ("C-c L" . 'counsel-git-log)
            ))
+  (use-package ivy-hydra
+    :ensure t
+    :after (ivy hydra))
 #+END_SRC
 
 #+RESULTS:
-: counsel-git-log
 
 ** Hydra
 

@@ -129,6 +129,9 @@
          ("C-c j" . 'counsel-git-grep)
          ("C-c L" . 'counsel-git-log)
          ))
+(use-package ivy-hydra
+  :ensure t
+  :after (ivy hydra))
 
 (use-package hydra
   :ensure ace-window
