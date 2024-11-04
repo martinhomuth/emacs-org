@@ -641,6 +641,8 @@ well.
 
 * Ediff
 
+Make sure ediff does not spawn another frame.
+
 #+begin_src emacs-lisp :tangle "init.el"
   (setq ediff-split-window-function 'split-window-horizontally
         ediff-window-setup-function 'ediff-setup-windows-plain)
@@ -648,6 +650,21 @@ well.
 
 #+RESULTS:
 : ediff-setup-windows-plain
+
+And ensure that the colors do not work against me when using the
+gruvbox theme.
+
+#+begin_src emacs-lisp :tangle "init.el"
+  (custom-set-faces
+   '(ediff-current-diff-A ((t (:foreground "Black"))))
+   '(ediff-fine-diff-A ((t (:foreground "Black"))))
+   '(ediff-current-diff-B ((t (:foreground "Black"))))
+   '(ediff-fine-diff-B ((t (:foreground "Black"))))
+   '(ediff-current-diff-C ((t (:foreground "Black"))))
+   '(ediff-fine-diff-C ((t (:foreground "Black")))))
+#+end_src
+
+#+RESULTS:
 
 * Pomodoro Timer
 

@@ -285,6 +285,14 @@
 (setq ediff-split-window-function 'split-window-horizontally
       ediff-window-setup-function 'ediff-setup-windows-plain)
 
+(custom-set-faces
+ '(ediff-current-diff-A ((t (:foreground "Black"))))
+ '(ediff-fine-diff-A ((t (:foreground "Black"))))
+ '(ediff-current-diff-B ((t (:foreground "Black"))))
+ '(ediff-fine-diff-B ((t (:foreground "Black"))))
+ '(ediff-current-diff-C ((t (:foreground "Black"))))
+ '(ediff-fine-diff-C ((t (:foreground "Black")))))
+
 (global-set-key (kbd "C-x p i") 'mh-pomodoro-start-focus)
 (global-set-key (kbd "C-x p b") 'mh-pomodoro-start-break)
 (global-set-key (kbd "C-x p o") 'mh-pomodoro-stop)
