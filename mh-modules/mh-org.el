@@ -116,6 +116,12 @@ SCHEDULED: %^t
         ("d" "Decisions" entry
          (file+headline "~/git/org-files/personal.org" "Decisions")
          "* %?\n%i")
+        ("d" "Decisions" entry
+         (file+headline "~/git/org-files/personal.org" "Decisions")
+         "* %?\n%i")
+        ("e" "Emlix journal entry" plain
+         (file+olp+datetree "~/git/org-files/emlix-journal.org")
+         ,martin/org-work-journal-template)
         ("p" "Project" entry
          (file+headline "~/git/org-files/personal.org" "Projects")
          ,martin/org-project-template)
