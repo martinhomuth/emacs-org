@@ -117,6 +117,7 @@
   (setq ivy-re-builders-alist
         ;; allow input not in order
         '((t   . ivy--regex-ignore-order)))
+  (setq swiper-stay-on-quit t)
   :bind (("C-s" . 'swiper)
          ("M-x" . 'counsel-M-x)
          ("C-x C-f" . 'counsel-find-file)
