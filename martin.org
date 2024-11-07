@@ -634,7 +634,7 @@ well.
 #+END_SRC
 
 #+RESULTS:
-: org-reveal
+: capitalize-dwim
 
 #+END_SRC
 
@@ -1780,7 +1780,7 @@ Find the ccls executable first
 
 #+RESULTS:
 
-** COMMENT C
+** C
 
 Linux kernel coding style adjustments
 
@@ -1799,15 +1799,15 @@ Linux kernel coding style adjustments
     (setq c-basic-offset 8
           cdefault-style "linux"
           tab-width 8
-          indent-tabs-mode t
+          indent-tabs-mode nil
           c-set-style "linux-tabs-only")
     (define-key c-mode-base-map (kbd "RET") 'newline-and-indent))
   (defun my/add-semantic-to-autocomplete ()
     (add-to-list 'ac-sources 'ac-source-semantic))
 
   (defun my/general-c++-mode-configuration ()
-    (setq c-basic-offset 2
-          tab-width 2
+    (setq c-basic-offset 4
+          tab-width 4
           indent-tabs-mode nil)
     (define-key c-mode-base-map (kbd "RET") 'newline-and-indent))
 

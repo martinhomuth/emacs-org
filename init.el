@@ -556,6 +556,93 @@ point reaches the beginning or end of the buffer, stop there."
   :commands lsp-ui-mode
   )
 
+(defun c-lineup-arglist-tabs-only ()
+  "Line up argument lists by tabs, not spaces"
+  (let* ((anchor (c-langelem-pos c-syntactic-element))
+         (column (c-langelem-2nd-pos c-syntactic-element))
+         (offset (- (1+ column) anchor))
+         (steps (floor offset c-basic-offset)))
+    (* (max steps 1)
+       c-basic-offset)))
+
+(defun my/general-c-mode-configuration ()
+  (setq indent-tabs-mode t)
+  (setq c-basic-offset 8
+        cdefault-style "linux"
+        tab-width 8
+        indent-tabs-mode nil
+        c-set-style "linux-tabs-only")
+  (define-key c-mode-base-map (kbd "RET") 'newline-and-indent))
+(defun my/add-semantic-to-autocomplete ()
+  (add-to-list 'ac-sources 'ac-source-semantic))
+
+(defun my/general-c++-mode-configuration ()
+  (setq c-basic-offset 4
+        tab-width 4
+        indent-tabs-mode nil)
+  (define-key c-mode-base-map (kbd "RET") 'newline-and-indent))
+
+(add-hook 'c-mode-common-hook 'my/add-semantic-to-autocomplete)
+(add-hook 'c-mode-common-hook 'my/general-c-mode-configuration)
+(add-hook 'c++-mode-hook 'my/general-c++-mode-configuration)
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            ;; Add kernel style
+            (c-add-style
+             "linux-tabs-only"
+             '("linux" (c-offsets-alist
+                        (arglist-cont-nonempty
+                         c-lineup-gcc-asm-reg
+                         c-lineup-arglist-tabs-only))))))
+
+(use-package auto-complete-c-headers
+  :ensure t
+  :config
+  (add-to-list 'ac-sources 'ac-source-c-headers))
+
+(defun my/init-ac-c-headers ()
+  (add-to-list 'achead:include-directories '"/usr/src/linux/include/"))
+
+(add-hook 'c++-mode-hook 'my/init-ac-c-headers)
+(add-hook 'c-mode-hook 'my/init-ac-c-headers)
+
+(use-package flycheck
+  :ensure flycheck-cstyle
+  :config
+  (eval-after-load 'flycheck
+    '(progn
+       (flycheck-cstyle-setup)
+       (flycheck-add-next-checker 'c/c++-cppcheck '(warning . cstyle))))
+  (global-flycheck-mode)
+  (add-hook 'c-mode-hook
+            (lambda () (setq flycheck-gcc-include-path
+                             (list "/usr/src/linux/include" ))))
+  (add-hook 'c-mode-hook
+            (lambda () (setq flycheck-gcc-language-standard "c11")))
+  (add-hook 'cc-mode-hook
+            (lambda () (setq flycheck-gcc-language-standard "c++17")))
+  (add-hook 'sh-mode-hook 'flycheck-mode)
+  (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
+
+(defun my-highlight-keywords-warning()
+  ""
+  (font-lock-add-keywords nil
+			  '(("\\<\\(FIXME\\|TODO\\|XXX+\\|BUG\\|TBD\\):"
+			     1 font-lock-warning-face prepend))))
+(defun my-highlight-keywords-info()
+  ""
+  (font-lock-add-keywords nil
+			  '(("\\<\\(NOTE\\|INFO\\):"
+			     1 font-lock-comment-face prepend))))
+
+(add-hook 'c-mode-hook 'my-highlight-keywords-warning)
+(add-hook 'c-mode-hook 'my-highlight-keywords-info)
+(add-hook 'c++-mode-hook 'my-highlight-keywords-warning)
+(add-hook 'c++-mode-hook 'my-highlight-keywords-info)
+
+(add-hook 'c-mode-common-hook
+          (lambda () (define-key c-mode-base-map (kbd "C-c C-l") 'compile)))
+
 (defun martin-setup-sh-mode()
   "sh-mode customizations."
   (interactive)
