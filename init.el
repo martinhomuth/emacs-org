@@ -119,6 +119,7 @@
         '((t   . ivy--regex-ignore-order)))
   (setq swiper-stay-on-quit t)
   :bind (("C-s" . 'swiper)
+         ("C-r" . 'swiper)
          ("M-x" . 'counsel-M-x)
          ("C-x C-f" . 'counsel-find-file)
          ("M-y" . 'counsel-yank-pop)
@@ -260,7 +261,8 @@
 (global-set-key "\C-w" 'backward-kill-word)
 (global-set-key "\C-x\C-k" 'kill-region)
 (global-set-key "\C-c\C-k" 'kill-region)
-(global-set-key (kbd "C-r") 'isearch-backward-regexp)
+(global-set-key (kbd "C-M-r") 'isearch-backward-regexp)
+(global-set-key (kbd "C-M-s") 'isearch-forward-regexp)
 (global-unset-key (kbd "C-z")) ;; who needs that anyways?
 (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "M-O") 'mh-prev-other-window)
