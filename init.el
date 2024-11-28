@@ -428,6 +428,15 @@ point reaches the beginning or end of the buffer, stop there."
 
 (setq eshell-cmpl-compare-entry-function (quote string-lessp))
 
+(add-to-list 'load-path "~/git/bb-mode")
+
+(require 'bb-mode)
+(setq auto-mode-alist (cons '("\\.bb$" . bb-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("\\.inc$" . bb-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("\\.bbappend$" . bb-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("\\.bbclass$" . bb-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("\\.conf$" . bb-mode) auto-mode-alist))
+
 (add-hook 'org-mode-hook 'turn-on-auto-fill)
 (add-hook 'c-mode-hook 'turn-on-auto-fill)
 (add-hook 'TeX-mode-hook 'turn-on-auto-fill)
