@@ -266,6 +266,9 @@
 (global-unset-key "\C-xf")
 (global-set-key [f1] 'eshell)
 (global-set-key (kbd "C-x g") 'magit-status)
+(global-set-key (kbd "C-x b") 'magit-blame-echo)
+(global-set-key (kbd "C-x C-b") 'switch-to-buffer)
+(global-set-key (kbd ")
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-c o") 'ff-find-other-file)
@@ -415,8 +418,8 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package expand-region
   :ensure t
   :commands ( er/expand-region er/contract-region )
-  :bind ("C-=" . er/expand-region)
-  ;:bind ("C--" . er/contract-region)
+  :bind ("M-r" . er/expand-region)
+  :bind ("M-q" . er/contract-region)
   )
 
 (add-hook 'eshell-mode-hook
@@ -458,7 +461,13 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package projectile
   :ensure t
-  :bind (("C-c P" . projectile-switch-project))
+  :bind (
+         ("C-c p P" . projectile-switch-project)
+         ("C-c p r" . projectile-ripgrep)
+         ("C-c p b" . projectile-switch-to-buffer)
+         ("C-c p f" . projectile-find-file)
+         )
+
   :config
   (projectile-global-mode)
   (setq projectile-enable-caching t

@@ -28,6 +28,9 @@ the =init.el=.
      '("mh-lisp" "mh-modules"))
   #+end_src
 
+  #+RESULTS:
+  | mh-lisp | mh-modules |
+
 Also I want to make sure that this file is always tangled as soon as
 it is saved.
 
@@ -42,7 +45,7 @@ it is saved.
 #+end_src
 
 #+RESULTS:
-| mh--tangle-this-file | t |
+| mh--tangle-this-file | flycheck-handle-save | t |
 
 * Personal Information
 
@@ -154,6 +157,9 @@ is available
    #+END_SRC
 
 ** Emacs Fonts and Locale
+
+I guess I set fonts manually.. Maybe there is a better way for this.
+
 #+BEGIN_SRC emacs-lisp :tangle "init.el"
   ;; TODO: add default font and fontsize
   (when (boundp 'fontsize)
@@ -617,6 +623,9 @@ well.
   (global-unset-key "\C-xf")
   (global-set-key [f1] 'eshell)
   (global-set-key (kbd "C-x g") 'magit-status)
+  (global-set-key (kbd "C-x b") 'magit-blame-echo)
+  (global-set-key (kbd "C-x C-b") 'switch-to-buffer)
+  (global-set-key (kbd ")
   (global-set-key (kbd "C-+") 'text-scale-increase)
   (global-set-key (kbd "C--") 'text-scale-decrease)
   (global-set-key (kbd "C-c o") 'ff-find-other-file)
@@ -941,10 +950,14 @@ reddit:
   (use-package expand-region
     :ensure t
     :commands ( er/expand-region er/contract-region )
-    :bind ("C-=" . er/expand-region)
-    ;:bind ("C--" . er/contract-region)
+    :bind ("M-r" . er/expand-region)
+    :bind ("M-q" . er/contract-region)
     )
 #+END_SRC
+
+#+RESULTS:
+: er/contract-region
+
 ** eshell
 
 Eshell seems to be a great tool, but sometimes it is kind of
@@ -1048,21 +1061,27 @@ As switching between projects becomes more and more cumbersome, I
 decided to finally head over to projectile and give it a try.
 
 #+BEGIN_SRC emacs-lisp :tangle "init.el"
-    (use-package projectile
-      :ensure t
-      :bind (("C-c P" . projectile-switch-project))
-      :config
-      (projectile-global-mode)
-      (setq projectile-enable-caching t
-            projectile-switch-project-action 'projectile-dired
-            )
+  (use-package projectile
+    :ensure t
+    :bind (
+           ("C-c p P" . projectile-switch-project)
+           ("C-c p r" . projectile-ripgrep)
+           ("C-c p b" . projectile-switch-to-buffer)
+           ("C-c p f" . projectile-find-file)
+           )
 
-      )
+    :config
+    (projectile-global-mode)
+    (setq projectile-enable-caching t
+          projectile-switch-project-action 'projectile-dired
+          )
+
+    )
 
 #+END_SRC
 
 #+RESULTS:
-: projectile-switch-project
+: projectile-find-file
 
 * Latex
 
