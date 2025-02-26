@@ -178,13 +178,10 @@
     (save-buffers-kill-terminal)))
 (global-set-key "\C-x\C-c" 'martin-save-buffers-kill-emacs-with-confirm)
 
-(defun pulse-line (&rest _)
-      "Pulse the current line."
-      (pulse-momentary-highlight-one-line (point)))
-
-(dolist (command '(scroll-up-command scroll-down-command
-                   recenter-top-bottom other-window))
-  (advice-add command :after #'pulse-line))
+(use-package beacon
+  :ensure t
+  :config
+  (beacon-mode 1))
 
 (use-package yasnippet
   :ensure t
