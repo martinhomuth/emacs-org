@@ -28,7 +28,7 @@
 ;; TODO: add default font and fontsize
 (when (boundp 'fontsize)
   (add-to-list 'default-frame-alist
-               `(font . ,(concat "Source Code Pro-" (number-to-string fontsize)))
+               `(font . ,(concat "Iosevka-" (number-to-string fontsize)))
                `(font . ,(concat "Noto Color Emoji" (number-to-string fontsize)))
                ))
 
