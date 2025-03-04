@@ -461,7 +461,7 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package projectile
   :ensure t
   :bind (
-         ("C-c p P" . projectile-switch-project)
+         ("C-c p p" . projectile-switch-project)
          ("C-c p r" . projectile-ripgrep)
          ("C-c p b" . projectile-switch-to-buffer)
          ("C-c p f" . projectile-find-file)
