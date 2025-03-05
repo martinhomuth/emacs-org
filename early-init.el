@@ -39,15 +39,15 @@
 (delete-selection-mode t)
 (show-paren-mode 1)
 
-(setq fill-column 120
-      inhibit-startup-screen t
-      initial-scratch-message ""
-      show-paren-delay 0
-      show-paren-style 'mixed
-      visible-bell t
-      browse-url-browser-function 'browse-url-chromium
-      browse-url-new-window-flag  t
-      browse-url-firefox-new-window-is-tab t)
+(setq-default fill-column 120
+              inhibit-startup-screen t
+              initial-scratch-message ""
+              show-paren-delay 0
+              show-paren-style 'mixed
+              visible-bell t
+              browse-url-browser-function 'browse-url-chromium
+              browse-url-new-window-flag  t
+              browse-url-firefox-new-window-is-tab t)
 
 ;; Whitespaces... A colleague of mine showed me the horror of not
 ;; considering whitespaces and thus they are shown always and everywhere!
