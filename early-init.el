@@ -48,6 +48,7 @@
 (show-paren-mode 1)
 
 (setq fill-column 120
+      inhibit-startup-screen t
       initial-scratch-message ""
       show-paren-delay 0
       show-paren-style 'mixed
