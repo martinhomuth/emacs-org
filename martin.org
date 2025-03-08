@@ -158,32 +158,7 @@ I guess I set fonts manually.. Maybe there is a better way for this.
 #+END_SRC
 
 #+RESULTS:
-| UTF8_STRING | COMPOUND_TEXT | TEXT | STRING |
-
-** Frame Position and Size
-
-TODO: add configuration that is different accross all devices
-
-#+BEGIN_SRC emacs-lisp :tangle "init.el"
-  (progn
-    (setq initial-frame-alist '( (tool-bar-lines . 0)))
-    (if (window-system)
-        (nconc initial-frame-alist
-              '(
-                (width . 230) ; chars
-                (height . 60) ; lines
-                (left . 1261)
-                (top . 514))))
-    (setq default-frame-alist '( (tool-bar-lines . 0)))
-    (if (window-system)
-        (nconc default-frame-alist
-              '(
-                (width . 230) ; chars
-                (height . 60) ; lines
-                (left . 1261)
-                (top . 514))))
-  )
-#+END_SRC
+: t
 
 ** Window Handling
 

@@ -34,25 +34,6 @@
   :config
   (unicode-fonts-setup))
 
-(progn
-  (setq initial-frame-alist '( (tool-bar-lines . 0)))
-  (if (window-system)
-      (nconc initial-frame-alist
-            '(
-              (width . 230) ; chars
-              (height . 60) ; lines
-              (left . 1261)
-              (top . 514))))
-  (setq default-frame-alist '( (tool-bar-lines . 0)))
-  (if (window-system)
-      (nconc default-frame-alist
-            '(
-              (width . 230) ; chars
-              (height . 60) ; lines
-              (left . 1261)
-              (top . 514))))
-)
-
 (setq display-buffer-base-action
       '((display-buffer-reuse-window
          display-buffer-reuse-mode-window
