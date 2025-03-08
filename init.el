@@ -25,7 +25,7 @@
              `(font . ,(concat "Noto Color Emoji" (number-to-string mh-fontsize)))
              )
 
-  ;; Treat clipboard as UTF-8 string first
+;; Treat clipboard as UTF-8 string first
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
 ;; see https://github.com/rolandwalker/unicode-fonts
@@ -350,7 +350,7 @@ point reaches the beginning or end of the buffer, stop there."
 (defun mh-prev-other-window()
   "Simple function wrapper to `other-window' with a negative argument"
   (interactive)
-   (other-window -1))
+  (other-window -1))
 
 (defun move-file (new-location)
   "Write this file to NEW-LOCATION, and delete the old one."
@@ -421,8 +421,8 @@ point reaches the beginning or end of the buffer, stop there."
   (let ((fill-column (point-max)))
     (fill-paragraph nil)))
 
- ;; Handy key definition
- (define-key global-map "\M-Q" 'unfill-paragraph)
+;; Handy key definition
+(define-key global-map "\M-Q" 'unfill-paragraph)
 
 (use-package magit
   :ensure t
@@ -482,16 +482,16 @@ point reaches the beginning or end of the buffer, stop there."
         ))
 
 (add-hook 'notmuch-hello-refresh-hook
-	      (lambda ()
-                (if (and (eq (point) (point-min))
-                         (search-forward "Saved searches:" nil t))
-                    (progn
-		      (forward-line)
-		      (widget-forward 1))
-                  (if (eq (widget-type (widget-at)) 'editable-field)
-		      (beginning-of-line)))))
+	  (lambda ()
+            (if (and (eq (point) (point-min))
+                     (search-forward "Saved searches:" nil t))
+                (progn
+		  (forward-line)
+		  (widget-forward 1))
+              (if (eq (widget-type (widget-at)) 'editable-field)
+		  (beginning-of-line)))))
 
- (setq notmuch-crypto-process-mime t)
+(setq notmuch-crypto-process-mime t)
 
 (setq notmuch-search-line-faces '(("unread" :weight bold)
                                   ("flagged" :foreground "red")))
@@ -691,29 +691,29 @@ point reaches the beginning or end of the buffer, stop there."
 
 (add-to-list 'auto-mode-alist '("\\.json$" . js-mode))
 
-  (use-package js2-mode
-    :ensure t
-    :init
-    (add-hook 'js-mode-hook 'js2-minor-mode)
-    (setq js2-highlight-level 3))
+(use-package js2-mode
+  :ensure t
+  :init
+  (add-hook 'js-mode-hook 'js2-minor-mode)
+  (setq js2-highlight-level 3))
 
-  (use-package ac-js2
-    :ensure t
-    :init
-    (add-hook 'js2-mode-hook 'ac-js2-mode))
+(use-package ac-js2
+  :ensure t
+  :init
+  (add-hook 'js2-mode-hook 'ac-js2-mode))
 
 
-  (use-package flymake-jslint
-    :ensure t
-    :config
-    (add-to-list 'load-path (file-truename "~/git/lintnode"))
-    (setq lintnode-location (file-truename "~/git/lintnode"))
-    (setq lintnode-jslint-excludes (list 'nomen 'undef 'plusplus 'onevar 'white))
+(use-package flymake-jslint
+  :ensure t
+  :config
+  (add-to-list 'load-path (file-truename "~/git/lintnode"))
+  (setq lintnode-location (file-truename "~/git/lintnode"))
+  (setq lintnode-jslint-excludes (list 'nomen 'undef 'plusplus 'onevar 'white))
     ;;; TODO: does not work currently, investigate
-                                          ; (add-hook 'js-mode-hook
-                                          ;	    (lambda()
-                                          ; (lintnode-hook))))
-)
+					; (add-hook 'js-mode-hook
+					;	    (lambda()
+					; (lintnode-hook))))
+  )
 
 (use-package slime
   :ensure t)

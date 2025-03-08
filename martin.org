@@ -21,15 +21,15 @@ explicitly require them, but in the future I'd like to have a macro
 for it to automatically obtain the provisioning and requirement via
 the =init.el=.
 
-  #+begin_src emacs-lisp :tangle "init.el"
-    (mapc
-     (lambda (string)
-       (add-to-list 'load-path (locate-user-emacs-file string)))
-     '("mh-lisp" "mh-modules"))
-  #+end_src
+#+begin_src emacs-lisp :tangle "init.el"
+  (mapc
+   (lambda (string)
+     (add-to-list 'load-path (locate-user-emacs-file string)))
+   '("mh-lisp" "mh-modules"))
+#+end_src
 
-  #+RESULTS:
-  | mh-lisp | mh-modules |
+#+RESULTS:
+| mh-lisp | mh-modules |
 
 Also I want to make sure that this file is always tangled as soon as
 it is saved.
@@ -115,25 +115,25 @@ Just to make sure specific things are loaded as soon as possible
 Use additional sources for the packages, and ensure that use-package
 is available
 
-   #+BEGIN_SRC emacs-lisp :tangle early-init.el
-     (setq package-archives
-           '(("gnu-elpa" . "https://elpa.gnu.org/packages/")
-             ("nongnu" . "https://elpa.nongnu.org/nongnu/")
-             ("melpa" . "https://melpa.org/packages/")))
+#+BEGIN_SRC emacs-lisp :tangle early-init.el
+  (setq package-archives
+        '(("gnu-elpa" . "https://elpa.gnu.org/packages/")
+          ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+          ("melpa" . "https://melpa.org/packages/")))
 
-     ;; Highest number gets priority (what is not mentioned has priority 0)
-     (setq package-archive-priorities
-           '(("gnu-elpa" . 3)
-             ("melpa" . 2)
-             ("nongnu" . 1)))
+  ;; Highest number gets priority (what is not mentioned has priority 0)
+  (setq package-archive-priorities
+        '(("gnu-elpa" . 3)
+          ("melpa" . 2)
+          ("nongnu" . 1)))
 
-     (unless (package-installed-p 'use-package)
-       (package-refresh-contents)
-       (package-install 'use-package))
-     (eval-when-compile
-       (require 'use-package))
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+  (eval-when-compile
+    (require 'use-package))
 
-   #+END_SRC
+#+END_SRC
 
 ** Emacs Fonts and Locale
 
@@ -147,7 +147,7 @@ I guess I set fonts manually.. Maybe there is a better way for this.
                `(font . ,(concat "Noto Color Emoji" (number-to-string mh-fontsize)))
                )
 
-    ;; Treat clipboard as UTF-8 string first
+  ;; Treat clipboard as UTF-8 string first
   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
   ;; see https://github.com/rolandwalker/unicode-fonts
@@ -401,10 +401,10 @@ when in window system.
     "Thanks to jsled for this method"
     (interactive)
     (if (window-system)
-	(if (null current-prefix-arg)
-	    (if (y-or-n-p "Are you sure you want to quit?")
-		(save-buffers-kill-emacs))
-	  (save-buffers-kill-emacs))
+        (if (null current-prefix-arg)
+  	  (if (y-or-n-p "Are you sure you want to quit?")
+  	      (save-buffers-kill-emacs))
+  	(save-buffers-kill-emacs))
       (save-buffers-kill-terminal)))
   (global-set-key "\C-x\C-c" 'martin-save-buffers-kill-emacs-with-confirm)
 #+END_SRC
@@ -461,10 +461,10 @@ From Sacha Chuas Configuration for testing
     (let (templates-and-pos)
       (unless (and yas-expand-only-for-last-commands
                    (not (member last-command yas-expand-only-for-last-commands)))
-	(setq templates-and-pos (if field
+        (setq templates-and-pos (if field
                                     (save-restriction
                                       (narrow-to-region (yas--field-start field)
-							(yas--field-end field))
+  						      (yas--field-end field))
                                       (yas--templates-for-key-at-point))
                                   (yas--templates-for-key-at-point))))
       (and templates-and-pos (first templates-and-pos))))
@@ -777,7 +777,7 @@ configuration until the blog is somewhat running.
 
             ("blog" :components ("blog-notes" "blog-static")))))
 
-    (add-to-list 'org-export-filter-link-functions 'filter-local-links)
+  (add-to-list 'org-export-filter-link-functions 'filter-local-links)
 #+END_SRC
 
 #+RESULTS:
@@ -829,7 +829,7 @@ previous window instead of directly passing a negative argument to
   (defun mh-prev-other-window()
     "Simple function wrapper to `other-window' with a negative argument"
     (interactive)
-     (other-window -1))
+    (other-window -1))
 #+END_SRC
 
 ** Moving Files
@@ -843,19 +843,19 @@ with the file.
   (defun move-file (new-location)
     "Write this file to NEW-LOCATION, and delete the old one."
     (interactive (list (if buffer-file-name
-			   (read-file-name "Move file to: ")
-			 (read-file-name "Move file to: "
-					 default-directory
-					 (expand-file-name (file-name-nondirectory (buffer-name))
-							   default-directory)))))
+  			 (read-file-name "Move file to: ")
+  		       (read-file-name "Move file to: "
+  				       default-directory
+  				       (expand-file-name (file-name-nondirectory (buffer-name))
+  							 default-directory)))))
     (when (file-exists-p new-location)
       (delete-file new-location))
     (let ((old-location (buffer-file-name)))
       (write-file new-location t)
       (when (and old-location
-		 (file-exists-p new-location)
-		 (not (string-equal old-location new-location)))
-	(delete-file old-location))))
+  	       (file-exists-p new-location)
+  	       (not (string-equal old-location new-location)))
+        (delete-file old-location))))
 
   (bind-key "C-x C-m" 'move-file)
 #+END_SRC
@@ -956,14 +956,14 @@ https://github.com/mferland/bb-mode
 : ((\.conf$ . bb-mode) (\.bbclass$ . bb-mode) (\.bbappend$ . bb-mode) (\.inc$ . bb-mode) (\.bb$ . bb-mode) (\.odc\' . archive-mode) (\.odf\' . archive-mode) (\.odi\' . archive-mode) (\.otp\' . archive-mode) (\.odp\' . archive-mode) (\.otg\' . archive-mode) (\.odg\' . archive-mode) (\.ots\' . archive-mode) (\.ods\' . archive-mode) (\.odm\' . archive-mode) (\.ott\' . archive-mode) (\.odt\' . archive-mode) (^yang\.settings$ . jsonc-mode) (\.json$ . js-mode) (\.php$ . my-setup-php) (.*mutt.* . message-mode) (\.yml\' . yaml-mode) (\.proto\' . protobuf-mode) (\.po\'\|\.po\. . po-mode) (\.eselect\' . eselect-mode) (/make\.\(conf\|defaults\)\' . conf-unix-mode) (/\(package\.\(mask\|unmask\|use\|env\|license\|properties\|accept_\(keywords\|restrict\)\)\|\(package\.\)?use.\(stable\.\)?\(force\|mask\)\)\' . conf-space-mode) (/glep.*\.rst\' . glep-mode) (/[0-9]\{4\}-[01][0-9]-[0-3][0-9]-.+\.[a-z]\{2\}\.txt\' . gentoo-newsitem-mode) (/devmanual.*\.xml\' . devbook-mode) (\.eclass\' . ebuild-eclass-mode) (\.ebuild\' . ebuild-mode) (\.at\' . autotest-mode) (\.ac\'\|configure\.in\' . autoconf-mode) (\.dtsi?\' . dts-mode) (/git-rebase-todo\' . git-rebase-mode) (\.\(?:md\|markdown\|mkd\|mdown\|mkdn\|mdwn\)\' . markdown-mode) (\.\(e?ya?\|ra\)ml\' . yaml-mode) (\.gpg\(~\|\.~[0-9]+~\)?\' nil epa-file) (\.elc\' . elisp-byte-code-mode) (\.zst\' nil jka-compr) (\.dz\' nil jka-compr) (\.xz\' nil jka-compr) (\.lzma\' nil jka-compr) (\.lz\' nil jka-compr) (\.g?z\' nil jka-compr) (\.bz2\' nil jka-compr) (\.Z\' nil jka-compr) (\.vr[hi]?\' . vera-mode) (\(?:\.\(?:rbw?\|ru\|rake\|thor\|jbuilder\|rabl\|gemspec\|podspec\)\|/\(?:Gem\|Rake\|Cap\|Thor\|Puppet\|Berks\|Brew\|Vagrant\|Guard\|Pod\)file\)\' . ruby-mode) (\.re?st\' . rst-mode) (\.py[iw]?\' . python-mode) (\.m\' . octave-maybe-mode) (\.less\' . less-css-mode) (\.scss\' . scss-mode) (\.cs\' . csharp-mode) (\.awk\' . awk-mode) (\.\(u?lpc\|pike\|pmod\(\.in\)?\)\' . pike-mode) (\.idl\' . idl-mode) (\.java\' . java-mode) (\.m\' . objc-mode) (\.ii\' . c++-mode) (\.i\' . c-mode) (\.lex\' . c-mode) (\.y\(acc\)?\' . c-mode) (\.h\' . c-or-c++-mode) (\.c\' . c-mode) (\.\(CC?\|HH?\)\' . c++-mode) (\.[ch]\(pp\|xx\|\+\+\)\' . c++-mode) (\.\(cc\|hh\)\' . c++-mode) (\.\(bat\|cmd\)\' . bat-mode) (\.[sx]?html?\(\.[a-zA-Z_]+\)?\' . mhtml-mode) (\.svgz?\' . image-mode) (\.svgz?\' . xml-mode) (\.x[bp]m\' . image-mode) (\.x[bp]m\' . c-mode) (\.p[bpgn]m\' . image-mode) (\.tiff?\' . image-mode) (\.gif\' . image-mode) (\.png\' . image-mode) (\.jpe?g\' . image-mode) (\.webp\' . image-mode) (\.te?xt\' . text-mode) (\.[tT]e[xX]\' . tex-mode) (\.ins\' . tex-mode) (\.ltx\' . latex-mode) (\.dtx\' . doctex-mode) (\.org\' . org-mode) (\.dir-locals\(?:-2\)?\.el\' . lisp-data-mode) (\.eld\' . lisp-data-mode) (eww-bookmarks\' . lisp-data-mode) (tramp\' . lisp-data-mode) (/archive-contents\' . lisp-data-mode) (places\' . lisp-data-mode) (\.emacs-places\' . lisp-data-mode) (\.el\' . emacs-lisp-mode) (Project\.ede\' . emacs-lisp-mode) (\.\(scm\|sls\|sld\|stk\|ss\|sch\)\' . scheme-mode) (\.l\' . lisp-mode) (\.li?sp\' . lisp-mode) (\.[fF]\' . fortran-mode) (\.for\' . fortran-mode) (\.p\' . pascal-mode) (\.pas\' . pascal-mode) (\.\(dpr\|DPR\)\' . delphi-mode) (\.\([pP]\([Llm]\|erl\|od\)\|al\)\' . perl-mode) (Imakefile\' . makefile-imake-mode) (Makeppfile\(?:\.mk\)?\' . makefile-makepp-mode) (\.makepp\' . makefile-makepp-mode) (\.mk\' . makefile-gmake-mode) (\.make\' . makefile-gmake-mode) ([Mm]akefile\' . makefile-gmake-mode) (\.am\' . makefile-automake-mode) (\.texinfo\' . texinfo-mode) (\.te?xi\' . texinfo-mode) (\.[sS]\' . asm-mode) (\.asm\' . asm-mode) (\.css\' . css-mode) (\.mixal\' . mixal-mode) (\.gcov\' . compilation-mode) (/\.[a-z0-9-]*gdbinit . gdb-script-mode) (-gdb\.gdb . gdb-script-mode) ([cC]hange\.?[lL]og?\' . change-log-mode) ([cC]hange[lL]og[-.][0-9]+\' . change-log-mode) (\$CHANGE_LOG\$\.TXT . change-log-mode) (\.scm\.[0-9]*\' . scheme-mode) (\.[ckz]?sh\'\|\.shar\'\|/\.z?profile\' . sh-mode) (\.bash\' . sh-mode) (/PKGBUILD\' . sh-mode) (\(/\|\`\)\.\(bash_\(profile\|history\|log\(in\|out\)\)\|z?log\(in\|out\)\)\' . sh-mode) (\(/\|\`\)\.\(shrc\|zshrc\|m?kshrc\|bashrc\|t?cshrc\|esrc\)\' . sh-mode) (\(/\|\`\)\.\([kz]shenv\|xinitrc\|startxrc\|xsession\)\' . sh-mode) (\.m?spec\' . sh-mode) (\.m[mes]\' . nroff-mode) (\.man\' . nroff-mode) (\.sty\' . latex-mode) (\.cl[so]\' . latex-mode) (\.bbl\' . latex-mode) (\.bib\' . bibtex-mode) (\.bst\' . bibtex-style-mode) (\.sql\' . sql-mode) (\(acinclude\|aclocal\|acsite\)\.m4\' . autoconf-mode) (\.m[4c]\' . m4-mode) (\.mf\' . metafont-mode) (\.mp\' . metapost-mode) (\.vhdl?\' . vhdl-mode) (\.article\' . text-mode) (\.letter\' . text-mode) (\.i?tcl\' . tcl-mode) (\.exp\' . tcl-mode) (\.itk\' . tcl-mode) (\.icn\' . icon-mode) (\.sim\' . simula-mode) (\.mss\' . scribe-mode) (\.f9[05]\' . f90-mode) (\.f0[38]\' . f90-mode) (\.indent\.pro\' . fundamental-mode) (\.\(pro\|PRO\)\' . idlwave-mode) (\.srt\' . srecode-template-mode) (\.prolog\' . prolog-mode) (\.tar\' . tar-mode) (\.\(arc\|zip\|lzh\|lha\|zoo\|[jew]ar\|xpi\|rar\|cbr\|7z\|squashfs\|ARC\|ZIP\|LZH\|LHA\|ZOO\|[JEW]AR\|XPI\|RAR\|CBR\|7Z\|SQUASHFS\)\' . archive-mode) (\.oxt\' . archive-mode) (\.\(deb\|[oi]pk\)\' . archive-mode) (\`/tmp/Re . text-mode) (/Message[0-9]*\' . text-mode) (\`/tmp/fol/ . text-mode) (\.oak\' . scheme-mode) (\.sgml?\' . sgml-mode) (\.x[ms]l\' . xml-mode) (\.dbk\' . xml-mode) (\.dtd\' . sgml-mode) (\.ds\(ss\)?l\' . dsssl-mode) (\.js[mx]?\' . javascript-mode) (\.har\' . javascript-mode) (\.json\' . js-json-mode) (\.[ds]?va?h?\' . verilog-mode) (\.by\' . bovine-grammar-mode) (\.wy\' . wisent-grammar-mode) (\.erts\' . erts-mode) ([:/\]\..*\(emacs\|gnus\|viper\)\' . emacs-lisp-mode) (\`\..*emacs\' . emacs-lisp-mode) ([:/]_emacs\' . emacs-lisp-mode) (/crontab\.X*[0-9]+\' . shell-script-mode) (\.ml\' . lisp-mode) (\.ld[si]?\' . ld-script-mode) (ld\.?script\' . ld-script-mode) (\.xs\' . c-mode) (\.x[abdsru]?[cnw]?\' . ld-script-mode) (\.zone\' . dns-mode) (\.soa\' . dns-mode) (\.asd\' . lisp-mode) (\.\(asn\|mib\|smi\)\' . snmp-mode) (\.\(as\|mi\|sm\)2\' . snmpv2-mode) (\.\(diffs?\|patch\|rej\)\' . diff-mode) (\.\(dif\|pat\)\' . diff-mode) (\.[eE]?[pP][sS]\' . ps-mode) (\.\(?:PDF\|EPUB\|CBZ\|FB2\|O?XPS\|DVI\|OD[FGPST]\|DOCX\|XLSX?\|PPTX?\|pdf\|epub\|cbz\|fb2\|o?xps\|djvu\|dvi\|od[fgpst]\|docx\|xlsx?\|pptx?\)\' . doc-view-mode-maybe) (configure\.\(ac\|in\)\' . autoconf-mode) (\.s\(v\|iv\|ieve\)\' . sieve-mode) (BROWSE\' . ebrowse-tree-mode) (\.ebrowse\' . ebrowse-tree-mode) (#\*mail\* . mail-mode) (\.g\' . antlr-mode) (\.mod\' . m2-mode) (\.ses\' . ses-mode) (\.docbook\' . sgml-mode) (\.com\' . dcl-mode) (/config\.\(?:bat\|log\)\' . fundamental-mode) (/\.\(authinfo\|netrc\)\' . authinfo-mode) (\.\(?:[iI][nN][iI]\|[lL][sS][tT]\|[rR][eE][gG]\|[sS][yY][sS]\)\' . conf-mode) (\.la\' . conf-unix-mode) (\.ppd\' . conf-ppd-mode) (java.+\.conf\' . conf-javaprop-mode) (\.properties\(?:\.[a-zA-Z0-9._-]+\)?\' . conf-javaprop-mode) (\.toml\' . conf-toml-mode) (\.desktop\' . conf-desktop-mode) (/\.redshift\.conf\' . conf-windows-mode) (\`/etc/\(?:DIR_COLORS\|ethers\|.?fstab\|.*hosts\|lesskey\|login\.?de\(?:fs\|vperm\)\|magic\|mtab\|pam\.d/.*\|permissions\(?:\.d/.+\)?\|protocols\|rpc\|services\)\' . conf-space-mode) (\`/etc/\(?:acpid?/.+\|aliases\(?:\.d/.+\)?\|default/.+\|group-?\|hosts\..+\|inittab\|ksysguarddrc\|opera6rc\|passwd-?\|shadow-?\|sysconfig/.+\)\' . conf-mode) ([cC]hange[lL]og[-.][-0-9a-z]+\' . change-log-mode) (/\.?\(?:gitconfig\|gnokiirc\|hgrc\|kde.*rc\|mime\.types\|wgetrc\)\' . conf-mode) (/\.mailmap\' . conf-unix-mode) (/\.\(?:asound\|enigma\|fetchmail\|gltron\|gtk\|hxplayer\|mairix\|mbsync\|msmtp\|net\|neverball\|nvidia-settings-\|offlineimap\|qt/.+\|realplayer\|reportbug\|rtorrent\.\|screen\|scummvm\|sversion\|sylpheed/.+\|xmp\)rc\' . conf-mode) (/\.\(?:gdbtkinit\|grip\|mpdconf\|notmuch-config\|orbital/.+txt\|rhosts\|tuxracer/options\)\' . conf-mode) (/\.?X\(?:default\|resource\|re\)s\> . conf-xdefaults-mode) (/X11.+app-defaults/\|\.ad\' . conf-xdefaults-mode) (/X11.+locale/.+/Compose\' . conf-colon-mode) (/X11.+locale/compose\.dir\' . conf-javaprop-mode) (\.~?[0-9]+\.[0-9][-.0-9]*~?\' nil t) (\.\(?:orig\|in\|[bB][aA][kK]\)\' nil t) ([/.]c\(?:on\)?f\(?:i?g\)?\(?:\.[a-zA-Z0-9._-]+\)?\' . conf-mode-maybe) (\.[1-9]\' . nroff-mode) (\.art\' . image-mode) (\.avs\' . image-mode) (\.bmp\' . image-mode) (\.cmyk\' . image-mode) (\.cmyka\' . image-mode) (\.crw\' . image-mode) (\.dcr\' . image-mode) (\.dcx\' . image-mode) (\.dng\' . image-mode) (\.dpx\' . image-mode) (\.fax\' . image-mode) (\.heic\' . image-mode) (\.hrz\' . image-mode) (\.icb\' . image-mode) (\.icc\' . image-mode) (\.icm\' . image-mode) (\.ico\' . image-mode) (\.icon\' . image-mode) (\.jbg\' . image-mode) (\.jbig\' . image-mode) (\.jng\' . image-mode) (\.jnx\' . image-mode) (\.miff\' . image-mode) (\.mng\' . image-mode) (\.mvg\' . image-mode) (\.otb\' . image-mode) (\.p7\' . image-mode) (\.pcx\' . image-mode) (\.pdb\' . image-mode) (\.pfa\' . image-mode) (\.pfb\' . image-mode) (\.picon\' . image-mode) (\.pict\' . image-mode) (\.rgb\' . image-mode) (\.rgba\' . image-mode) (\.tga\' . image-mode) (\.wbmp\' . image-mode) (\.webp\' . image-mode) (\.wmf\' . image-mode) (\.wpg\' . image-mode) (\.xcf\' . image-mode) (\.xmp\' . image-mode) (\.xwd\' . image-mode) (\.yuv\' . image-mode) (\.tgz\' . tar-mode) (\.tbz2?\' . tar-mode) (\.txz\' . tar-mode) (\.tzst\' . tar-mode))
 
 ** Auto Fill
-   #+BEGIN_SRC emacs-lisp :tangle "init.el"
-     (add-hook 'org-mode-hook 'turn-on-auto-fill)
-     (add-hook 'c-mode-hook 'turn-on-auto-fill)
-     (add-hook 'TeX-mode-hook 'turn-on-auto-fill)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
+  (add-hook 'org-mode-hook 'turn-on-auto-fill)
+  (add-hook 'c-mode-hook 'turn-on-auto-fill)
+  (add-hook 'TeX-mode-hook 'turn-on-auto-fill)
+#+END_SRC
 
-  /data/github/emacs-org/ #+RESULTS:
-   | turn-on-auto-fill |
+/data/github/emacs-org/ #+RESULTS:
+| turn-on-auto-fill |
 
 But, also allow unfilling
 
@@ -975,8 +975,8 @@ But, also allow unfilling
     (let ((fill-column (point-max)))
       (fill-paragraph nil)))
 
-   ;; Handy key definition
-   (define-key global-map "\M-Q" 'unfill-paragraph)
+  ;; Handy key definition
+  (define-key global-map "\M-Q" 'unfill-paragraph)
 #+END_SRC
 
 #+RESULTS:
@@ -989,11 +989,11 @@ Magit seems to be the one and only package when dealing with git
 repositories. We will see, if there is something else needed ever.
 
 #+BEGIN_SRC emacs-lisp :tangle "init.el"
-(use-package magit
-  :ensure t
-  :init
-  (setq magit-auto-revert-mode nil)
-  (setq magit-last-seen-setup-instructions "1.4.0"))
+  (use-package magit
+    :ensure t
+    :init
+    (setq magit-auto-revert-mode nil)
+    (setq magit-last-seen-setup-instructions "1.4.0"))
 #+END_SRC
 
 #+RESULTS:
@@ -1057,32 +1057,32 @@ decided to finally head over to projectile and give it a try.
 Typical settings for work stuff.
 
 #+begin_src emacs-lisp
-    (use-package erc
-      :init
-      (setq erc-server-alist
-       '(("Emlix GmbH IRC Server" emlix "irc.emlix.com" 6667)
-       ))
-      (setq erc-autojoin-timing 'ident)
-      (setq erc-nick "martin_daheeme")
-      (setq erc-user-full-name "Martin H")
-      (setq erc-track-shorten-start 8)
-      (setq erc-autojoin-channels-alist
-       '(("irc.emlix.com" "#emlix")
-         ))
-      (setq erc-kill-buffer-on-part t)
-      (setq erc-auto-query 'bury)
-      :config
-      (add-hook 'erc-mode-hook
-                (lambda ()
-                  (setq show-trailing-whitespace nil)))
-      (add-hook 'erc-list-mode-hook
-                (lambda ()
-                  (setq show-trailing-whitespace nil)))
-      (add-to-list 'erc-modules 'notifications)
-      (add-to-list 'erc-modules 'spelling)
-      (add-to-list 'erc-modules 'log)
-      (erc-services-mode 1)
-      (erc-update-modules))
+  (use-package erc
+    :init
+    (setq erc-server-alist
+  	'(("Emlix GmbH IRC Server" emlix "irc.emlix.com" 6667)
+  	  ))
+    (setq erc-autojoin-timing 'ident)
+    (setq erc-nick "martin_daheeme")
+    (setq erc-user-full-name "Martin H")
+    (setq erc-track-shorten-start 8)
+    (setq erc-autojoin-channels-alist
+  	'(("irc.emlix.com" "#emlix")
+  	  ))
+    (setq erc-kill-buffer-on-part t)
+    (setq erc-auto-query 'bury)
+    :config
+    (add-hook 'erc-mode-hook
+              (lambda ()
+                (setq show-trailing-whitespace nil)))
+    (add-hook 'erc-list-mode-hook
+              (lambda ()
+                (setq show-trailing-whitespace nil)))
+    (add-to-list 'erc-modules 'notifications)
+    (add-to-list 'erc-modules 'spelling)
+    (add-to-list 'erc-modules 'log)
+    (erc-services-mode 1)
+    (erc-update-modules))
 #+end_src
 
 #+RESULTS:
@@ -1132,7 +1132,7 @@ my work IRC. [[https://jcubic.wordpress.com/2012/07/24/erc-notifications-on-chan
 #+begin_src emacs-lisp
   (setq inactivity-buffer-alist '(("#emlix" (inactivity . 900))
                                   ("#mhtest" (inactivity . 3))))
-  
+
   (defun async-exec-command (command &rest success)
     (interactive)
     (let* ((buffer-name (generate-new-buffer-name "**shell**"))
@@ -1152,7 +1152,7 @@ my work IRC. [[https://jcubic.wordpress.com/2012/07/24/erc-notifications-on-chan
                                 (lambda (proces str)
                                   (kill-buffer buffer)))))
       (concat "execute: " command)))
-  
+
   (defun channel-activity (string &rest ignore)
     "Notification when there is activity on a erc channel after inactivity"
     (let* ((buffer (buffer-name))
@@ -1197,15 +1197,15 @@ emails. Let's fix that.
   (add-to-list 'auto-mode-alist '(".*mutt.*" . message-mode))
   (setq mail-header-separator "")
   (add-hook 'message-mode-hook
-	    'turn-on-auto-fill
-	    (function
-	     (lambda ()
-	       (progn
-		 (local-unset-key "\C-c\C-c")
-		 (define-key message-mode-map "\C-c\C-c" '(lambda ()
-							    "save and exit quickly"
-							    (interactive)
-							    (save-buffer)))))))
+  	  'turn-on-auto-fill
+  	  (function
+  	   (lambda ()
+  	     (progn
+  	       (local-unset-key "\C-c\C-c")
+  	       (define-key message-mode-map "\C-c\C-c" '(lambda ()
+  							  "save and exit quickly"
+  							  (interactive)
+  							  (save-buffer)))))))
 #+END_SRC
 
 #+RESULTS:
@@ -1239,16 +1239,16 @@ Initial cursor position in hello window
 
 #+BEGIN_SRC emacs-lisp :tangle "init.el"
   (add-hook 'notmuch-hello-refresh-hook
-		(lambda ()
-                  (if (and (eq (point) (point-min))
-                           (search-forward "Saved searches:" nil t))
-                      (progn
-			(forward-line)
-			(widget-forward 1))
-                    (if (eq (widget-type (widget-at)) 'editable-field)
-			(beginning-of-line)))))
+  	  (lambda ()
+              (if (and (eq (point) (point-min))
+                       (search-forward "Saved searches:" nil t))
+                  (progn
+  		  (forward-line)
+  		  (widget-forward 1))
+                (if (eq (widget-type (widget-at)) 'editable-field)
+  		  (beginning-of-line)))))
 
-   (setq notmuch-crypto-process-mime t)
+  (setq notmuch-crypto-process-mime t)
 #+END_SRC
 
 Faces
@@ -1302,8 +1302,8 @@ Testing some scripts for startup
   GH=$HOME/github
 
   err () {
-      notify-send "$1"
-      exit 1
+  	notify-send "$1"
+  	exit 1
   }
 
   REPOSITORIES="\
@@ -1319,46 +1319,46 @@ Testing some scripts for startup
   "
 
   for repo in $REPOSITORIES; do
-      if [ ! -d $repo ]; then
-	  err "repo $(basename $repo) is not available"
-      fi
+  	if [ ! -d $repo ]; then
+  		err "repo $(basename $repo) is not available"
+  	fi
 
-      # execute everything in a subshell, may be useful later on
-      (
-	  cd $repo
+  	# execute everything in a subshell, may be useful later on
+  	(
+  		cd $repo
 
-	  status=$(git status -s)
-	  if [ "y$status" != "y" ]; then
-	      # can be unstaged or untracked
-	      if [ $(expr match "$status" '^??.*') -eq 0 ]; then  # if unstaged
-		  err "$(basename $repo) has unstaged changes"
-	      fi
-	  fi
+  		status=$(git status -s)
+  		if [ "y$status" != "y" ]; then
+  			# can be unstaged or untracked
+  			if [ $(expr match "$status" '^??.*') -eq 0 ]; then  # if unstaged
+  				err "$(basename $repo) has unstaged changes"
+  			fi
+  		fi
 
-	  git status | grep -e behind >/dev/null
-	  ret=$?
-	  if [ $ret -eq 0 ]; then
-	      echo "Pulling changeds from $repo"
-	      {
-		  git pull
-	      } &>/dev/null
-	      if [ $? -eq 1 ]; then
-		  err "unable to pull repo $repo"
-	      fi
-	  fi
+  		git status | grep -e behind >/dev/null
+  		ret=$?
+  		if [ $ret -eq 0 ]; then
+  			echo "Pulling changeds from $repo"
+  			{
+  				git pull
+  			} &>/dev/null
+  			if [ $? -eq 1 ]; then
+  				err "unable to pull repo $repo"
+  			fi
+  		fi
 
-	  git status | grep -e ahead >/dev/null
-	  ret=$?
-	  if [ $ret -eq 0 ]; then
-	      echo "Pushing changes to $repo"
-	      {
-		  git push
-	      } &>/dev/null
-	      if [ $? -eq 1 ]; then
-		  err "unable to push repo $repo"
-	      fi
-	  fi
-      )
+  		git status | grep -e ahead >/dev/null
+  		ret=$?
+  		if [ $ret -eq 0 ]; then
+  			echo "Pushing changes to $repo"
+  			{
+  				git push
+  			} &>/dev/null
+  			if [ $? -eq 1 ]; then
+  				err "unable to push repo $repo"
+  			fi
+  		fi
+  	)
   done
 #+END_SRC
 
@@ -1373,7 +1373,7 @@ I use ledger to collect any accounting data.
     :ensure t)
 
   (setenv "PATH" (concat (concat "/home/" user-login-name "/bin:")
-			 (getenv "PATH")))
+  		       (getenv "PATH")))
   (push (concat "/home/" user-login-name "/bin") exec-path)
 #+END_SRC
 
@@ -1446,7 +1446,7 @@ Thanks to Isa Mert Gurbuz (https://isamert.net/)
                          '(("[ ]" . "☐")
                            ("[X]" . "☑" )
                            ("[-]" . "❍" )))
-  #+END_SRC
+#+END_SRC
 
 #+RESULTS:
 : t
@@ -1687,7 +1687,7 @@ confirmation of executing those blocks the following variables are set
            ("C-c c" . org-gtd-organize)
            ("C-c f" . org-gtd-area-of-focus-set-on-item-at-point)
            ("C-c t" . org-gtd-clarify-toggle-horizons-window))
-  )
+    )
 #+end_src
 
 #+RESULTS:
@@ -1823,16 +1823,16 @@ Define a function that intializes auto-complete-c-headers and gets
 called for c/c++ hooks
 
 #+BEGIN_SRC emacs-lisp :tangle "init.el"
-    (use-package auto-complete-c-headers
-      :ensure t
-      :config
-      (add-to-list 'ac-sources 'ac-source-c-headers))
+  (use-package auto-complete-c-headers
+    :ensure t
+    :config
+    (add-to-list 'ac-sources 'ac-source-c-headers))
 
-    (defun my/init-ac-c-headers ()
-      (add-to-list 'achead:include-directories '"/usr/src/linux/include/"))
+  (defun my/init-ac-c-headers ()
+    (add-to-list 'achead:include-directories '"/usr/src/linux/include/"))
 
-    (add-hook 'c++-mode-hook 'my/init-ac-c-headers)
-    (add-hook 'c-mode-hook 'my/init-ac-c-headers)
+  (add-hook 'c++-mode-hook 'my/init-ac-c-headers)
+  (add-hook 'c-mode-hook 'my/init-ac-c-headers)
 #+END_SRC
 
 Use flycheck for syntax checking
@@ -1866,13 +1866,13 @@ Highlight TODO/FIXME/etc
   (defun my-highlight-keywords-warning()
     ""
     (font-lock-add-keywords nil
-			    '(("\\<\\(FIXME\\|TODO\\|XXX+\\|BUG\\|TBD\\):"
-			       1 font-lock-warning-face prepend))))
+  			  '(("\\<\\(FIXME\\|TODO\\|XXX+\\|BUG\\|TBD\\):"
+  			     1 font-lock-warning-face prepend))))
   (defun my-highlight-keywords-info()
     ""
     (font-lock-add-keywords nil
-			    '(("\\<\\(NOTE\\|INFO\\):"
-			       1 font-lock-comment-face prepend))))
+  			  '(("\\<\\(NOTE\\|INFO\\):"
+  			     1 font-lock-comment-face prepend))))
 
   (add-hook 'c-mode-hook 'my-highlight-keywords-warning)
   (add-hook 'c-mode-hook 'my-highlight-keywords-info)
@@ -1924,25 +1924,25 @@ This indentation is not working in the original c++-mode, thus a fix is needed:
     "Checks if POS is within the braces of a C++ \"enum class\"."
     (ignore-errors
       (save-excursion
-	(goto-char pos)
-	(up-list -1)
-	(backward-sexp 1)
-	(looking-back "enum[ \t]+class[ \t]+[^}]+"))))
+        (goto-char pos)
+        (up-list -1)
+        (backward-sexp 1)
+        (looking-back "enum[ \t]+class[ \t]+[^}]+"))))
 
   (defun align-enum-class (langelem)
     (if (inside-class-enum-p (c-langelem-pos langelem))
-	(c-lineup-topmost-intro-cont langelem)))
+        (c-lineup-topmost-intro-cont langelem)))
 
   (defun align-enum-class-closing-brace (langelem)
     (if (inside-class-enum-p (c-langelem-pos langelem))
-	'-
+        '-
       '+))
 
   (defun fix-enum-class ()
     "Setup `c++-mode' to better handle \"class enum\"."
     (add-to-list 'c-offsets-alist '(topmost-intro-cont . align-enum-class))
     (add-to-list 'c-offsets-alist
-		 '(statement-cont . align-enum-class-closing-brace)))
+  	       '(statement-cont . align-enum-class-closing-brace)))
 
   (add-hook 'c++-mode-hook 'fix-enum-class)
 #+END_SRC
@@ -2017,11 +2017,11 @@ needed. [[http://truongtx.me][Truong TX]] gave a nice example.
     (add-to-list 'load-path (file-truename "~/git/lintnode"))
     (setq lintnode-location (file-truename "~/git/lintnode"))
     (setq lintnode-jslint-excludes (list 'nomen 'undef 'plusplus 'onevar 'white))
-    ;;; TODO: does not work currently, investigate
-                                          ; (add-hook 'js-mode-hook
-                                          ;	    (lambda()
-                                          ; (lintnode-hook))))
-)
+      ;;; TODO: does not work currently, investigate
+  					; (add-hook 'js-mode-hook
+  					;	    (lambda()
+  					; (lintnode-hook))))
+    )
 #+END_SRC
 
 #+RESULTS:

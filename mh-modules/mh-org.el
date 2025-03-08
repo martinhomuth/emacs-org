@@ -210,7 +210,7 @@ SCHEDULED: %^t
          ("C-c c" . org-gtd-organize)
          ("C-c f" . org-gtd-area-of-focus-set-on-item-at-point)
          ("C-c t" . org-gtd-clarify-toggle-horizons-window))
-)
+  )
 
 (use-package org-roam
   :ensure t
