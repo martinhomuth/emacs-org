@@ -71,13 +71,6 @@ better be extracted from this file.
 #+RESULTS:
 : t
 
-And configure some custom stuff that is also based on the system emacs
-pis running on. There are four systems that I consider:
- 1. Desktop (melchior)
- 2. Work Desktop (devpool16)
- 3. Work Laptop (mobilepool16)
- 4. Any other system (servers)
-
 #+begin_src emacs-lisp :tangle "init.el"
   ;;; mail address based on username
   (setq user-mail-address
@@ -85,13 +78,6 @@ pis running on. There are four systems that I consider:
           (cond ((string= username "martin") "martin@followthestack.tech")
                 ((string= username "mhomuth") "mh@emlix.com")
                 "martin@followthestack.tech")))
-
-  ;;; fontsize based on screen resolution
-  (if (display-graphic-p)
-      (setq fontsize
-            (let ((width (x-display-pixel-width)))
-              (cond ((eql width 6336) 10) ;;; 2 monitor workstation in office
-                    (t 9)))))
 
 #+end_src
 
@@ -155,11 +141,11 @@ I guess I set fonts manually.. Maybe there is a better way for this.
 
 #+BEGIN_SRC emacs-lisp :tangle "init.el"
   ;; TODO: add default font and fontsize
-  (when (boundp 'fontsize)
-    (add-to-list 'default-frame-alist
-                 `(font . ,(concat "Iosevka-" (number-to-string fontsize)))
-                 `(font . ,(concat "Noto Color Emoji" (number-to-string fontsize)))
-                 ))
+  (defvar mh-fontsize 10)
+  (add-to-list 'default-frame-alist
+               `(font . ,(concat "Iosevka-" (number-to-string mh-fontsize)))
+               `(font . ,(concat "Noto Color Emoji" (number-to-string mh-fontsize)))
+               )
 
     ;; Treat clipboard as UTF-8 string first
   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))

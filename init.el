@@ -16,21 +16,14 @@
               ((string= username "mhomuth") "mh@emlix.com")
               "martin@followthestack.tech")))
 
-;;; fontsize based on screen resolution
-(if (display-graphic-p)
-    (setq fontsize
-          (let ((width (x-display-pixel-width)))
-            (cond ((eql width 6336) 10) ;;; 2 monitor workstation in office
-                  (t 9)))))
-
 (require 'mh-org)
 
 ;; TODO: add default font and fontsize
-(when (boundp 'fontsize)
-  (add-to-list 'default-frame-alist
-               `(font . ,(concat "Iosevka-" (number-to-string fontsize)))
-               `(font . ,(concat "Noto Color Emoji" (number-to-string fontsize)))
-               ))
+(defvar mh-fontsize 10)
+(add-to-list 'default-frame-alist
+             `(font . ,(concat "Iosevka-" (number-to-string mh-fontsize)))
+             `(font . ,(concat "Noto Color Emoji" (number-to-string mh-fontsize)))
+             )
 
   ;; Treat clipboard as UTF-8 string first
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
