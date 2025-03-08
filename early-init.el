@@ -28,14 +28,6 @@
 (eval-when-compile
   (require 'use-package))
 
-;; also keep the packages up to date
-(use-package auto-package-update
-  :ensure t
-  :config
-  (setq auto-package-update-delete-old-versions t)
-  (setq auto-package-update-hide-results t)
-  (auto-package-update-maybe))
-
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 
 (tooltip-mode -1)
