@@ -570,7 +570,6 @@ point reaches the beginning or end of the buffer, stop there."
        c-basic-offset)))
 
 (defun my/general-c-mode-configuration ()
-  (setq indent-tabs-mode t)
   (setq c-basic-offset 8
         cdefault-style "linux"
         tab-width 8
@@ -648,12 +647,14 @@ point reaches the beginning or end of the buffer, stop there."
           (lambda () (define-key c-mode-base-map (kbd "C-c C-l") 'compile)))
 
 (defun martin-setup-sh-mode()
-  "sh-mode customizations."
+  "sh-mode and shell-mode customizations."
   (interactive)
-  (setq sh-basic-offset 8
-        sh-indentation 8))
+  (lambda()
+    (setq indent-tabs-mode nil)
+    (setq tab-width 4)))
 
 (add-hook 'sh-mode-hook 'martin-setup-sh-mode)
+(add-hook 'shell-mode-hook 'martin-setup-sh-mode)
 
 (add-hook 'sh-mode-hook 'flycheck-mode)
 

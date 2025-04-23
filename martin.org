@@ -1814,7 +1814,6 @@ Linux kernel coding style adjustments
          c-basic-offset)))
 
   (defun my/general-c-mode-configuration ()
-    (setq indent-tabs-mode t)
     (setq c-basic-offset 8
           cdefault-style "linux"
           tab-width 8
@@ -1843,6 +1842,9 @@ Linux kernel coding style adjustments
                            c-lineup-gcc-asm-reg
                            c-lineup-arglist-tabs-only))))))
 #+END_SRC
+
+#+RESULTS:
+| (lambda nil (define-key c-mode-base-map (kbd C-c C-l) 'compile)) | (lambda nil (c-add-style linux-tabs-only '(linux (c-offsets-alist (arglist-cont-nonempty c-lineup-gcc-asm-reg c-lineup-arglist-tabs-only))))) | my/general-c-mode-configuration | my/add-semantic-to-autocomplete | ac-cc-mode-setup |
 
 Define a function that intializes auto-complete-c-headers and gets
 called for c/c++ hooks
@@ -1924,13 +1926,18 @@ Finally fixing the indentation of my shell mode.
 
 #+BEGIN_SRC emacs-lisp :tangle "init.el"
   (defun martin-setup-sh-mode()
-    "sh-mode customizations."
+    "sh-mode and shell-mode customizations."
     (interactive)
-    (setq sh-basic-offset 8
-          sh-indentation 8))
+    (lambda()
+      (setq indent-tabs-mode nil)
+      (setq tab-width 4)))
 
   (add-hook 'sh-mode-hook 'martin-setup-sh-mode)
+  (add-hook 'shell-mode-hook 'martin-setup-sh-mode)
 #+END_SRC
+
+#+RESULTS:
+| martin-setup-sh-mode |
 
 Use shellcheck
 
