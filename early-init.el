@@ -52,3 +52,8 @@
 ;; Whitespaces... A colleague of mine showed me the horror of not
 ;; considering whitespaces and thus they are shown always and everywhere!
 (setq-default show-trailing-whitespace t)
+;; but in some cases they are useless
+(add-hook 'vterm-mode-hook
+          (lambda()
+            (setq show-trailing-whitespace nil)))
+
