@@ -57,3 +57,7 @@
           (lambda()
             (setq show-trailing-whitespace nil)))
 
+;; In commit mode we want to keep the 80 character limit
+(add-hook 'git-commit-mode-hook
+          (lambda()
+            (setq fill-column 80)))
