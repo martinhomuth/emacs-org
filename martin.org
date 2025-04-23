@@ -608,6 +608,7 @@ well.
   (global-set-key (kbd "C--") 'text-scale-decrease)
   (global-set-key (kbd "C-c o") 'ff-find-other-file)
   (global-set-key (kbd "C-x r l") 'counsel-bookmark)
+  (global-set-key (kbd "<f1>") 'vterm)
   ;; Org-Mode
   (bind-key "C-c r" 'org-capture)
   (bind-key "C-c a" 'org-agenda)
