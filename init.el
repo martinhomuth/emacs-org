@@ -207,11 +207,27 @@
   (interactive)
   (condition-case nil (or (my/hippie-expand-maybe nil) (insert "  "))))
 
+(defun mh__current-calendar-week ()
+  "Return the current ISO 8601 calendar week number as an integer."
+  (let* ((time (current-time))
+         (decoded (decode-time time))
+         (day (nth 3 decoded))
+         (month (nth 4 decoded))
+         (year (nth 5 decoded)))
+    (car (calendar-iso-from-absolute
+          (calendar-absolute-from-gregorian (list month day year))))))
+
+(defun mh__update-timeclock-file-daily()
+    "Updates the variable `timeclock-file` once per day"
+    (setq timeclock-file (concat "~/nextcloud-work/timelog/cw" (number-to-string (mh__current-calendar-week)))))
+
 (use-package timeclock
   :ensure t
   :init
   (display-time-mode)
   (timeclock-mode-line-display)
+  (mh__update-timeclock-file-daily)
+  (run-at-time "1 hour" 3600 #'mh__update-timeclock-file-daily)
   :config
   (define-key ctl-x-map "ti" 'timeclock-in)
   (define-key ctl-x-map "to" 'timeclock-out)
@@ -221,8 +237,7 @@
   (define-key ctl-x-map "tw" 'timeclock-when-to-leave-string)
   (define-key ctl-x-map "tR" 'timeclock-generate-report)
   (add-hook 'kill-emacs-query-functions #'timeclock-query-out)
-  (setq timeclock-file "~/Nextcloud/work/timelog"
-        display-time-load-average nil
+  (setq display-time-load-average nil
         timeclock-relative nil))
 
 ;; General
