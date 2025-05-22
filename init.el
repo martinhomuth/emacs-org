@@ -247,8 +247,8 @@
 (global-set-key "\C-w" 'backward-kill-word)
 (global-set-key "\C-x\C-k" 'kill-region)
 (global-set-key "\C-c\C-k" 'kill-region)
-(global-set-key (kbd "C-M-r") 'isearch-backward-regexp)
-(global-set-key (kbd "C-M-s") 'isearch-forward-regexp)
+(global-set-key (kbd "C-S-r") 'isearch-backward-regexp)
+(global-set-key (kbd "C-S-s") 'isearch-forward-regexp)
 (global-unset-key (kbd "C-z")) ;; who needs that anyways?
 (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "M-O") 'mh-prev-other-window)
