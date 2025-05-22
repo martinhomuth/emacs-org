@@ -9,7 +9,8 @@
   (setq org-hide-emphasis-markers t
         org-src-window-setup 'current-window
         org-support-shift-select t
-        org-use-speed-commands t)
+        org-use-speed-commands t
+	org-adapt-indentation t)
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((shell . t)
