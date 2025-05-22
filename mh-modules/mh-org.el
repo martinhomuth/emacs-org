@@ -79,7 +79,6 @@ SCHEDULED: %^t
   Collect 10 Ideas
 " "Full Project Description")
 (defvar martin/org-basic-task-template "* TODO %^{Task}
-SCHEDULED: %^t
 :PROPERTIES:
 :Effort: %^{effort|1:00|0:05|0:10|0:15|0:30|0:45|2:00|4:00}
 :END:
