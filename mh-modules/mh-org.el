@@ -139,7 +139,6 @@ SCHEDULED: %^t
 (setq org-refile-allow-creating-parent-nodes 'confirm)
 (setq org-refile-use-cache nil)
 (setq org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
-(setq org-blank-before-entry nil)
 
 (setq org-todo-keywords
       '((sequence
