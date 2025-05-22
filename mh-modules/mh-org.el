@@ -78,7 +78,7 @@ SCHEDULED: %^t
 ** Brainstorming
   Collect 10 Ideas
 " "Full Project Description")
-(defvar martin/org-basic-task-template "* TODO %^{Task}
+(defvar martin/org-basic-task-template "* TODO %^{Task} %^G
 :PROPERTIES:
 :Effort: %^{effort|1:00|0:05|0:10|0:15|0:30|0:45|2:00|4:00}
 :END:
@@ -105,7 +105,7 @@ SCHEDULED: %^t
          ,martin/org-basic-task-template)
         ("T" "Quick Task" entry
          (file+headline "~/git/org-files/personal.org" "INBOX")
-         "* TODO %^{Task}"
+         "* TODO %^{Task} %^G"
          :immediate-finish t)
         ("j" "Journal entry" plain
          (file+olp+datetree "~/git/org-files/journal.org")
