@@ -653,7 +653,9 @@ gruvbox theme.
    '(ediff-current-diff-B ((t (:foreground "Black"))))
    '(ediff-fine-diff-B ((t (:foreground "Black"))))
    '(ediff-current-diff-C ((t (:foreground "Black"))))
-   '(ediff-fine-diff-C ((t (:foreground "Black")))))
+   '(ediff-fine-diff-C ((t (:foreground "Black"))))
+  ;;; add font customization for info entries
+   '(Info-quoted ((t (:slant oblique :weight bold)))))
 #+end_src
 
 #+RESULTS:

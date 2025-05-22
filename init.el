@@ -283,7 +283,9 @@
  '(ediff-current-diff-B ((t (:foreground "Black"))))
  '(ediff-fine-diff-B ((t (:foreground "Black"))))
  '(ediff-current-diff-C ((t (:foreground "Black"))))
- '(ediff-fine-diff-C ((t (:foreground "Black")))))
+ '(ediff-fine-diff-C ((t (:foreground "Black"))))
+;;; add font customization for info entries
+ '(Info-quoted ((t (:slant oblique :weight bold)))))
 
 (global-set-key (kbd "C-x p i") 'mh-pomodoro-start-focus)
 (global-set-key (kbd "C-x p b") 'mh-pomodoro-start-break)
