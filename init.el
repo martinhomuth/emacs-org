@@ -19,7 +19,7 @@
 (require 'mh-org)
 
 ;; TODO: add default font and fontsize
-(defvar mh-fontsize 10)
+(defvar mh-fontsize 12)
 (add-to-list 'default-frame-alist
              `(font . ,(concat "Iosevka-" (number-to-string mh-fontsize)))
              `(font . ,(concat "Noto Color Emoji" (number-to-string mh-fontsize)))
