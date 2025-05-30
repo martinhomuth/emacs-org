@@ -535,6 +535,10 @@ point reaches the beginning or end of the buffer, stop there."
   "Hook run after notmuch has been synchronised"
   :type 'hook)
 
+(use-package prog-mode
+  :config
+  (define-key prog-mode-map (kbd "M-q") nil))
+
 (use-package auto-complete
   :ensure t
   :config
@@ -562,6 +566,10 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :commands lsp-ui-mode
   )
+
+(use-package cc-mode
+  :config
+  (define-key c-mode-base-map (kbd "M-q") nil))
 
 (defun c-lineup-arglist-tabs-only ()
   "Line up argument lists by tabs, not spaces"

@@ -1746,6 +1746,17 @@ confirmation of executing those blocks the following variables are set
 
 * Programming
 ** General
+*** =prog-mode.el=
+
+Some adjustments to prog-mode in general.
+
+#+begin_src emacs-lisp :tangle "init.el"
+  (use-package prog-mode
+    :config
+    (define-key prog-mode-map (kbd "M-q") nil))
+#+end_src
+
+*** Auto Complete
 
 #+BEGIN_SRC emacs-lisp :tangle "init.el"
   (use-package auto-complete
@@ -1803,6 +1814,17 @@ Find the ccls executable first
 
 ** C
 
+*** cc-mode
+
+Some adjustments to the existing mode have to be performed.
+
+#+begin_src emacs-lisp :tangle "init.el"
+  (use-package cc-mode
+    :config
+    (define-key c-mode-base-map (kbd "M-q") nil))
+#+end_src
+
+*** Style adjustments
 Linux kernel coding style adjustments
 
 #+BEGIN_SRC emacs-lisp :tangle "init.el"
