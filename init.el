@@ -409,8 +409,9 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package expand-region
   :ensure t
   :commands ( er/expand-region er/contract-region )
-  :bind ("M-r" . er/expand-region)
-  :bind ("M-q" . er/contract-region)
+  :init
+  (global-set-key (kbd "M-r") #'er/expand-region)
+  (global-set-key (kbd "M-q") #'er/contract-region)
   )
 
 (add-hook 'eshell-mode-hook
