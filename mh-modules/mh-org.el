@@ -4,6 +4,13 @@
   (setq org-log-done 'time)
   (setq org-clock-report-include-clocking-task t)
   :config
+  (bind-key "C-c r" 'org-capture)
+  (bind-key "C-M-r" 'org-capture)
+  (bind-key "C-c a" 'org-agenda)
+  (bind-key "C-c l" 'org-store-link)
+  (bind-key "C-c L" 'org-insert-link-global)
+  (bind-key "C-c O" 'org-open-at-point-global)
+  (bind-key "<f9>" 'org-agenda-list)
   (add-hook 'org-clock-in-hook 'martin/org-clock-in-set-state-to-started)
   (add-hook 'org-babel-after-execute-hook 'org-display-inline-images)
   (setq org-hide-emphasis-markers t
@@ -131,7 +138,6 @@ SCHEDULED: %^t
         ("W" "Workout" entry
          (file+headline "~/git/org-files/personal.org" "Primary Skills")
          ,martin/org-programming-workout-template)))
-(bind-key "C-M-r" 'org-capture)
 
 (setq org-reverse-note-order t)
 (setq org-refile-use-outline-path nil)

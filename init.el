@@ -241,17 +241,14 @@
         timeclock-relative nil))
 
 ;; General
-(global-set-key "\C-cw" 'compare-windows)
-(global-set-key "\C-x\C-m" 'execute-extended-command)
-(global-set-key "\C-c\C-m" 'execute-extended-command)
 (global-set-key "\C-w" 'backward-kill-word)
 (global-set-key "\C-x\C-k" 'kill-region)
-(global-set-key "\C-c\C-k" 'kill-region)
 (global-set-key (kbd "C-S-r") 'isearch-backward-regexp)
 (global-set-key (kbd "C-S-s") 'isearch-forward-regexp)
 (global-unset-key (kbd "C-z")) ;; who needs that anyways?
 (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "M-O") 'mh-prev-other-window)
+(global-set-key (kbd "M-SPC") 'mark-sexp)
 (global-unset-key "\C-xf")
 (global-set-key [f1] 'eshell)
 (global-set-key (kbd "C-x g") 'magit-status)
@@ -262,14 +259,6 @@
 (global-set-key (kbd "C-c o") 'ff-find-other-file)
 (global-set-key (kbd "C-x r l") 'counsel-bookmark)
 (global-set-key (kbd "<f1>") 'vterm)
-;; Org-Mode
-(bind-key "C-c r" 'org-capture)
-(bind-key "C-c a" 'org-agenda)
-(bind-key "C-c l" 'org-store-link)
-(bind-key "C-c L" 'org-insert-link-global)
-(bind-key "C-c O" 'org-open-at-point-global)
-(bind-key "<f9>" 'org-agenda-list)
-
 (global-set-key (kbd "M-u") 'upcase-dwim)
 (global-set-key (kbd "M-l") 'downcase-dwim)
 (global-set-key (kbd "M-c") 'capitalize-dwim)
@@ -337,6 +326,8 @@
      :body remaining-time
      :timeout 1500
      )))
+
+(setq sentence-end-double-space nil)
 
 (defun smarter-move-beginning-of-line (arg)
   "Move point back to indentation of beginning of line.

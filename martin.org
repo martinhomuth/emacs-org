@@ -588,17 +588,14 @@ well.
 ** Key Bindings
 #+BEGIN_SRC emacs-lisp :tangle "init.el"
   ;; General
-  (global-set-key "\C-cw" 'compare-windows)
-  (global-set-key "\C-x\C-m" 'execute-extended-command)
-  (global-set-key "\C-c\C-m" 'execute-extended-command)
   (global-set-key "\C-w" 'backward-kill-word)
   (global-set-key "\C-x\C-k" 'kill-region)
-  (global-set-key "\C-c\C-k" 'kill-region)
   (global-set-key (kbd "C-S-r") 'isearch-backward-regexp)
   (global-set-key (kbd "C-S-s") 'isearch-forward-regexp)
   (global-unset-key (kbd "C-z")) ;; who needs that anyways?
   (global-set-key (kbd "M-o") 'other-window)
   (global-set-key (kbd "M-O") 'mh-prev-other-window)
+  (global-set-key (kbd "M-SPC") 'mark-sexp)
   (global-unset-key "\C-xf")
   (global-set-key [f1] 'eshell)
   (global-set-key (kbd "C-x g") 'magit-status)
@@ -609,14 +606,6 @@ well.
   (global-set-key (kbd "C-c o") 'ff-find-other-file)
   (global-set-key (kbd "C-x r l") 'counsel-bookmark)
   (global-set-key (kbd "<f1>") 'vterm)
-  ;; Org-Mode
-  (bind-key "C-c r" 'org-capture)
-  (bind-key "C-c a" 'org-agenda)
-  (bind-key "C-c l" 'org-store-link)
-  (bind-key "C-c L" 'org-insert-link-global)
-  (bind-key "C-c O" 'org-open-at-point-global)
-  (bind-key "<f9>" 'org-agenda-list)
-
   (global-set-key (kbd "M-u") 'upcase-dwim)
   (global-set-key (kbd "M-l") 'downcase-dwim)
   (global-set-key (kbd "M-c") 'capitalize-dwim)
@@ -811,6 +800,17 @@ configuration until the blog is somewhat running.
 | filter-local-links |
 
 * Navigation
+** Moving by sentence
+
+Moving by sentence does expect a sentence to end on two spaces. As I am no writer and this is nothing I really encounter
+in real life, let's adjust this
+
+#+begin_src emacs-lisp :tangle "init.el"
+  (setq sentence-end-double-space nil)
+#+end_src
+
+#+RESULTS:
+
 ** Better Beginning Of The Line
 
 Thanks to Howard Abrams for this neat function!
@@ -1424,6 +1424,13 @@ Thanks to Isa Mert Gurbuz (https://isamert.net/)
     (setq org-log-done 'time)
     (setq org-clock-report-include-clocking-task t)
     :config
+    (bind-key "C-c r" 'org-capture)
+    (bind-key "C-M-r" 'org-capture)
+    (bind-key "C-c a" 'org-agenda)
+    (bind-key "C-c l" 'org-store-link)
+    (bind-key "C-c L" 'org-insert-link-global)
+    (bind-key "C-c O" 'org-open-at-point-global)
+    (bind-key "<f9>" 'org-agenda-list)
     (add-hook 'org-clock-in-hook 'martin/org-clock-in-set-state-to-started)
     (add-hook 'org-babel-after-execute-hook 'org-display-inline-images)
     (setq org-hide-emphasis-markers t
@@ -1478,7 +1485,7 @@ Thanks to Isa Mert Gurbuz (https://isamert.net/)
 #+END_SRC
 
 #+RESULTS:
-: t
+| #[nil ((mapc (lambda (pair) (push pair prettify-symbols-alist)) '(([ ] . ☐) ([X] . ☑) ([-] . ❍))) (prettify-symbols-mode)) nil] | er/add-org-mode-expansions | #[0 \301\211\207 [imenu-create-index-function org-imenu-get-tree] 2] | turn-on-auto-fill | #[nil ((mapc #'(lambda (pair) (setq prettify-symbols-alist (cons pair prettify-symbols-alist))) '(([ ] . ☐) ([X] . ☑) ([-] . ❍))) (prettify-symbols-mode)) nil] | org-fancy-priorities-mode | org-bullets-mode | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-fold-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes |
 
 Using actual circular bullets for bullet lists
 
@@ -1576,7 +1583,6 @@ Let's use =org-capture= to quickly add the things that come to mind all the time
           ("W" "Workout" entry
            (file+headline "~/git/org-files/personal.org" "Primary Skills")
            ,martin/org-programming-workout-template)))
-  (bind-key "C-M-r" 'org-capture)
 #+END_SRC
 
 #+RESULTS:
