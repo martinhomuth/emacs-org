@@ -106,6 +106,10 @@ SCHEDULED: %^t
      %T
      %?"
   "Work Journal Template")
+(defvar martin/org-learning-template
+  "**** %^{Description} %^g
+     %?"
+  "Learning Template")
 (setq org-capture-templates
       `(("t" "Tasks" entry
          (file+headline "~/git/org-files/personal.org" "INBOX")
@@ -137,7 +141,11 @@ SCHEDULED: %^t
          ,martin/org-work-journal-template)
         ("W" "Workout" entry
          (file+headline "~/git/org-files/personal.org" "Primary Skills")
-         ,martin/org-programming-workout-template)))
+         ,martin/org-programming-workout-template)
+	("l" "learning" plain
+	 (file+olp+datetree "~/git/org-files/learnings.org")
+	 ,martin/org-learning-template)
+	))
 
 (setq org-reverse-note-order t)
 (setq org-refile-use-outline-path nil)

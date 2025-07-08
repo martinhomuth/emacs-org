@@ -1551,6 +1551,10 @@ Let's use =org-capture= to quickly add the things that come to mind all the time
        %T
        %?"
     "Work Journal Template")
+  (defvar martin/org-learning-template
+    "**** %^{Description} %^g
+       %?"
+    "Learning Template")
   (setq org-capture-templates
         `(("t" "Tasks" entry
            (file+headline "~/git/org-files/personal.org" "INBOX")
@@ -1582,7 +1586,11 @@ Let's use =org-capture= to quickly add the things that come to mind all the time
            ,martin/org-work-journal-template)
           ("W" "Workout" entry
            (file+headline "~/git/org-files/personal.org" "Primary Skills")
-           ,martin/org-programming-workout-template)))
+           ,martin/org-programming-workout-template)
+  	("l" "learning" plain
+  	 (file+olp+datetree "~/git/org-files/learnings.org")
+  	 ,martin/org-learning-template)
+  	))
 #+END_SRC
 
 #+RESULTS:
