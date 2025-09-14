@@ -230,11 +230,19 @@ SCHEDULED: %^t
   :init
   (setq org-roam-v2-ack t)
   :custom
-  (org-roam-directory "~/Nextcloud/Martin/RoamNotes")
+  (org-roam-directory "~/nextcloud-private/Martin/RoamNotes")
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
-         ("C-c n i" . org-roam-node-insert))
+         ("C-c n i" . org-roam-node-insert)
+	 ("C-c n c" . org-roam-capture))
   :config
-  (org-roam-setup))
+  (org-roam-db-autosync-mode)
+  ;; suggestion from here: https://www.orgroam.com/manual.html#Configuring-the-Org_002droam-buffer-display
+  (add-to-list 'display-buffer-alist
+             '("\\*org-roam\\*"
+               (display-buffer-in-direction)
+               (direction . right)
+               (window-width . 0.33)
+               (window-height . fit-window-to-buffer))))
 
 (provide 'mh-org)
