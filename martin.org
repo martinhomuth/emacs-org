@@ -924,6 +924,17 @@ reddit:
 
 #+RESULTS:
 : t
+** Company Mode
+
+After realizing that auto-complete is dead lets switch to company.
+
+#+begin_src emacs-lisp :tangle "init.el"
+  (use-package company
+    :ensure t
+    :init
+    (global-company-mode))
+#+end_src
+
 
 ** Expand Region
 
@@ -1770,19 +1781,6 @@ Some adjustments to prog-mode in general.
     (define-key prog-mode-map (kbd "M-q") nil))
 #+end_src
 
-*** Auto Complete
-
-#+BEGIN_SRC emacs-lisp :tangle "init.el"
-  (use-package auto-complete
-    :ensure t
-    :config
-    (ac-config-default)
-    (global-auto-complete-mode t))
-#+END_SRC
-
-#+RESULTS:
-: t
-
 ** Language Server
 
 To enable language server support, apparently lsp-mode is the new
@@ -1858,8 +1856,6 @@ Linux kernel coding style adjustments
           indent-tabs-mode nil
           c-set-style "linux-tabs-only")
     (define-key c-mode-base-map (kbd "RET") 'newline-and-indent))
-  (defun my/add-semantic-to-autocomplete ()
-    (add-to-list 'ac-sources 'ac-source-semantic))
 
   (defun my/general-c++-mode-configuration ()
     (setq c-basic-offset 4
@@ -1867,7 +1863,6 @@ Linux kernel coding style adjustments
           indent-tabs-mode nil)
     (define-key c-mode-base-map (kbd "RET") 'newline-and-indent))
 
-  (add-hook 'c-mode-common-hook 'my/add-semantic-to-autocomplete)
   (add-hook 'c-mode-common-hook 'my/general-c-mode-configuration)
   (add-hook 'c++-mode-hook 'my/general-c++-mode-configuration)
   (add-hook 'c-mode-common-hook
@@ -1883,22 +1878,6 @@ Linux kernel coding style adjustments
 
 #+RESULTS:
 | (lambda nil (define-key c-mode-base-map (kbd C-c C-l) 'compile)) | (lambda nil (c-add-style linux-tabs-only '(linux (c-offsets-alist (arglist-cont-nonempty c-lineup-gcc-asm-reg c-lineup-arglist-tabs-only))))) | my/general-c-mode-configuration | my/add-semantic-to-autocomplete | ac-cc-mode-setup |
-
-Define a function that intializes auto-complete-c-headers and gets
-called for c/c++ hooks
-
-#+BEGIN_SRC emacs-lisp :tangle "init.el"
-  (use-package auto-complete-c-headers
-    :ensure t
-    :config
-    (add-to-list 'ac-sources 'ac-source-c-headers))
-
-  (defun my/init-ac-c-headers ()
-    (add-to-list 'achead:include-directories '"/usr/src/linux/include/"))
-
-  (add-hook 'c++-mode-hook 'my/init-ac-c-headers)
-  (add-hook 'c-mode-hook 'my/init-ac-c-headers)
-#+END_SRC
 
 Use flycheck for syntax checking
 

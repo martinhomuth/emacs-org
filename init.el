@@ -397,6 +397,11 @@ point reaches the beginning or end of the buffer, stop there."
                (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
   )
 
+(use-package company
+  :ensure t
+  :init
+  (global-company-mode))
+
 (use-package expand-region
   :ensure t
   :commands ( er/expand-region er/contract-region )
@@ -530,12 +535,6 @@ point reaches the beginning or end of the buffer, stop there."
   :config
   (define-key prog-mode-map (kbd "M-q") nil))
 
-(use-package auto-complete
-  :ensure t
-  :config
-  (ac-config-default)
-  (global-auto-complete-mode t))
-
 (setq lsp-use-plists t)
 (use-package ccls
   :ensure t
@@ -578,8 +577,6 @@ point reaches the beginning or end of the buffer, stop there."
         indent-tabs-mode nil
         c-set-style "linux-tabs-only")
   (define-key c-mode-base-map (kbd "RET") 'newline-and-indent))
-(defun my/add-semantic-to-autocomplete ()
-  (add-to-list 'ac-sources 'ac-source-semantic))
 
 (defun my/general-c++-mode-configuration ()
   (setq c-basic-offset 4
@@ -587,7 +584,6 @@ point reaches the beginning or end of the buffer, stop there."
         indent-tabs-mode nil)
   (define-key c-mode-base-map (kbd "RET") 'newline-and-indent))
 
-(add-hook 'c-mode-common-hook 'my/add-semantic-to-autocomplete)
 (add-hook 'c-mode-common-hook 'my/general-c-mode-configuration)
 (add-hook 'c++-mode-hook 'my/general-c++-mode-configuration)
 (add-hook 'c-mode-common-hook
@@ -599,17 +595,6 @@ point reaches the beginning or end of the buffer, stop there."
                         (arglist-cont-nonempty
                          c-lineup-gcc-asm-reg
                          c-lineup-arglist-tabs-only))))))
-
-(use-package auto-complete-c-headers
-  :ensure t
-  :config
-  (add-to-list 'ac-sources 'ac-source-c-headers))
-
-(defun my/init-ac-c-headers ()
-  (add-to-list 'achead:include-directories '"/usr/src/linux/include/"))
-
-(add-hook 'c++-mode-hook 'my/init-ac-c-headers)
-(add-hook 'c-mode-hook 'my/init-ac-c-headers)
 
 (use-package flycheck
   :ensure flycheck-cstyle
