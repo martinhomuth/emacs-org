@@ -799,6 +799,16 @@ configuration until the blog is somewhat running.
 | filter-local-links |
 
 * Navigation
+** Scrolling
+
+For some reason I wanted to try scrolling by page and recenter the cursor. Now lets try this with smoother scrolling.
+
+#+begin_src emacs-lisp :tangle "init.el"
+  (setopt scroll-step 1
+  	scroll-margin 5
+  	scroll-conservatively 101)
+#+end_src
+
 ** Moving by sentence
 
 Moving by sentence does expect a sentence to end on two spaces. As I am no writer and this is nothing I really encounter

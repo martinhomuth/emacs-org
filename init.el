@@ -326,6 +326,10 @@
      :timeout 1500
      )))
 
+(setopt scroll-step 1
+	scroll-margin 5
+	scroll-conservatively 101)
+
 (setq sentence-end-double-space nil)
 
 (defun smarter-move-beginning-of-line (arg)
