@@ -488,16 +488,23 @@ point reaches the beginning or end of the buffer, stop there."
 
 (add-hook 'message-mode-hook 'turn-on-orgtbl)
 
-(when (executable-find "notmuch")
-  (define-key global-map "\C-cm" 'notmuch)
-  (setq sendmail-program "/usr/bin/msmtp"
-        notmuch-search-oldest-first nil
-        mail-specify-envelope-from t
-        message-sendmail-envelope-from 'header
-        mail-specify-envelope-from 'header
-        notmuch-show-all-multipart/alternative-parts nil
-        notmuch-fcc-dirs "emlix/Sent +sent -unread"
-        ))
+(use-package notmuch
+  :ensure t
+  :config
+  (when (executable-find "notmuch")
+    (defun martin/notmuch-search-is-me()
+      (interactive)
+      (notmuch-search-by-tag "is-me"))
+    (define-key global-map "\C-cM" 'notmuch)
+    (define-key global-map "\C-cm" 'martin/notmuch-search-is-me)
+    (define-key global-map "\C-cn" 'notmuch-mua-new-mail)
+    (setq sendmail-program "/usr/bin/msmtp")
+    (setq message-sendmail-envelope-from 'header)
+    (setq mail-specify-envelope-from 'header)
+    (setq notmuch-show-all-multipart/alternative-parts nil)
+    (setq notmuch-fcc-dirs "emlix/Sent +sent -unread")
+    (setq notmuch-crypto-process-mime t)
+    ))
 
 (add-hook 'notmuch-hello-refresh-hook
 	  (lambda ()
@@ -509,8 +516,6 @@ point reaches the beginning or end of the buffer, stop there."
               (if (eq (widget-type (widget-at)) 'editable-field)
 		  (beginning-of-line)))))
 
-(setq notmuch-crypto-process-mime t)
-
 (setq notmuch-search-line-faces '(("unread" :weight bold)
                                   ("flagged" :foreground "red")))
 
@@ -519,9 +524,9 @@ point reaches the beginning or end of the buffer, stop there."
 (defun martin/get-notmuch-incoming-count ()
   (string-trim
    (shell-command-to-string
-    "notmuch count tag:inbox AND tag:unread AND '\(folder:INBOX or folder:INBOX.Eyeo\)'")))
+    "notmuch count tag:unread AND tag:is-me")))
 (defun martin/format-notmuch-mode-string (count)
-  (concat " mails[" (if (string= count "0") "" count) "]"))
+  (if (string= count "0") "" (concat "📨" count )))
 (defun martin/update-notmuch-activity-string (&rest args)
   (setq martin/notmuch-activity-string
         (martin/format-notmuch-mode-string (martin/get-notmuch-incoming-count)))
