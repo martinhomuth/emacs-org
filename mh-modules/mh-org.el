@@ -106,6 +106,36 @@ SCHEDULED: %^t
      %T
      %?"
   "Work Journal Template")
+(defvar martin/org-day-review-template
+  "* Tagesreview :review:
+   :PROPERTIES:
+   :Date: %U
+   :END:
+
+   🌟 *Fokus*
+   - Was war heute mein wichtigster Fortschritt?
+   - Habe ich den ersten Fokusblock effektiv genutzt?
+
+   ⚙️ *Herausforderungen*
+   - Welche Ablenkungen traten auf?
+   - Gab es Energieeinbrüche oder Unterbrechungen?
+
+   🧠 *Lernen / Erkenntnis*
+   - Was hat heute gut funktioniert, das ich wiederholen will?
+   - Was möchte ich morgen bewusst anders machen?
+
+   💡 *System-Check*
+   - [ ] Time Blocking eingehalten
+   - [ ] Spielzeit nur im erlaubten Zeitfenster
+   - [ ] Leichtarbeit richtig platziert
+
+   💭 *Tagesgefühl*
+   - Wort oder kurzer Satz für den Tag: _____________
+
+   ✅ *Mini-Abschluss*
+   - [ ] Inbox geleert / nächste Aufgaben markiert
+   - [ ] Notiz im Wochenreview aktualisiert
+")
 (defvar martin/org-learning-template
   "**** %^{Description} %^g
      %?"
@@ -145,6 +175,9 @@ SCHEDULED: %^t
 	("l" "learning" plain
 	 (file+olp+datetree "~/git/org-files/learnings.org")
 	 ,martin/org-learning-template)
+	("r" "Review of the day" entry
+	 (file+olp+datetree "~/git/org-files/work-journal.org")
+	 ,martin/org-day-review-template)
 	))
 
 (setq org-reverse-note-order t)
