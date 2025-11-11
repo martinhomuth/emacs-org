@@ -142,10 +142,10 @@ SCHEDULED: %^t
   "Learning Template")
 (setq org-capture-templates
       `(("t" "Tasks" entry
-         (file+headline "~/git/org-files/personal.org" "INBOX")
+         (file+headline "~/git/org-files/inbox.org" "INBOX")
          ,martin/org-basic-task-template)
         ("T" "Quick Task" entry
-         (file+headline "~/git/org-files/personal.org" "INBOX")
+         (file+headline "~/git/org-files/inbox.org" "INBOX")
          "* TODO %^{Task} %^G"
          :immediate-finish t)
         ("j" "Journal entry" plain
