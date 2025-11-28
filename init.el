@@ -314,7 +314,7 @@
    )
   (org-timer-stop))
 
-(setq org-clock-sound "~/Nextcloud/Martin/bell.wav")
+(setq org-clock-sound "~/nextcloud-private/Martin/bell.wav")
 
 (defun mh-pomodoro-remaining-time()
   """ Reports the remaining time """

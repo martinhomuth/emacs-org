@@ -716,7 +716,7 @@ required. I simply use some downloaded bell sound for that, which is
 stored in the nextcloud thus available on all machines.
 
 #+begin_src emacs-lisp :tangle "init.el"
-  (setq org-clock-sound "~/Nextcloud/Martin/bell.wav")
+  (setq org-clock-sound "~/nextcloud-private/Martin/bell.wav")
 #+end_src
 
 In between sessions it is also helpful to be able to obtain the
@@ -1730,7 +1730,7 @@ This defines the key commands for those, too.
 #+BEGIN_SRC emacs-lisp :tangle "mh-modules/mh-org.el"
     (setq my-org-agenda-files-list (append
                                     (file-expand-wildcards "~/git/org-files/*.org")
-  				  (file-expand-wildcards "~/nextcloud-private/private/org/gtd/*.org"))
+  				  (file-expand-wildcards "~/git/org-files/gtd/*.org"))
           org-agenda-files
           (delq nil
                 (mapcar (lambda (x) (and (file-exists-p x) x))
@@ -1777,7 +1777,7 @@ confirmation of executing those blocks the following variables are set
     :ensure t
     :custom
     (setq org-edna-use-inheritance t
-          org-gtd-directory (file-truename "~/nextcloud-private/private/org/gtd")
+          org-gtd-directory (file-truename "~/git/org-files/gtd")
           org-gtd-clarify-show-horizons 'right
           org-gtd-areas-of-focus '("Home" "Health" "Family" "Career" "Play" "Finances" "Relationships" "Fitness" "Tech")
           )
@@ -1811,7 +1811,7 @@ confirmation of executing those blocks the following variables are set
     :init
     (setq org-roam-v2-ack t)
     :custom
-    (org-roam-directory "~/nextcloud-private/private/org/roam")
+    (org-roam-directory "~/git/org-files/roam")
     :bind (("C-c R l" . org-roam-buffer-toggle)
            ("C-c R f" . org-roam-node-find)
            ("C-c R i" . org-roam-node-insert)

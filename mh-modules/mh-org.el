@@ -135,75 +135,6 @@ SCHEDULED: %^t
    - [ ] Inbox geleert / nächste Aufgaben markiert
    - [ ] Notiz im Wochenreview aktualisiert
 ")
-(defvar martin/org-week-planning-template
-  "* Woche %<%Y>-W%<%V> :planning:
-:PROPERTIES:
-:Week: %<%Y-%m-%d> – %<(format-time-string \"%Y-%m-%d\" (time-add (org-read-date nil t \"Mon\") (* 6 24 3600)))>
-:Intention: neugierig und fokussiert
-:END:
-
-** Leitstern (kurz)
-- Thema der Woche: 
-- Die *eine* Sache, die passieren muss: 
-
-** Big 3 (max. 3 Ziele)
-- [ ] 
-- [ ] 
-- [ ] 
-
-** Nicht-Ziele (Anti-Goals)
-- [ ] 
-- [ ] 
-
-** Rahmen & Constraints
-- Familie/Kinder: 06:30–08:30 täglich
-- Abend-Review: 20:00 (10 Min)
-- Energie: Mittagstief → Leichtarbeit nachmittags
-
-** Kalender-Überblick
-- Private/Arbeits-Termine: [[elisp:(org-agenda nil \"a\")][Agenda öffnen]]
-
-** Fokusplanung (Blöcke)
-- Vormittag Deep-Work (08:30–11:00) → Projekt: 
-- Nachmittags Leichtarbeit (13:00–15:00) → Themen: 
-- Optional (15:00–17:00) → nur bei Energie: 
-
-** Kommunikationsfenster
-- E-Mail/Chat: 11:00–12:00, 15:00–15:30
-- Notmuch wichtig:
-  # notmuch search '(to:me@example.com OR body:@MeinHandle) and tag:inbox and not tag:trash'
-
-** Wochentage
-| Tag | Deep Work (08:30–11:00) | Leichtarbeit (13–15) | Fixtermine / Notizen |
-|-----+--------------------------+-----------------------+----------------------|
-| Mo  |                          |                       |                      |
-| Di  |                          |                       |                      |
-| Mi  |                          |                       |                      |
-| Do  |                          |                       |                      |
-| Fr  |                          |                       |                      |
-
-** Gewohnheiten
-- [ ] Morgenroutine 04:30–05:30
-- [ ] Kinderblock 06:30–08:30 geschützt
-- [ ] Abend-Review 20:00
-
-** Woche – Kurzjournal
-- Mo: 
-- Di: 
-- Mi: 
-- Do: 
-- Fr: 
-
-** Wochenreview :review:
-🌟 Gut:
-- 
-⚙️ Bremser:
-- 
-🎯 Nächste Woche:
-- 
-💭 Gefühl:
-- neugierig und fokussiert
-")
 (defvar martin/org-learning-template
   "**** %^{Description} %^g
      %?"
@@ -237,15 +168,15 @@ SCHEDULED: %^t
         ("w" "Work journal entry" plain
          (file+olp+datetree "~/git/org-files/work-journal.org")
          ,martin/org-work-journal-template)
+        ("W" "Workout" entry
+         (file+headline "~/git/org-files/personal.org" "Primary Skills")
+         ,martin/org-programming-workout-template)
 	("l" "learning" plain
 	 (file+olp+datetree "~/git/org-files/learnings.org")
 	 ,martin/org-learning-template)
 	("r" "Review of the day" entry
-	 (file+olp+datetree "~/git/org-files/journal.org")
+	 (file+olp+datetree "~/git/org-files/work-journal.org")
 	 ,martin/org-day-review-template)
-	("W" "Week planning" entry
-	 (file+olp+datetree "~/git/org-files/weeks.org")
-	 ,martin/org-week-planning-template)
 	))
 
 (setq org-reverse-note-order t)
@@ -289,7 +220,7 @@ SCHEDULED: %^t
 
 (setq my-org-agenda-files-list (append
                                 (file-expand-wildcards "~/git/org-files/*.org")
-				  (file-expand-wildcards "~/nextcloud-private/private/org/gtd/*.org"))
+				  (file-expand-wildcards "~/git/org-files/gtd/*.org"))
       org-agenda-files
       (delq nil
             (mapcar (lambda (x) (and (file-exists-p x) x))
@@ -313,7 +244,7 @@ SCHEDULED: %^t
   :ensure t
   :custom
   (setq org-edna-use-inheritance t
-        org-gtd-directory (file-truename "~/nextcloud-private/private/org/gtd")
+        org-gtd-directory (file-truename "~/git/org-files/gtd")
         org-gtd-clarify-show-horizons 'right
         org-gtd-areas-of-focus '("Home" "Health" "Family" "Career" "Play" "Finances" "Relationships" "Fitness" "Tech")
         )
@@ -340,7 +271,7 @@ SCHEDULED: %^t
   :init
   (setq org-roam-v2-ack t)
   :custom
-  (org-roam-directory "~/nextcloud-private/private/org/roam")
+  (org-roam-directory "~/git/org-files/roam")
   :bind (("C-c R l" . org-roam-buffer-toggle)
          ("C-c R f" . org-roam-node-find)
          ("C-c R i" . org-roam-node-insert)
