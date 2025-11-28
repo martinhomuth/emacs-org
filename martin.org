@@ -1478,7 +1478,6 @@ Thanks to Isa Mert Gurbuz (https://isamert.net/)
 
   (bind-key "C-c v" 'org-show-todo-tree org-mode-map)
   (bind-key "C-c C-r" 'org-refile org-mode-map)
-  (bind-key "C-c R" 'org-reveal org-mode-map)
 
   (use-package org-bullets
     :ensure t
@@ -1729,12 +1728,13 @@ This defines the key commands for those, too.
 **** Basic Configuration
 
 #+BEGIN_SRC emacs-lisp :tangle "mh-modules/mh-org.el"
-  (setq my-org-agenda-files-list (append
-                                  (file-expand-wildcards "~/git/org-files/*.org"))
-        org-agenda-files
-        (delq nil
-              (mapcar (lambda (x) (and (file-exists-p x) x))
-                      my-org-agenda-files-list)))
+    (setq my-org-agenda-files-list (append
+                                    (file-expand-wildcards "~/git/org-files/*.org")
+  				  (file-expand-wildcards "~/nextcloud-private/private/org/gtd/*.org"))
+          org-agenda-files
+          (delq nil
+                (mapcar (lambda (x) (and (file-exists-p x) x))
+                        my-org-agenda-files-list)))
 #+END_SRC
 
 This is some configuration of Sacha's
@@ -1766,45 +1766,56 @@ confirmation of executing those blocks the following variables are set
 : t
 
 ** Org-GTD
+:PROPERTIES:
+:ID:       Org-GTD-2025-11-28-09-46-34
+:END:
 
 #+begin_src emacs-lisp :tangle "mh-modules/mh-org.el"
+  (setq org-gtd-update-ack "2.1.0")
   (use-package org-gtd
     :after org
     :ensure t
-    :init
+    :custom
     (setq org-edna-use-inheritance t
-          org-gtd-directory (file-truename "~/Nextcloud/private/org/gtd")
+          org-gtd-directory (file-truename "~/nextcloud-private/private/org/gtd")
           org-gtd-clarify-show-horizons 'right
-          org-gtd-areas-of-focus '("Home" "Health" "Family" "Career" "Beer")
+          org-gtd-areas-of-focus '("Home" "Health" "Family" "Career" "Play" "Finances" "Relationships" "Fitness" "Tech")
           )
+    :config
     (org-edna-mode 1)
     :bind (("C-c d c" . org-gtd-capture)
-           ("C-c d e" . org-gtd-engage)
            ("C-c d f" . org-gtd-area-of-focus-set-on-item-at-point)
            ("C-c d l" . org-gtd-clarify-item)
+  	 ("C-c d p" . org-gtd-process-inbox)
+  	 ("C-c d A" . org-gtd-archive-completed-items)
+  	 ("C-c a" . org-gtd-engage)
            :map org-gtd-clarify-map
            ("C-c c" . org-gtd-organize)
            ("C-c f" . org-gtd-area-of-focus-set-on-item-at-point)
-           ("C-c t" . org-gtd-clarify-toggle-horizons-window))
+           ("C-c t" . org-gtd-clarify-toggle-horizons-window)
+  	 :map org-agenda-mode-map
+  	 ("C-c d C" . org-gtd-project-cancel-from-agenda)
+  	 )
     )
 #+end_src
 
 #+RESULTS:
-: org-gtd-clarify-toggle-horizons-window
+: org-gtd-project-cancel-from-agenda
 
 ** Org-Roam
 
 #+begin_src emacs-lisp :tangle "mh-modules/mh-org.el"
   (use-package org-roam
+    :after org
     :ensure t
     :init
     (setq org-roam-v2-ack t)
     :custom
-    (org-roam-directory "~/nextcloud-private/Martin/RoamNotes")
-    :bind (("C-c n l" . org-roam-buffer-toggle)
-           ("C-c n f" . org-roam-node-find)
-           ("C-c n i" . org-roam-node-insert)
-  	 ("C-c n c" . org-roam-capture))
+    (org-roam-directory "~/nextcloud-private/private/org/roam")
+    :bind (("C-c R l" . org-roam-buffer-toggle)
+           ("C-c R f" . org-roam-node-find)
+           ("C-c R i" . org-roam-node-insert)
+  	 ("C-c R c" . org-roam-capture))
     :config
     (org-roam-db-autosync-mode)
     ;; suggestion from here: https://www.orgroam.com/manual.html#Configuring-the-Org_002droam-buffer-display

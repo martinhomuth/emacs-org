@@ -33,7 +33,6 @@
 
 (bind-key "C-c v" 'org-show-todo-tree org-mode-map)
 (bind-key "C-c C-r" 'org-refile org-mode-map)
-(bind-key "C-c R" 'org-reveal org-mode-map)
 
 (use-package org-bullets
   :ensure t
@@ -136,6 +135,75 @@ SCHEDULED: %^t
    - [ ] Inbox geleert / nächste Aufgaben markiert
    - [ ] Notiz im Wochenreview aktualisiert
 ")
+(defvar martin/org-week-planning-template
+  "* Woche %<%Y>-W%<%V> :planning:
+:PROPERTIES:
+:Week: %<%Y-%m-%d> – %<(format-time-string \"%Y-%m-%d\" (time-add (org-read-date nil t \"Mon\") (* 6 24 3600)))>
+:Intention: neugierig und fokussiert
+:END:
+
+** Leitstern (kurz)
+- Thema der Woche: 
+- Die *eine* Sache, die passieren muss: 
+
+** Big 3 (max. 3 Ziele)
+- [ ] 
+- [ ] 
+- [ ] 
+
+** Nicht-Ziele (Anti-Goals)
+- [ ] 
+- [ ] 
+
+** Rahmen & Constraints
+- Familie/Kinder: 06:30–08:30 täglich
+- Abend-Review: 20:00 (10 Min)
+- Energie: Mittagstief → Leichtarbeit nachmittags
+
+** Kalender-Überblick
+- Private/Arbeits-Termine: [[elisp:(org-agenda nil \"a\")][Agenda öffnen]]
+
+** Fokusplanung (Blöcke)
+- Vormittag Deep-Work (08:30–11:00) → Projekt: 
+- Nachmittags Leichtarbeit (13:00–15:00) → Themen: 
+- Optional (15:00–17:00) → nur bei Energie: 
+
+** Kommunikationsfenster
+- E-Mail/Chat: 11:00–12:00, 15:00–15:30
+- Notmuch wichtig:
+  # notmuch search '(to:me@example.com OR body:@MeinHandle) and tag:inbox and not tag:trash'
+
+** Wochentage
+| Tag | Deep Work (08:30–11:00) | Leichtarbeit (13–15) | Fixtermine / Notizen |
+|-----+--------------------------+-----------------------+----------------------|
+| Mo  |                          |                       |                      |
+| Di  |                          |                       |                      |
+| Mi  |                          |                       |                      |
+| Do  |                          |                       |                      |
+| Fr  |                          |                       |                      |
+
+** Gewohnheiten
+- [ ] Morgenroutine 04:30–05:30
+- [ ] Kinderblock 06:30–08:30 geschützt
+- [ ] Abend-Review 20:00
+
+** Woche – Kurzjournal
+- Mo: 
+- Di: 
+- Mi: 
+- Do: 
+- Fr: 
+
+** Wochenreview :review:
+🌟 Gut:
+- 
+⚙️ Bremser:
+- 
+🎯 Nächste Woche:
+- 
+💭 Gefühl:
+- neugierig und fokussiert
+")
 (defvar martin/org-learning-template
   "**** %^{Description} %^g
      %?"
@@ -169,15 +237,15 @@ SCHEDULED: %^t
         ("w" "Work journal entry" plain
          (file+olp+datetree "~/git/org-files/work-journal.org")
          ,martin/org-work-journal-template)
-        ("W" "Workout" entry
-         (file+headline "~/git/org-files/personal.org" "Primary Skills")
-         ,martin/org-programming-workout-template)
 	("l" "learning" plain
 	 (file+olp+datetree "~/git/org-files/learnings.org")
 	 ,martin/org-learning-template)
 	("r" "Review of the day" entry
-	 (file+olp+datetree "~/git/org-files/work-journal.org")
+	 (file+olp+datetree "~/git/org-files/journal.org")
 	 ,martin/org-day-review-template)
+	("W" "Week planning" entry
+	 (file+olp+datetree "~/git/org-files/weeks.org")
+	 ,martin/org-week-planning-template)
 	))
 
 (setq org-reverse-note-order t)
@@ -220,7 +288,8 @@ SCHEDULED: %^t
                       ("business" . ?B)))
 
 (setq my-org-agenda-files-list (append
-                                (file-expand-wildcards "~/git/org-files/*.org"))
+                                (file-expand-wildcards "~/git/org-files/*.org")
+				  (file-expand-wildcards "~/nextcloud-private/private/org/gtd/*.org"))
       org-agenda-files
       (delq nil
             (mapcar (lambda (x) (and (file-exists-p x) x))
@@ -238,36 +307,44 @@ SCHEDULED: %^t
       org-src-fontify-natively t
       org-src-tab-acts-natively t)
 
+(setq org-gtd-update-ack "2.1.0")
 (use-package org-gtd
   :after org
   :ensure t
-  :init
+  :custom
   (setq org-edna-use-inheritance t
-        org-gtd-directory (file-truename "~/Nextcloud/private/org/gtd")
+        org-gtd-directory (file-truename "~/nextcloud-private/private/org/gtd")
         org-gtd-clarify-show-horizons 'right
-        org-gtd-areas-of-focus '("Home" "Health" "Family" "Career" "Beer")
+        org-gtd-areas-of-focus '("Home" "Health" "Family" "Career" "Play" "Finances" "Relationships" "Fitness" "Tech")
         )
+  :config
   (org-edna-mode 1)
   :bind (("C-c d c" . org-gtd-capture)
-         ("C-c d e" . org-gtd-engage)
          ("C-c d f" . org-gtd-area-of-focus-set-on-item-at-point)
          ("C-c d l" . org-gtd-clarify-item)
+	 ("C-c d p" . org-gtd-process-inbox)
+	 ("C-c d A" . org-gtd-archive-completed-items)
+	 ("C-c a" . org-gtd-engage)
          :map org-gtd-clarify-map
          ("C-c c" . org-gtd-organize)
          ("C-c f" . org-gtd-area-of-focus-set-on-item-at-point)
-         ("C-c t" . org-gtd-clarify-toggle-horizons-window))
+         ("C-c t" . org-gtd-clarify-toggle-horizons-window)
+	 :map org-agenda-mode-map
+	 ("C-c d C" . org-gtd-project-cancel-from-agenda)
+	 )
   )
 
 (use-package org-roam
+  :after org
   :ensure t
   :init
   (setq org-roam-v2-ack t)
   :custom
-  (org-roam-directory "~/nextcloud-private/Martin/RoamNotes")
-  :bind (("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n f" . org-roam-node-find)
-         ("C-c n i" . org-roam-node-insert)
-	 ("C-c n c" . org-roam-capture))
+  (org-roam-directory "~/nextcloud-private/private/org/roam")
+  :bind (("C-c R l" . org-roam-buffer-toggle)
+         ("C-c R f" . org-roam-node-find)
+         ("C-c R i" . org-roam-node-insert)
+	 ("C-c R c" . org-roam-capture))
   :config
   (org-roam-db-autosync-mode)
   ;; suggestion from here: https://www.orgroam.com/manual.html#Configuring-the-Org_002droam-buffer-display
