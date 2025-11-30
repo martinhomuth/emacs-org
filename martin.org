@@ -1775,11 +1775,11 @@ confirmation of executing those blocks the following variables are set
   (use-package org-gtd
     :after org
     :ensure t
-    :custom
+    :init
     (setq org-edna-use-inheritance t
           org-gtd-directory (file-truename "~/git/org-files/gtd")
           org-gtd-clarify-show-horizons 'right
-          org-gtd-areas-of-focus '("Home" "Health" "Family" "Career" "Play" "Finances" "Relationships" "Fitness" "Tech")
+          org-gtd-areas-of-focus '("Home" "Growth" "Health" "Family" "Career" "Play" "Finances" "Relationships" "Fitness" "Tech")
           )
     :config
     (org-edna-mode 1)
