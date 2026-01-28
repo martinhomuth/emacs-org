@@ -187,19 +187,21 @@ SCHEDULED: %^t
 
 (setq org-todo-keywords
       '((sequence
-         "TODO(t)"   ; next action
+         "TODO(t)"    ; new
+	 "NEXT(n)"    ; next action
          "TOBLOG(b)"  ; next action
          "REVIEW(r)"  ; next action
          "STARTED(s)"
-         "WAITING(w@/!)"
-         "SOMEDAY(.)" "|" "DONE(x!)" "CANCELLED(c@)")
+         "WAIT(w@/!)"
+         "SOMEDAY(.)" "|" "DONE(x!)" "CNCL(c@)")
         (sequence "TODELEGATE(-)" "DELEGATED(d)" "|" "COMPLETE(x)")))
 
 (setq org-todo-keyword-faces
       '(("TODO" . (:foreground "green" :weight bold))
+	("NEXT" . (:foreground "green" :weight bold))
         ("DONE" . (:foreground "cyan" :weight bold))
         ("REVIEW" . (:foreground "blue" :weight bold))
-        ("WAITING" . (:foreground "red" :weight bold))
+        ("WAIT" . (:foreground "red" :weight bold))
         ("SOMEDAY" . (:foregound "gray" :weight bold))))
 
 (setq org-tag-alist '(("call" . ?c)
