@@ -225,7 +225,7 @@
 
 (defun mh__update-timeclock-file-daily()
     "Updates the variable `timeclock-file` once per day"
-    (setq timeclock-file (concat "~/nextcloud-work/timelog/cw" (number-to-string (mh__add-leading-zero (mh__current-calendar-week))) "_" (number-to-string (nth 5 (decode-time (current-time)))))))
+    (setq timeclock-file (concat "~/nextcloud-work/timelog/cw" (mh__add-leading-zero (number-to-string (mh__current-calendar-week))) "_" (number-to-string (nth 5 (decode-time (current-time)))))))
 
 (use-package timeclock
   :ensure t

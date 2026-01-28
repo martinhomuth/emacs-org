@@ -220,7 +220,9 @@ SCHEDULED: %^t
 
 (setq my-org-agenda-files-list (append
                                 (file-expand-wildcards "~/git/org-files/*.org")
-				  (file-expand-wildcards "~/git/org-files/gtd/*.org"))
+				(file-expand-wildcards "~/git/org-files/gtd/*.org")
+				(file-expand-wildcards "~/nextcloud-work/projects/*.org")
+				  )
       org-agenda-files
       (delq nil
             (mapcar (lambda (x) (and (file-exists-p x) x))
