@@ -556,9 +556,17 @@ well.
       (car (calendar-iso-from-absolute
             (calendar-absolute-from-gregorian (list month day year))))))
 
+  (defun mh__add-leading-zero(value)
+    "Adds a leading zero if the length of VALUE is 1"
+    (let ((ret value))
+      (when (length= ret 1)
+        (setq ret (concat "0" ret)))
+        ret)
+    )
+
   (defun mh__update-timeclock-file-daily()
       "Updates the variable `timeclock-file` once per day"
-      (setq timeclock-file (concat "~/nextcloud-work/timelog/cw" (number-to-string (mh__current-calendar-week)))))
+      (setq timeclock-file (concat "~/nextcloud-work/timelog/cw" (number-to-string (mh__add-leading-zero (mh__current-calendar-week))) "_" (number-to-string (nth 5 (decode-time (current-time)))))))
 
   (use-package timeclock
     :ensure t
