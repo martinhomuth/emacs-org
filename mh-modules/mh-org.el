@@ -241,6 +241,7 @@ SCHEDULED: %^t
       org-src-tab-acts-natively t)
 
 (setq org-gtd-update-ack "2.1.0")
+(setq org-gtd-update-ack "4.0.0")
 (use-package org-gtd
   :after org
   :ensure t
