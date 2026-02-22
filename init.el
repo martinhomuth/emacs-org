@@ -22,7 +22,7 @@
 ;; TODO: add default font and fontsize
 (defvar mh-fontsize 12)
 (add-to-list 'default-frame-alist
-             `(font . ,(concat "Iosevka-" (number-to-string mh-fontsize))))
+             `(font . ,(concat "Iosevka Term-" (number-to-string mh-fontsize))))
 
 ;; Treat clipboard as UTF-8 string first
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
