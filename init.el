@@ -436,6 +436,45 @@ point reaches the beginning or end of the buffer, stop there."
 (setq auto-mode-alist (cons '("\\.bbclass$" . bb-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.conf$" . bb-mode) auto-mode-alist))
 
+(defun mh-string->one-line-components (s &optional indent)
+  "Transform S into lines like:
+  \" \\
+    foo \\
+    bar-baz \\
+    meh \\
+  \"
+
+  Splits on whitespace. INDENT (default 4) controls spaces before each component."
+  (interactive)
+  (let* ((indent (or indent 4))
+         (parts (split-string s "[ \t\n\r]+" t))
+         (pad (make-string indent ?\s)))
+    (concat " \\\n"
+            (mapconcat (lambda (p) (format "%s%s \\" pad p)) parts "\n")
+            "\n")))
+
+(defun mh-region->one-line-components (beg end &optional indent)
+  "Replace active region with one-line components.
+  With prefix arg (C-u), prompt for INDENT; otherwise default to 4.
+  If no region is active, do nothing."
+  (interactive
+   (if (use-region-p)
+       (list (region-beginning)
+             (region-end)
+             (when current-prefix-arg
+               (read-number "Indent (default 4): " 4)))
+     (list nil nil nil)))
+  (when (and beg end)
+    (let* ((text (buffer-substring-no-properties beg end))
+           (out (mh-string->one-line-components text indent)))
+      (delete-region beg end)
+      (insert out))))
+
+(with-eval-after-load 'bb-mode
+  (define-key bb-mode-map (kbd "C-c C-b") #'mh-region->one-line-components))
+;; Example:
+;; (mh-string->one-line-components "foo bar-baz meh")
+
 (add-hook 'org-mode-hook 'turn-on-auto-fill)
 (add-hook 'c-mode-hook 'turn-on-auto-fill)
 (add-hook 'TeX-mode-hook 'turn-on-auto-fill)
