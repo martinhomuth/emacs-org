@@ -1,4 +1,4 @@
-#+TITLE Literate Emacs Configuration
+#+TITLE: Literate Emacs Configuration
 #+AUTHOR: Martin Homuth
 #+EMAIL: martin@followthestack.tech
 
@@ -593,6 +593,7 @@ well.
 : t
 
 ** Key Bindings
+
 #+BEGIN_SRC emacs-lisp :tangle "init.el"
   ;; General
   (global-set-key "\C-w" 'backward-kill-word)
@@ -618,15 +619,6 @@ well.
   (global-set-key (kbd "M-c") 'capitalize-dwim)
   (global-set-key (kbd "M-/") 'comment-or-uncomment-region)
 #+END_SRC
-
-#+RESULTS:
-: capitalize-dwim
-
-#+END_SRC
-
-#+RESULTS:
-: magit-status
-
 
 * Ediff
 
