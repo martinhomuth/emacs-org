@@ -108,6 +108,7 @@ Just to make sure specific things are loaded as soon as possible
 
 #+begin_src emacs-lisp :tangle "init.el"
   (require 'mh-org)
+  (require 'mh-go)
 #+end_src
 
 ** add Package Sources
@@ -1892,11 +1893,23 @@ confirmation of executing those blocks the following variables are set
 #+RESULTS:
 : org-roam-capture
 
-** Provide =mh-org.el= module
+** Modules
+
+*** Provide =mh-org.el= module
 
 #+begin_src emacs-lisp :tangle "mh-modules/mh-org.el"
   (provide 'mh-org)
 #+end_src
+
+#+RESULTS:
+: mh-org
+
+*** Provide =mh-go.el= module
+
+#+begin_src emacs-lisp :tangle "mh-modules/mh-go.el"
+  (provide 'mh-go)
+#+end_src
+
 
 * Programming
 ** General
@@ -2140,8 +2153,35 @@ appropriate mode..
 #+END_SRC
 
 #+RESULTS:
+** Go
+#+begin_src emacs-lisp :tangle "mh-modules/mh-go.el"
+  (require 'project)
 
+  (defun project-find-go-module (dir)
+    (when-let ((root (locate-dominating-file dir "go.mod")))
+      (cons 'go-module root)))
 
+  (cl-defmethod project-root ((project (head go-module)))
+    (cdr project))
+
+  (add-hook 'project-find-functions #'project-find-go-module)
+  (require 'go-mode)
+  (require 'eglot)
+  (add-hook 'go-mode-hook 'eglot-ensure)
+
+  ;; Optional: install eglot-format-buffer as a save hook.
+  ;; The depth of -10 places this before eglot's willSave notification,
+  ;; so that notification reports the actual contents that will be saved.
+  (defun eglot-format-buffer-before-save ()
+    (add-hook 'before-save-hook #'eglot-format-buffer -10 t))
+  (add-hook 'go-mode-hook #'eglot-format-buffer-before-save)
+
+  (add-hook 'before-save-hook
+  	  (lambda ()
+              (call-interactively 'eglot-code-action-organize-imports))
+  	  nil t)
+
+#+end_src
 ** WebDev
 
 For work I need some php/javascript combination support. Web-mode

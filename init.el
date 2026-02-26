@@ -17,6 +17,7 @@
               "martin@followthestack.tech")))
 
 (require 'mh-org)
+(require 'mh-go)
 
 ;; TODO: add default font and fontsize
 (defvar mh-fontsize 12)
