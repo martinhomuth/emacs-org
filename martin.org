@@ -34,14 +34,21 @@ the =init.el=.
 Also I want to make sure that this file is always tangled as soon as
 it is saved.
 
-#+begin_src emacs-lisp
-  (defun mh--tangle-this-file()
+#+begin_src emacs-lisp :tangle "init.el"
+  (defun mh--enable-tangle-on-save()
     """
-     Tangles this buffers file.
+     Tangles the main org file to new emacs configuration files.
     """
-    (org-babel-tangle-file (buffer-file-name (current-buffer))))
+    (when (and (buffer-file-name)
+  	     (string-equal (file-truename (buffer-file-name))
+  			   (file-truename "~/.emacs.d/martin.org")))
+      (add-hook 'after-save-hook #'mh--tangle-config-on-save nil t)))
 
-  (add-hook 'after-save-hook 'mh--tangle-this-file nil t)
+  (defun mh--tangle-config-on-save()
+    (let ((org-confirm-babel-evaluate nil))
+        (org-babel-tangle)))
+
+  (add-hook 'org-mode-hook 'mh--enable-tangle-on-save)
 #+end_src
 
 #+RESULTS:

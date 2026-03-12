@@ -3,6 +3,21 @@
    (add-to-list 'load-path (locate-user-emacs-file string)))
  '("mh-lisp" "mh-modules"))
 
+(defun mh--enable-tangle-on-save()
+  """
+   Tangles the main org file to new emacs configuration files.
+  """
+  (when (and (buffer-file-name)
+	     (string-equal (file-truename (buffer-file-name))
+			   (file-truename "~/.emacs.d/martin.org")))
+    (add-hook 'after-save-hook #'mh--tangle-config-on-save nil t)))
+
+(defun mh--tangle-config-on-save()
+  (let ((org-confirm-babel-evaluate nil))
+      (org-babel-tangle)))
+
+(add-hook 'org-mode-hook 'mh--enable-tangle-on-save)
+
 (setq user-full-name "Martin Homuth")
 
 (let ((file (expand-file-name "~/.emacs.d/secrets.el")))
