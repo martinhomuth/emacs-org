@@ -586,7 +586,34 @@ point reaches the beginning or end of the buffer, stop there."
     (setq notmuch-show-all-multipart/alternative-parts nil)
     (setq notmuch-fcc-dirs "martin.homuth@emlix.com/Sent +sent -unread")
     (setq notmuch-crypto-process-mime t)
-    (add-hook 'message-setup-hook 'mml-secure-sign-pgpmime)
+    (add-hook 'message-setup-hook 'mml-secure-message-sign-pgpmime)
+
+    (defun mh--signing-key-id ()
+      "Return the OpenPGP key ID used for signing this message, if possible."
+      (or (car mml-secure-openpgp-signers)
+	  (when mml-secure-openpgp-sign-with-sender
+            (message-fetch-field "from"))))
+
+    (defun mh--export-signing-public-key (&optional output-file)
+      "Export the current signing public key in ASCII armored format.
+Return the output file name."
+      (let* ((key (mh--igning-key-id))
+             (outfile (or output-file "/tmp/mh-signing-public-key.asc")))
+	(unless key
+	  (error "No signing key configured"))
+	(unless (eq 0 (call-process
+                       "gpg" nil nil nil
+                       "--armor" "--output" outfile "--export" key))
+	  (error "Failed to export public key: %s" key))
+	outfile))
+
+    (defun mh-attach-signing-public-key ()
+      "Export and attach the public key used for signing."
+      (interactive)
+      (let ((file (mh--export-signing-public-key)))
+	(mml-attach-file file "application/pgp-keys" nil "attachment")))
+
+    (add-hook 'message-setup-hook 'mh-attach-signing-public-key)
     ))
 
 (add-hook 'notmuch-hello-refresh-hook
