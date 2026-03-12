@@ -942,6 +942,37 @@ reddit:
 #+RESULTS:
 : t
 
+* Tramp
+
+Apparantly Tramp can be made fairly responsive again as noted in the [[https://www.gnu.org/software/tramp/#Frequently-Asked-Questions-1][FAQ]].
+
+#+begin_src emacs-lisp :tangle "init.el"
+  (setq tramp-use-scp-direct-remote-copying t)
+  (setq remote-file-name-inhibit-locks t)
+#+end_src
+
+#+RESULTS:
+: t
+
+https://coredumped.dev/2025/06/18/making-tramp-go-brrrr./
+
+#+begin_src emacs-lisp :tangle "init.el"
+  (setq tramp-copy-size-limit (* 1024 1024) ;; 1MB
+        tramp-verbose 2)
+  (connection-local-set-profile-variables
+   'remote-direct-async-process
+   '((tramp-direct-async-process . t)))
+
+  (connection-local-set-profiles
+   '(:application tramp :protocol "scp")
+   'remote-direct-async-process)
+
+  (setq magit-tramp-pipe-stty-settings 'pty)
+
+  (with-eval-after-load 'tramp
+    (with-eval-after-load 'compile
+      (remove-hook 'compilation-mode-hook #'tramp-compile-disable-ssh-controlmaster-options)))
+#+end_src
 * Editing
 
 ** yaml-mode
