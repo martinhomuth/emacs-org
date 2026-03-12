@@ -11,6 +11,19 @@
    (add-to-list 'load-path (locate-user-emacs-file string)))
  '("mh-lisp" "mh-modules"))
 
+;; Delay garbage collection while Emacs is booting
+(setq gc-cons-threshold most-positive-fixnum
+      gc-cons-percentage 0.6)
+
+;; Schedule garbage collection sensible defaults for after booting
+(add-hook 'after-init-hook
+          (lambda ()
+            (setq gc-cons-threshold (* 100 1024 1024)
+                  gc-cons-percentage 0.1)))
+
+;; Single VC backend inscreases booting speed
+(setq vc-handled-backends '(Git))
+
 (setq package-archives
       '(("gnu-elpa" . "https://elpa.gnu.org/packages/")
         ("nongnu" . "https://elpa.nongnu.org/nongnu/")
