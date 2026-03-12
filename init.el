@@ -584,8 +584,9 @@ point reaches the beginning or end of the buffer, stop there."
     (setq message-sendmail-envelope-from 'header)
     (setq mail-specify-envelope-from 'header)
     (setq notmuch-show-all-multipart/alternative-parts nil)
-    (setq notmuch-fcc-dirs "emlix/Sent +sent -unread")
+    (setq notmuch-fcc-dirs "martin.homuth@emlix.com/Sent +sent -unread")
     (setq notmuch-crypto-process-mime t)
+    (add-hook 'message-setup-hook 'mml-secure-sign-pgpmime)
     ))
 
 (add-hook 'notmuch-hello-refresh-hook
