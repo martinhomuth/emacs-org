@@ -597,8 +597,9 @@ point reaches the beginning or end of the buffer, stop there."
     (defun mh--export-signing-public-key (&optional output-file)
       "Export the current signing public key in ASCII armored format.
 Return the output file name."
-      (let* ((key (mh--igning-key-id))
-             (outfile (or output-file "/tmp/mh-signing-public-key.asc")))
+      (let* ((key (mh--signing-key-id))
+	     (store-location (make-temp-file "signing-keys" t))
+             (outfile (or output-file (concat store-location "/mh-signing-public-key.asc"))))
 	(unless key
 	  (error "No signing key configured"))
 	(unless (eq 0 (call-process
