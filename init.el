@@ -129,6 +129,10 @@
                                     (newline-mark 10 [9166 10])
                                     (tab-mark 9 [9654 9] [92 9])))
 
+(setq display-line-numbers-type 'relative)
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
+(add-hook 'text-mode-hook #'display-line-numbers-mode)
+
 (use-package counsel
   :ensure t)
 (use-package ivy :ensure t

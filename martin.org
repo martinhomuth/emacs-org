@@ -351,6 +351,17 @@ A good addition is to toggle every whitespace character on demand.
 
 #+RESULTS:
 
+I found showing line numbers on the side to be rather helpful in general so I will try to enable them all the time.
+
+#+begin_src emacs-lisp :tangle "init.el"
+  (setq display-line-numbers-type 'relative)
+  (add-hook 'prog-mode-hook #'display-line-numbers-mode)
+  (add-hook 'text-mode-hook #'display-line-numbers-mode)
+#+end_src
+
+#+RESULTS:
+| display-line-numbers-mode | text-mode-hook-identify |
+
 ** Ivy
 
 #+BEGIN_SRC emacs-lisp :tangle "init.el"
