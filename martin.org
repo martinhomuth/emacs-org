@@ -273,22 +273,6 @@ to bother remote files too much slowing down tramp.
 
 #+RESULTS:
 
-** Auto-Compile
-
-Enable auto compilation to ensure to never load out of date lisp modules
-
-#+BEGIN_SRC emacs-lisp :tangle "init.el"
-  (use-package auto-compile
-    :ensure t
-    :init (setq load-prefer-newer t)
-    :config
-    (auto-compile-on-load-mode)
-    (auto-compile-on-save-mode))
-#+END_SRC
-
-#+RESULTS:
-: t
-
 ** General Configuration
 
 #+BEGIN_SRC emacs-lisp :tangle "init.el"

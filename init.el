@@ -75,13 +75,6 @@
 (global-auto-revert-mode)
 (setq auto-revert-remote-files nil)   ;; t makes tramp slow
 
-(use-package auto-compile
-  :ensure t
-  :init (setq load-prefer-newer t)
-  :config
-  (auto-compile-on-load-mode)
-  (auto-compile-on-save-mode))
-
 (tooltip-mode -1)
 (tool-bar-mode -1)
 (menu-bar-mode -1)
