@@ -133,6 +133,27 @@
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 (add-hook 'text-mode-hook #'display-line-numbers-mode)
 
+;; ELISP evaluations show results in an overlay
+(defun mh/eval-last-sexp-overlay (arg)
+  "Eval last sexp and show result inline as overlay.
+With prefix ARG, insert the result inline instead.
+Use ⇒ if displayable, otherwise fallback to =>."
+  (interactive "P")
+  (let ((arrow (if (char-displayable-p ?⇒) " ; ⇒ " " ; => ")))
+    (if arg
+        (let ((value (elisp--eval-last-sexp nil)))
+          (insert arrow (format "%S" value)))
+      (let* ((value (elisp--eval-last-sexp nil))
+             (str (concat arrow (format "%S" value)))
+             (ov (make-overlay (point) (point))))
+        (overlay-put ov 'after-string
+                     (propertize str 'face 'font-lock-comment-face))
+        (run-with-timer
+         3 nil
+         (lambda (o) (delete-overlay o))
+         ov)))))
+(global-set-key (kbd "C-x C-e") #'mh/eval-last-sexp-overlay)
+
 (use-package counsel
   :ensure t)
 (use-package ivy :ensure t

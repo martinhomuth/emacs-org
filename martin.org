@@ -362,6 +362,34 @@ I found showing line numbers on the side to be rather helpful in general so I wi
 #+RESULTS:
 | display-line-numbers-mode | text-mode-hook-identify |
 
+Elisp overlay evaluation appears to be a rather nice feature.
+
+#+begin_src emacs-lisp :tangle "init.el"
+  ;; ELISP evaluations show results in an overlay
+  (defun mh/eval-last-sexp-overlay (arg)
+    "Eval last sexp and show result inline as overlay.
+  With prefix ARG, insert the result inline instead.
+  Use ⇒ if displayable, otherwise fallback to =>."
+    (interactive "P")
+    (let ((arrow (if (char-displayable-p ?⇒) " ; ⇒ " " ; => ")))
+      (if arg
+          (let ((value (elisp--eval-last-sexp nil)))
+            (insert arrow (format "%S" value)))
+        (let* ((value (elisp--eval-last-sexp nil))
+               (str (concat arrow (format "%S" value)))
+               (ov (make-overlay (point) (point))))
+          (overlay-put ov 'after-string
+                       (propertize str 'face 'font-lock-comment-face))
+          (run-with-timer
+           3 nil
+           (lambda (o) (delete-overlay o))
+           ov)))))
+  (global-set-key (kbd "C-x C-e") #'mh/eval-last-sexp-overlay)
+#+end_src
+
+#+RESULTS:
+: mh/eval-last-sexp-overlay
+
 ** Ivy
 
 #+BEGIN_SRC emacs-lisp :tangle "init.el"
