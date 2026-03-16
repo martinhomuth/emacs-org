@@ -62,10 +62,10 @@
     (setq term-file-aliases (cons '("st" . "xterm-256color")
                                   term-file-aliases)))
 
-(unless (package-installed-p 'gruvbox-theme)
+(unless (package-installed-p 'almost-mono-themes)
   (package-refresh-contents)
-  (package-install 'gruvbox-theme))
-(load-theme 'gruvbox t)
+  (package-install 'almost-mono-themes))
+(load-theme 'almost-mono-white t)
 (setq-default cursor-type 'box)
 
 (if (or (not (fboundp 'server-running-p))

@@ -223,15 +223,15 @@ For now I use the same theme for all my machines. This will be
 refactored later for allowing different themes.
 
 #+BEGIN_SRC emacs-lisp :tangle "init.el"
-  (unless (package-installed-p 'gruvbox-theme)
+  (unless (package-installed-p 'almost-mono-themes)
     (package-refresh-contents)
-    (package-install 'gruvbox-theme))
-  (load-theme 'gruvbox t)
+    (package-install 'almost-mono-themes))
+  (load-theme 'almost-mono-white t)
   (setq-default cursor-type 'box)
 #+END_SRC
 
 #+RESULTS:
-: t
+: box
 
 ** Emacs-Server
 
