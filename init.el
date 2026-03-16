@@ -73,6 +73,7 @@
     (server-start))
 
 (global-auto-revert-mode)
+(setq auto-revert-remote-files nil)   ;; t makes tramp slow
 
 (use-package auto-compile
   :ensure t

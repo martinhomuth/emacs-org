@@ -261,18 +261,17 @@ want.
 
 ** Auto-Revert
 
-I am working with different computers on the same text base controlled
-by git and some background jobs that keep the git repositories current
-by some means. As the files are always opened and essential to my
-organization, I need to make sure that the opened buffers are current
-all the time. Apparantly global-auto-revert-mode does the trick.
+I am working with different computers on the same text base controlled by git and some background jobs that keep the git
+repositories current by some means. As the files are always opened and essential to my organization, I need to make sure
+that the opened buffers are current all the time. global-auto-revert-mode does the trick, but we need to make sure not
+to bother remote files too much slowing down tramp.
 
 #+begin_src emacs-lisp :tangle "init.el"
   (global-auto-revert-mode)
+  (setq auto-revert-remote-files nil)   ;; t makes tramp slow
 #+end_src
 
 #+RESULTS:
-: t
 
 ** Auto-Compile
 
