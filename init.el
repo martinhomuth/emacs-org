@@ -81,6 +81,48 @@
   (auto-compile-on-load-mode)
   (auto-compile-on-save-mode))
 
+(tooltip-mode -1)
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(line-number-mode t)
+(column-number-mode t)
+(setq display-line-numbers-width 4)
+(setq display-line-numbers-widen t)
+(setq line-spacing nil)
+(setq find-ls-option '("-exec ls -ldh {} +" . " -ldh"))
+(fset 'yes-or-no-p 'y-or-n-p)
+(delete-selection-mode t)
+(show-paren-mode 1)
+(setq project-vc-extra-root-markers '("Cargo.toml" "package.json" "go.mod"))
+(setq read-answer-short t)
+(setq recentf-exclude (list "^/\\(?:ssh\\|su\\|sudo\\)?:"))
+(setq use-short-answers t)
+(setq visible-bell nil)
+
+(setq-default fill-column 120
+              inhibit-startup-screen t
+              initial-scratch-message ""
+              show-paren-delay 0
+              show-paren-style 'mixed
+              visible-bell t
+              browse-url-browser-function 'browse-url-chromium
+              browse-url-new-window-flag  t
+              browse-url-firefox-new-window-is-tab t)
+
+;; Whitespaces... A colleague of mine showed me the horror of not
+;; considering whitespaces and thus they are shown always and everywhere!
+(setq-default show-trailing-whitespace t)
+;; but in some cases they are useless
+(add-hook 'vterm-mode-hook
+          (lambda()
+            (setq show-trailing-whitespace nil)))
+
+;; In commit mode we want to keep the 80 character limit
+(add-hook 'git-commit-mode-hook
+          (lambda()
+            (setq fill-column 80)))
+
 (global-set-key (kbd "C-c T w") 'whitespace-mode)
 (setq whitespace-line-column nil
       whitespace-display-mappings '((space-mark 32 [183] [46])

@@ -292,15 +292,25 @@ Enable auto compilation to ensure to never load out of date lisp modules
 
 ** General Configuration
 
-#+BEGIN_SRC emacs-lisp :tangle early-init.el
+#+BEGIN_SRC emacs-lisp :tangle "init.el"
   (tooltip-mode -1)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
-  (line-number-mode -1)
+  (line-number-mode t)
+  (column-number-mode t)
+  (setq display-line-numbers-width 4)
+  (setq display-line-numbers-widen t)
+  (setq line-spacing nil)
+  (setq find-ls-option '("-exec ls -ldh {} +" . " -ldh"))
   (fset 'yes-or-no-p 'y-or-n-p)
   (delete-selection-mode t)
   (show-paren-mode 1)
+  (setq project-vc-extra-root-markers '("Cargo.toml" "package.json" "go.mod"))
+  (setq read-answer-short t)
+  (setq recentf-exclude (list "^/\\(?:ssh\\|su\\|sudo\\)?:"))
+  (setq use-short-answers t)
+  (setq visible-bell nil)
 
   (setq-default fill-column 120
                 inhibit-startup-screen t
