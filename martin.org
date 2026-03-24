@@ -991,6 +991,30 @@ reddit:
 #+RESULTS:
 : t
 
+It is fairly often required to calculate the hash of a file to make sure it is the right one and get that hash into the
+clipboard. So we create a function that calculates that hash, prints it to the *Message* buffer and copies it to the kill
+ring.
+
+#+begin_src emacs-lisp :tangle "init.el"
+  (defun mh/dired-copy-sha256 ()
+    "Compute sha256 of the file at point in Dired and copy it."
+    (interactive)
+    (let* ((file (dired-get-file-for-visit))
+           (hash (string-trim
+                  (shell-command-to-string
+                   (format "sha256sum %s | awk '{print $1}'"
+                           (shell-quote-argument file))))))
+      (kill-new hash)
+      (message "sha256: %s (copied)" hash)))
+
+  (with-eval-after-load 'dired
+    (define-key dired-mode-map (kbd "h") #'mh/dired-copy-sha256))
+
+#+end_src
+
+#+RESULTS:
+: mh/dired-copy-sha256
+
 * Tramp
 
 Apparantly Tramp can be made fairly responsive again as noted in the [[https://www.gnu.org/software/tramp/#Frequently-Asked-Questions-1][FAQ]].
@@ -1022,6 +1046,7 @@ https://coredumped.dev/2025/06/18/making-tramp-go-brrrr./
     (with-eval-after-load 'compile
       (remove-hook 'compilation-mode-hook #'tramp-compile-disable-ssh-controlmaster-options)))
 #+end_src
+
 * Editing
 
 ** yaml-mode

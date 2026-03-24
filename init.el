@@ -482,6 +482,20 @@ point reaches the beginning or end of the buffer, stop there."
   (bind-key "<tab>" #'dired-subtree-toggle dired-mode-map)
   (bind-key "<backtab>" #'dired-subtree-cycle dired-mode-map))
 
+(defun mh/dired-copy-sha256 ()
+  "Compute sha256 of the file at point in Dired and copy it."
+  (interactive)
+  (let* ((file (dired-get-file-for-visit))
+         (hash (string-trim
+                (shell-command-to-string
+                 (format "sha256sum %s | awk '{print $1}'"
+                         (shell-quote-argument file))))))
+    (kill-new hash)
+    (message "sha256: %s (copied)" hash)))
+
+(with-eval-after-load 'dired
+  (define-key dired-mode-map (kbd "h") #'mh/dired-copy-sha256))
+
 (setq tramp-use-scp-direct-remote-copying t)
 (setq remote-file-name-inhibit-locks t)
 
